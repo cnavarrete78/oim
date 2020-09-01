@@ -1,0 +1,45 @@
+.form-control{
+    border-radius: 0%;
+    border:1px solid #6b82eb;
+}
+.form-control:focus{
+    box-shadow: 0px 0px 5px 0px #6b82eb;
+}
+.btn-success{
+    background: #3465ba;
+    color:white;
+    border: 1px solid #3465ba;
+}
+.btn-success:hover, .btn-success:focus{
+    background: #6b82eb;
+    color:white;
+    border: 1px solid #6b82eb;
+}
+.btn{
+    border-radius: 0%;
+}
+.jumbotron{
+    background-color: #d2daed;
+    color: #3465ba;
+}
+.panel, .panel-heading, .panel-body{
+    border-radius: 0%;
+    border:0px solid white;
+    border-bottom: 0px solid white;
+    border-color: white !important;
+}
+.panel-footer{
+    background: white;
+    border-top: 0px solid white !important;
+}
+.panel-default > .panel-heading{
+    background: white;
+    color: #3465ba;
+}
+a{
+    text-decoration: none;
+    color:#6b82eb
+}
+a:hover, a:focus{
+    text-decoration: none;
+}

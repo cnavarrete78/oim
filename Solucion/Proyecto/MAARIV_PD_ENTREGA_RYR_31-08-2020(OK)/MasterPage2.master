@@ -1,0 +1,108 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage2.master.cs" Inherits="MasterPage2" %>
+
+<!DOCTYPE html>
+<%@ Register Assembly="System.Web.Extensions, Version=1.0.61025.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI" TagPrefix="asp" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+
+
+<html lang="en">
+<head runat="server">
+
+    <%--<link href="css/popups.css" rel="stylesheet" />--%>
+     <%--<link href="css/bootstrap.min.css" rel="stylesheet" />--%>
+    <link href="css/grid2.css" rel="stylesheet" />
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>  
+    <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js" type="text/javascript"></script>--%>
+    <script src="../../js/jsapi_local.js"></script>
+    <script src="../../js/jquery.min_local.js"></script>
+
+        <!--boostrap 3.4-->
+    <%--<link rel="stylesheet" href="/css/boostrap3.css" >--%>
+   
+    <!-- Bootstrap core CSS -->
+    
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />-->
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />-->
+    <%--<link href="/css/grid2.css" rel="stylesheet" />--%>
+    <link rel="stylesheet" href="/css/boostrap31.css" >
+    <%--<link href="/css/mensaje_inicio1.css" rel="stylesheet" />--%>
+    
+
+    <script src="/js/jquery1113.js" type="text/javascript"></script>
+    <script src="/js/boostrap335.js" type="text/javascript"></script>
+
+    
+     <link href="/css/mensaje_inicio1.css" rel="stylesheet" />
+
+
+</head>
+
+<body class="body45"> 
+    <form runat="server">    
+        <div>
+        <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server">
+        
+
+
+
+        </asp:ContentPlaceHolder>
+    </div>
+    </form>
+
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        document.onkeydown = function (e) {
+            e = e || window.event;//Get event
+            if (e.ctrlKey) {
+                var c = e.which || e.keyCode;//Get key code
+                switch (c) {
+                    case 87://Block Ctrl+W --Not work in Chrome
+                        e.preventDefault();
+                        e.stopPropagation();
+                        break;
+                }
+            }
+        };
+
+        $(function () {
+            $(document).keydown(function (e) {
+                var code = (e.keyCode ? e.keyCode : e.which);
+                if (code == 93) {
+                    alert("Tecla con uso restringido !!! ");
+                    e.preventDefault();
+                }
+                else if ((e.keyCode == 115 && e.altKey == 1) || (e.keyCode == 9 && e.altKey == 1) || (e.keyCode == 38 && e.altKey == 1) || (e.keyCode == 40 && e.altKey == 1) || (e.keyCode == 39 && e.altKey == 1) ||
+                    (e.keyCode == 37 && e.altKey == 1) || (e.keyCode == 115 && e.altKey == 1) || (e.keyCode == 82 && e.ctrlKey) ||
+                    (e.keyCode == 83 && e.ctrlKey) || (e.keyCode == 85 && e.ctrlKey) || (e.keyCode == 69 && e.ctrlKey) || (e.keyCode == 78 && e.ctrlKey) ||
+                    (e.keyCode == 81 && e.ctrlKey) || (e.keyCode == 79 && e.ctrlKey) || (e.keyCode == 80 && e.ctrlKey) || (e.keyCode == 75 && e.ctrlKey) ||
+                    code == 116 || code == 123 || code == 122 || code == 121 || code == 112 || code == 113 || code == 114 || code == 115 || code == 117 ||
+                    code == 119 || code == 120 ) {
+                    swal("Inhabilitado!", "Comando no permítido", "warning");
+                    e.preventDefault();
+                }
+            });
+
+            $(document).mousedown(function (e) {
+                var code = (e.keyCode ? e.keyCode : e.which);
+                var msg = "Prohibido usar Click Derecho !!! ";
+                if (navigator.appName == 'Netscape' && e.which == 3) {
+                    alert(msg); //- Si no quieres asustar a tu usuario entonces quita esta linea...
+                    return false;
+                }
+                else if (navigator.appName == 'Microsoft Internet Explorer' && event.button == 2) {
+                    alert(msg); //- Si no quieres asustar al usuario que utiliza IE,  entonces quita esta linea...
+                    //- Aunque realmente se lo merezca...
+                    return false;
+                }
+
+            });
+        });
+
+    </script>
+
+
+</body>
+</html>
