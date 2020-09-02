@@ -2669,16 +2669,20 @@
 
                                                 <div id="Tabs" role="tabpanel">
                                                     <!-- Nav tabs -->
-
+                                                    <%--------------------------------------------------------%>
+                                                    <%--aqui se deben agregar los nuevos tabs da desarrollar--%>
+                                                    <%--------------------------------------------------------%>
                                                     <ul class="nav2 nav2-tabs pestana" role="tablist">
                                                         <li id="m_2" runat="server"><a href="#ContentPlaceHolder1_Responsables" aria-controls="Responsables" role="tab" data-toggle="tab">Responsables</a></li>
-                                                        <li id="m_4" runat="server" class="active"><a href="#ContentPlaceHolder1_Dias" aria-controls="Dias" role="tab" data-toggle="tab">Acciones </a></li>
+                                                        <li id="Li1" runat="server" class="active"><a href="#ContentPlaceHolder1_Dias" aria-controls="Dias" role="tab" data-toggle="tab">Acciones </a></li>
+                                                        <li id="PlanTraslado" runat="server" class="active"><a href="#ContentPlaceHolder1_plan_traslado" aria-controls="PlanTraslado" role="tab" data-toggle="tab">Plan de acción del traslado </a></li>
+                                                        <li id="Balance" runat="server" class="active"><a href="#ContentPlaceHolder1_balance" aria-controls="Balance" role="tab" data-toggle="tab">Balance </a></li>
                                                     </ul>
                                                     <!-- Tab panes -->
                                                     <div class="tab-content" style="padding-top: 20px">
 
                                                         <asp:HiddenField ID="hidIdSujetoCol" runat="server" />
-
+                                                        <%--primer tab de responsables--%>
                                                         <div role="tabpanel" class="tab-pane" id="Responsables" runat="server">
                                                             <asp:UpdatePanel runat="server" ID="UP_Responsable" UpdateMode="Conditional">
                                                                 <ContentTemplate>
@@ -2816,6 +2820,7 @@
                                                                 </Triggers>
                                                             </asp:UpdatePanel>
                                                         </div>
+                                                        <%--tab de acciones--%>
                                                         <div role="tabpanel" class="tab-pane active" id="Dias" runat="server">
                                                             <asp:UpdatePanel runat="server" ID="UP_Dias" UpdateMode="Conditional">
                                                                 <ContentTemplate>
@@ -3927,7 +3932,1118 @@
                                                                 </Triggers>
                                                             </asp:UpdatePanel>
                                                         </div>
+                                                         <%--tab de acciones--%>
+                                                        <div role="tabpanel" class="tab-pane active" id="Div3" runat="server">
+                                                            <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
+                                                                <ContentTemplate>
 
+                                                                    <asp:Panel ID="Panel2" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Seguimiento 
+                                                                            </div>
+                                                                            <div class="panel-body">
+
+                                                                                <asp:Label runat="server" ID="Label7" Text="No hay medidas en Seguimiento"></asp:Label>
+
+
+                                                                                <div class="row">
+
+
+                                                                                    <!--search (buscador)-->
+                                                                                    <div class="input-group" runat="server" style="width: 20%;">
+                                                                                        <asp:TextBox ID="TextBox1" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                        <asp:LinkButton ID="LinkButton7" runat="server" OnClick="search_gv5_Click">
+                                                                                            <span class="fas fa-search" aria-hidden="true" style="position: absolute;top: 0px;z-index: 0;padding: 4%;left: 100%;border: 1px solid #cccccc;color: #95d095;"></span>
+                                                                                        </asp:LinkButton>
+                                                                                        <asp:LinkButton ID="LinkButton8" runat="server" OnClick="reset_gv5_Click">
+                                                                                            <span class="fas fa-window-close" aria-hidden="true" style="position: absolute;top: 0px;left: 117%;border: 1px solid #cccccc;padding: 4%;"></span>
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
+
+                                                                                    <!-- fin search-->
+
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="GridView2"
+                                                                                        runat="server" AutoGenerateColumns="False" OnRowCommand="gv5_RowCommand" OnRowDataBound="gv5_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+
+                                                                                        <Columns>
+                                                                                            <asp:TemplateField HeaderText="id_actividad_responsable" Visible="False">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="proyeccion" runat="server" Text='<%# Eval("PROYECCION") %>'></asp:Label>
+                                                                                                    <asp:Label ID="gestion" runat="server" Text='<%# Eval("GESTION") %>'></asp:Label>
+                                                                                                    <asp:Label ID="id_actividad_dia" runat="server" Text='<%# Eval("id_actividad_dia") %>'></asp:Label>
+                                                                                                    <asp:Label ID="archivos" runat="server" Text='<%# Eval("archivos") %>'></asp:Label>
+
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:BoundField DataField="MUNICIPIO" HeaderText="Municipio" Visible="false" />
+                                                                                            <%--<asp:BoundField DataField="LUGAR_ACTIVIDAD" HeaderText="Medida" />--%>
+
+                                                                                            <asp:BoundField DataField="TIPO_MEDIDA" HeaderText="Tipo de medida" />
+                                                                                            <asp:BoundField DataField="ID_ACTIVIDAD_PRODUCTO" HeaderText="ID Producto / Id Medida" />
+                                                                                            <asp:BoundField DataField="PRODUCTO" HeaderText="Medida / Producto " />
+                                                                                            <asp:BoundField DataField="HORA_INICIO" HeaderText="Inicio" Visible="false" />
+                                                                                            <asp:BoundField DataField="HORA_FIN" HeaderText="Fin" Visible="false" />
+
+                                                                                            <asp:BoundField DataField="proyeccion" HeaderText="ID Acción / Id Actividad" />
+                                                                                            <%--<asp:BoundField DataField="DIA_ACTIVIDAD" HeaderText="Día" Visible="false" />--%>
+                                                                                            <%--<asp:BoundField DataField="LUGAR_ACTIVIDAD" HeaderText="Actividades " />--%>
+                                                                                            <asp:BoundField DataField="OBSERVACION_ACTIVIDAD_DIA" HeaderText="Actividades " />
+                                                                                            <asp:BoundField DataField="BITACORA" HeaderText="Bitácoras" Visible="false" />
+
+                                                                                            <asp:BoundField DataField="PROYECCION" HeaderText="Proyección costo" ItemStyle-HorizontalAlign="Center" Visible="false" />
+                                                                                            <asp:BoundField DataField="GESTION" HeaderText="Gestión costo" ItemStyle-HorizontalAlign="Center" Visible="false" />
+
+                                                                                            <asp:TemplateField HeaderText="Estado">
+                                                                                                <ItemTemplate>
+                                                                                                    <div id="estado_dia" runat="server" visible="false" class="btn-group btn-group-md" role="group" aria-label="...">
+                                                                                                        <asp:LinkButton ID="PorAprobar" runat="server" CssClass="btn btn-default" CommandName="Por_Aprobar" ToolTip="ENVIAR PARA APROBACIÓN">
+                                                                                                    <span class="glyphicon glyphicon-ok " aria-hidden="true"></span>        
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:LinkButton ID="AprobadoDia" runat="server" CssClass="btn btn-default" CommandName="Dia_aprobado" ToolTip="APROBADO">
+                                                                                                    <span class="glyphicon glyphicon-thumbs-up " aria-hidden="true"></span>     
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:LinkButton ID="DenegadoDia" runat="server" CssClass="btn btn-default" CommandName="Dia_denegado" ToolTip="NO APROBADO">
+                                                                                                    <span class="glyphicon glyphicon-thumbs-down " aria-hidden="true"></span>        
+                                                                                                        </asp:LinkButton>
+                                                                                                    </div>
+
+
+                                                                                                    <div class="input-group " style="display: block;">
+                                                                                                        <asp:LinkButton ID="L_Estado_dia" runat="server" CssClass="btn btn-block btn-default " CommandName="Estado_dia" ToolTip="Estado">
+                                                                                                            <%--Style=" width:160px "--%>
+                                                                                                            <span class="fas fa-edit" id="S_EstadoDia" runat="server" aria-hidden="true"></span>
+                                                                                                            <asp:Literal runat="server" ID="LI_Estado_dia" Text='<%# " "+Eval("ACTIVIDAD_DIA_ESTADO") %>'></asp:Literal>
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:Label ID="L_Alerta" runat="server" Text='<%# Eval("alerta") %>' Visible="false"> </asp:Label>
+
+                                                                                                        <asp:Panel ID="D_bell" runat="server" CssClass="alertabell"
+                                                                                                            Style="color: red; font-size: 18px; position: absolute; left: -7px; top: 1px; z-index: 10; animation-name: mover; animation-duration: 5s; animation-iteration-count: infinite;">
+                                                                                                            <span class="fas fa-bell" aria-hidden="true">
+                                                                                                        </asp:Panel>
+                                                                                                    </div>
+                                                                                                    </div>
+
+                                                                                                    <asp:Label ID="LB_IdEstado_dia" runat="server" Text='<%# Eval("ID_ACTIVIDAD_DIA_ESTADO") %>' Visible="false"></asp:Label>
+                                                                                                    <asp:Label ID="LB_EstadoDia" runat="server" Text='<%# Eval("ACTIVIDAD_DIA_ESTADO") %>' Visible="false"></asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="130px" />
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="Opciones">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label CssClass="success text-success" ToolTip="Día aprobado" Font-Size="20px" runat="server" ID="Val_DiaAprobado" Visible="false">
+                                                                                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                                                                                                    </asp:Label>
+                                                                                                    <asp:Label CssClass="success text-warning" ToolTip="Pendiente aprobación" Font-Size="20px" runat="server" ID="Pen_Aprobacion" Visible="false">
+                                                                                            <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>
+                                                                                                    </asp:Label>
+                                                                                                    <asp:ImageButton ID="actualizar_dia" runat="server" CausesValidation="False" Visible="false" CommandName="Actualizar_dia" ImageUrl="~/IMG/lapiz.png" ToolTip="Actualizar actividad" Width="22px"></asp:ImageButton>
+
+
+                                                                                                    <%--<asp:ImageButton ID="Evidencias" runat="server" CausesValidation="False" CommandName="Evidencias" ImageUrl="~/IMG/documentacion.png" ToolTip="Evidencias" Width="22px"></asp:ImageButton>--%>
+                                                                                                    <div class="btn-group" role="group" aria-label="...">
+
+                                                                                                        
+
+                                                                                                        <asp:LinkButton ID="Evidencias" runat="server" CssClass="btn btn-default" CausesValidation="False" Style="color: #b10c0c" CommandName="Evidencias" ToolTip="Evidencias">
+                                                                                                        <span class=" far fa-file " aria-hidden="true"><%--</span><span class="badge">4</span>--%>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        <asp:LinkButton ID="Bitacora" runat="server" CausesValidation="False" CssClass="btn btn-default" CommandName="Bitacora" ToolTip="Bitacora">
+                                                                                                        <span class="far fa-comment-dots" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        <asp:LinkButton ID="Costos" runat="server" CausesValidation="False" CommandName="Costos" Style="color: green" ToolTip="Costos" CssClass="btn btn-default">
+                                                                                                        <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        <asp:LinkButton ID="Encuesta" runat="server" CssClass="btn btn-default" CausesValidation="False" Style="color: #b10c0c" CommandName="Encuesta" ToolTip="Encuesta">
+                                                                                                        <span class="far fa-clipboard" aria-hidden="true"><%--</span><span class="badge">4</span>--%>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        <asp:LinkButton ID="Actualizar" runat="server" Visible="true" CssClass="btn btn-default" CausesValidation="False" Style="color: #b10c0c" CommandName="Actualizar" ToolTip="Actualizar">
+                                                                                                                <span class="fas fa-edit" aria-hidden="true"><%--</span><span class="badge">4</span>--%>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        <asp:LinkButton ID="ibtnGEliminar_actividad_dia" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        
+
+                                                                                                        <asp:Label ID="L_Alerta_bitacora" runat="server" Text='<%# Eval("alertaBitacora") %>' Visible="false"> </asp:Label>
+
+                                                                                                        <asp:Panel ID="D_Circle" runat="server"
+                                                                                                            Style="color: white; font-size: 10px; position: absolute; left: 63px; top: 2px; z-index: 10;">
+
+                                                                                                            <%--Style="color: green; font-size: 5px; position: absolute; left: 60px; top: 2px; z-index: 10;"><span class="fas fa-circle" aria-hidden="true">--%>
+
+
+                                                                                                            <span style="background-color: green; border-radius: 100%; padding-left: 2px; padding-right: 2px;" aria-hidden="true">
+                                                                                                                <asp:Label runat="server" ID="lb_bitacora_m" Text='<%# Eval("alertaBitacora") %>'></asp:Label></span>
+
+
+                                                                                                        </asp:Panel>
+
+                                                                                                        <asp:Label ID="L_Alerta_documentos" runat="server" Text='<%# Eval("archivos") %>' Visible="false"> </asp:Label>
+
+                                                                                                        <asp:Panel ID="D_Circle_documentos" runat="server"
+                                                                                                            Style="color: white; font-size: 10px; position: absolute; left: 24px; top: 2px; z-index: 10;">
+
+                                                                                                            <%--Style="color: green; font-size: 5px; position: absolute; left: 60px; top: 2px; z-index: 10;"><span class="fas fa-circle" aria-hidden="true">--%>
+
+                                                                                                            <span style="background-color: green; border-radius: 100%; padding-left: 2px; padding-right: 2px;" aria-hidden="true">
+                                                                                                                <asp:Label runat="server" ID="Label3" Text='<%# Eval("archivos") %>'></asp:Label></span>
+
+
+                                                                                                        </asp:Panel>
+
+                                                                                                    </div>
+
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="200px" />
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="" Visible="false">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="LB_Id_Actividad_Dia_Estado" runat="server" Text='<%# Eval("ID_ACTIVIDAD_DIA_ESTADO") %>' />
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" />
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="TIPO_MEDIDA_2" Visible="False">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="TIPO_MEDIDA_2" runat="server" Text='<%# Eval("TIPO_MEDIDA") %>'></asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="PRODUCTO_D" Visible="False">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="PRODUCTO_D" runat="server" Text='<%# Eval("PRODUCTO") %>'></asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="ACTIVIDAD_D" Visible="False">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="ACTIVIDAD_D" runat="server" Text='<%# Eval("OBSERVACION_ACTIVIDAD_DIA") %>'></asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="ACTIVIDAD_PRODUCTO_ID" Visible="False">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="ACTIVIDAD_PRODUCTO_ID" runat="server" Text='<%# Eval("ID_ACTIVIDAD_PRODUCTO") %>'></asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
+                                                                                </div>
+
+                                                                                <asp:Panel ID="Panel3" runat="server" Visible="false">
+                                                                                    <div class="container-fluid">
+                                                                                        <div class="panel panel-default">
+                                                                                            <div class="panel-body">
+
+                                                                                                <div class="row" runat="server" visible="false">
+                                                                                                    <div class="col-md-1">
+                                                                                                        <p class="text-center">Día </p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <div class="input-group">
+                                                                                                            <asp:TextBox ID="TextBox2" runat="server" CssClass="form-control" placeholder="dd/MM/yyyy" aria-describedby="basic-addon2"></asp:TextBox>
+                                                                                                            <span class="input-group-addon glyphicon glyphicon-calendar" id="basic-addon2" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                                                        </div>
+                                                                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender2" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="basic-addon2" TargetControlID="TB_Fecha"></ajaxToolkit:CalendarExtender>
+                                                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="TB_Fecha" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardar_dias">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator18" runat="server" ControlToValidate="TB_Fecha" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <p class="text-center">Hora inicio:</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <div class="input-group bootstrap-timepicker timepicker">
+                                                                                                            <asp:TextBox ID="TextBox3" runat="server" OnTextChanged="TB_HoraInicio_TextChanged" CssClass="form-control input-small"></asp:TextBox>
+                                                                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                                                                                        </div>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator19" runat="server" ControlToValidate="TB_HoraInicio" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <p class="text-center">Hora fin:</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <div class="input-group bootstrap-timepicker timepicker">
+                                                                                                            <asp:TextBox ID="TextBox15" runat="server" CssClass="form-control input-small"></asp:TextBox>
+                                                                                                            <span class="input-group-addon disabled"><i class="glyphicon glyphicon-time"></i></span>
+                                                                                                        </div>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator20" runat="server" ControlToValidate="TB_HoraFin" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-3">
+
+                                                                                                        <p class="text-center">Departamento</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="DropDownList7" runat="server" AutoPostBack="True" CssClass="form-control" OnSelectedIndexChanged="LD_DepartamentoDia_SelectedIndexChanged">
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server" ControlToValidate="LD_DepartamentoDia" CssClass="validador"
+                                                                                                            Display="Dynamic" InitialValue="0" ValidationGroup="guardar_dias">El departamento es obligatorio</asp:RequiredFieldValidator>
+
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+
+                                                                                                        <p class="text-center">Municipio</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="DropDownList8" runat="server" CssClass="form-control">
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator26" runat="server" ControlToValidate="LD_MunicipioDia" CssClass="validador"
+                                                                                                            Display="Dynamic" InitialValue="0" Style="font-weight: normal" ValidationGroup="guardar_dias">El municipio es obligatorio</asp:RequiredFieldValidator>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="row">
+
+                                                                                                    <%--<label class="col-md-3 label1">Actividad</label>--%>
+                                                                                                    <%--<div class="col-md-3">
+                                                                                                        <p class="text-center">Actividad</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="LD_tipo_actividad" runat="server" CssClass="form-control">
+                                                                                                           
+                                                                                                            <asp:ListItem Selected="True" Value="0">Seleccione</asp:ListItem>
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator529" runat="server" ControlToValidate="LD_tipo_actividad"
+                                                                                                            CssClass="validador" Display="Dynamic" InitialValue="0" Style="font-weight: normal"
+                                                                                                            ValidationGroup="guardar_dias">Seleccione</asp:RequiredFieldValidator>
+                                                                                                    </div>--%>
+
+
+
+                                                                                                    <div class="col-md-3">
+
+                                                                                                        <p class="text-center">Producto</p>
+                                                                                                        <%--Observación día--%>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="DropDownList9" runat="server" CssClass="form-control" Enabled="true">
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator27" runat="server" ControlToValidate="LD_Encuentro"
+                                                                                                            CssClass="validador" Display="Dynamic" InitialValue="0" Style="font-weight: normal" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                                <div runat="server" id="div4" visible="true">
+                                                                                                    <div class="row">
+
+                                                                                                        <div class="col-md-3">
+                                                                                                            <p class="text-center">Acción / Medida</p>
+                                                                                                        </div>
+                                                                                                        <div class="col-md-3">
+                                                                                                            <asp:TextBox ID="TextBox16" runat="server" Rows="3" CssClass="form-control" Text='<%# Eval("LUGAR_ACTIVIDAD") %>' TextMode="MultiLine"></asp:TextBox>
+                                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator28" runat="server" ControlToValidate="TB_Direccion_lugar"
+                                                                                                                CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+
+                                                                                                        </div>
+
+
+                                                                                                        <%--    <div class="col-md-3">
+                                                                                                            <p class="text-center">Bitácora de Avance </p>  
+                                                                                                        </div>
+                                                                                                        <div class="col-md-3">
+
+                                                                                                            <asp:TextBox ID="TB_actividad_detalle" runat="server" CssClass="form-control" Rows="3" ReadOnly="false"
+                                                                                                                placeholder="Descripción" TextMode="MultiLine"></asp:TextBox>
+                                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator23" runat="server"
+                                                                                                                ControlToValidate="TB_actividad_detalle" CssClass="validador"
+                                                                                                                Display="Dynamic" ValidationGroup="guardar_dias">Campo obligatorio</asp:RequiredFieldValidator>
+
+                                                                                                            <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender6" runat="server" TargetControlID="TB_actividad_detalle"
+                                                                                                                ValidChars="0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúÁÉÍÓÚ ,." Enabled="True" />
+
+                                                                                                            
+                                                                                                        </div>--%>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class=" panel-default panel">
+                                                                                                    <asp:Panel ID="Panel5" runat="server" CssClass=" panel-heading collapsed" ScrollBars="None" HorizontalAlign="Left">
+                                                                                                        <asp:Image ID="image4" runat="server" ImageUrl="~/Img/flecha_abajo.png" Width="20px" />
+                                                                                                        Habilitar costos 
+                                                                                                    </asp:Panel>
+                                                                                                    <ajaxToolkit:CollapsiblePanelExtender ID="CollapsiblePanelExtender4" runat="server" Collapsed="true"
+                                                                                                        CollapseControlID="Panel_costos" CollapsedImage="../../Img/flecha_abajo.png" CollapsedText="Mostrar ..." Enabled="True"
+                                                                                                        ExpandControlID="Panel_costos" ExpandedImage="../../Img/flecha_arriba.png" ExpandedText="Ocultar ... "
+                                                                                                        ImageControlID="image1" SuppressPostBack="True" TargetControlID="Panel_hcostos">
+                                                                                                    </ajaxToolkit:CollapsiblePanelExtender>
+
+                                                                                                    <asp:Panel runat="server" ID="Panel22" ScrollBars="None">
+                                                                                                        <br />
+                                                                                                        <div class=" container-fluid">
+                                                                                                            <%-- <div class="col-md-3">
+                                                                                                                <p class="text-center">Proyección costo Actividad</p>
+                                                                                                            </div>
+                                                                                                            <div class="col-md-3">
+                                                                                                                <asp:TextBox ID="TB_Proyeccion" runat="server" Text="0" CssClass="form-control">
+                                                                                                                </asp:TextBox>
+                                                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="TB_Proyeccion" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                                <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" runat="server" TargetControlID="TB_Proyeccion" ValidChars="0123456789" Enabled="True" />
+                                                                                                            </div>
+                                                                                                            <div class="col-md-3">
+                                                                                                                <p class="text-center">Costo Gestión Actividad</p>
+                                                                                                            </div>
+                                                                                                            <div class="col-md-3">
+
+                                                                                                                <asp:TextBox ID="TB_Gestion" runat="server" CssClass="form-control">
+                                                                                                                </asp:TextBox>
+                                                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator170" runat="server" Text="0" ControlToValidate="TB_Gestion" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                                <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender60" runat="server" TargetControlID="TB_Gestion"
+                                                                                                                    ValidChars="0123456789" Enabled="True" />
+                                                                                                            </div>--%>
+                                                                                                        </div>
+                                                                                                        <br />
+
+                                                                                                    </asp:Panel>
+                                                                                                </div>
+
+                                                                                                <div class="row col-md-4 col-md-offset-4 ">
+                                                                                                    <asp:LinkButton ID="LinkButton9" runat="server" CssClass="btn btn-block btn-danger " OnClick="guardar_dias_Click" ValidationGroup="guardar_dias">
+                                                                                        <span class="glyphicon glyphicon glyphicon-plus"></span>&nbsp;Agregar día 
+                                                                                                    </asp:LinkButton>
+                                                                                                </div>
+
+                                                                                                <div class="col-md-3 col-md-offset-1">
+                                                                                                    <asp:LinkButton ID="LinkButton10" Visible="false" runat="server" CssClass="btn btn-block btn-danger " OnClick="B_ActualizarDia_Click" ValidationGroup="guardar_dias">
+                                                                                        <span class="fas fa-edit"></span>&nbsp;Actualizar día 
+                                                                                                    </asp:LinkButton>
+                                                                                                </div>
+                                                                                                <div class="col-md-3 col-md-offset-3">
+                                                                                                    <asp:LinkButton ID="LinkButton11" Visible="false" runat="server" CssClass="btn btn-block btn-warning " OnClick="B_CancelarDia_Click">
+                                                                                        <span class="glyphicon glyphicon glyphicon-remove-circle"></span>&nbsp;cancelar
+                                                                                                    </asp:LinkButton>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </asp:Panel>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+
+                                                                    <asp:Panel ID="Panel24" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Implementadas
+                                                                            </div>
+                                                                            <div class="panel-body">
+
+                                                                                <asp:Label runat="server" ID="Label12" Text="No hay medidas Implementadas"></asp:Label>
+
+                                                                                <div class="row">
+                                                                                    <!--search (buscador)-->
+                                                                                    <div class="input-group">
+                                                                                        <asp:TextBox ID="TextBox17" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                        <asp:LinkButton ID="LinkButton12" runat="server" OnClick="search_gv_dias_implementados_Click">
+                                                                                            <span class="fas fa-search" aria-hidden="true" style="position: absolute;top: 0px;z-index: 0;padding: 4%;left: 100%;border: 1px solid #cccccc;color: #95d095;"></span>
+                                                                                        </asp:LinkButton>
+                                                                                        <asp:LinkButton ID="LinkButton13" runat="server" OnClick="reset_gv_dias_implementados_Click">
+                                                                                            <span class="fas fa-window-close" aria-hidden="true" style="position: absolute;top: 0px;left: 117%;border: 1px solid #cccccc;padding: 4%;"></span>
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
+                                                                                    <div class="col-md-12" style="height: 20px;"></div>
+                                                                                    <!-- fin search-->
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="GridView3"
+                                                                                        runat="server" AutoGenerateColumns="False" OnRowCommand="gv_dias_implementados_RowCommand" OnRowDataBound="gv_dias_implementados_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+
+                                                                                        <Columns>
+                                                                                            <asp:TemplateField HeaderText="id_actividad_responsable" Visible="False">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="proyeccion" runat="server" Text='<%# Eval("PROYECCION") %>'></asp:Label>
+                                                                                                    <asp:Label ID="gestion" runat="server" Text='<%# Eval("GESTION") %>'></asp:Label>
+                                                                                                    <asp:Label ID="id_actividad_dia" runat="server" Text='<%# Eval("id_actividad_dia") %>'></asp:Label>
+                                                                                                    <asp:Label ID="archivos" runat="server" Text='<%# Eval("archivos") %>'></asp:Label>
+
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:BoundField DataField="MUNICIPIO" HeaderText="Municipio" Visible="false" />
+                                                                                            <%--<asp:BoundField DataField="LUGAR_ACTIVIDAD" HeaderText="Medida" />--%>
+
+                                                                                            <asp:BoundField DataField="TIPO_MEDIDA" HeaderText="Tipo de medida" />
+                                                                                            <asp:BoundField DataField="ID_ACTIVIDAD_PRODUCTO" HeaderText="ID Producto / Id Medida" />
+                                                                                            <asp:BoundField DataField="PRODUCTO" HeaderText="Medida / Producto " />
+                                                                                            <asp:BoundField DataField="HORA_INICIO" HeaderText="Inicio" Visible="false" />
+                                                                                            <asp:BoundField DataField="HORA_FIN" HeaderText="Fin" Visible="false" />
+
+                                                                                            <asp:BoundField DataField="proyeccion" HeaderText="ID Acción / Id Actividad" />
+                                                                                            <%--<asp:BoundField DataField="DIA_ACTIVIDAD" HeaderText="Día" Visible="false" />--%>
+                                                                                            <%--<asp:BoundField DataField="LUGAR_ACTIVIDAD" HeaderText="Actividades " />--%>
+                                                                                            <asp:BoundField DataField="OBSERVACION_ACTIVIDAD_DIA" HeaderText="Actividades " />
+                                                                                            <asp:BoundField DataField="BITACORA" HeaderText="Bitácoras" Visible="false" />
+
+                                                                                            <asp:BoundField DataField="PROYECCION" HeaderText="Proyección costo" ItemStyle-HorizontalAlign="Center" Visible="false" />
+                                                                                            <asp:BoundField DataField="GESTION" HeaderText="Gestión costo" ItemStyle-HorizontalAlign="Center" Visible="false" />
+
+                                                                                            <asp:TemplateField HeaderText="Estado">
+                                                                                                <ItemTemplate>
+                                                                                                    <div id="estado_dia" runat="server" visible="false" class="btn-group btn-group-md" role="group" aria-label="...">
+
+                                                                                                        <asp:LinkButton ID="PorAprobar" runat="server" CssClass="btn btn-default" CommandName="Por_Aprobar" ToolTip="ENVIAR PARA APROBACIÓN">
+                                                                                                    <span class="glyphicon glyphicon-ok " aria-hidden="true"></span>        
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:LinkButton ID="AprobadoDia" runat="server" CssClass="btn btn-default" CommandName="Dia_aprobado" ToolTip="APROBADO">
+                                                                                                    <span class="glyphicon glyphicon-thumbs-up " aria-hidden="true"></span>     
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:LinkButton ID="DenegadoDia" runat="server" CssClass="btn btn-default" CommandName="Dia_denegado" ToolTip="NO APROBADO">
+                                                                                                    <span class="glyphicon glyphicon-thumbs-down " aria-hidden="true"></span>        
+                                                                                                        </asp:LinkButton>
+                                                                                                    </div>
+
+
+                                                                                                    <div class="input-group " style="display: block;">
+
+                                                                                                        <asp:LinkButton ID="L_Estado_dia" runat="server" CssClass="btn btn-block btn-default " Style="width: auto !important;" CommandName="Estado_dia" ToolTip="Estado">
+                                                                                                            <%--Style=" width:160px "--%>
+                                                                                                            <span class="fas fa-edit" id="S_EstadoDia" runat="server" aria-hidden="true"></span>
+                                                                                                            <asp:Literal runat="server" ID="LI_Estado_dia" Text='<%# " "+Eval("ACTIVIDAD_DIA_ESTADO") %>'></asp:Literal>
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:Label ID="L_Alerta" runat="server" Text='<%# Eval("alerta") %>' Visible="false"> </asp:Label>
+
+                                                                                                        <asp:Panel ID="D_bell" runat="server" CssClass="alertabell"
+                                                                                                            Style="color: red; font-size: 18px; position: absolute; left: -7px; top: 1px; z-index: 10; animation-name: mover; animation-duration: 5s; animation-iteration-count: infinite;">
+                                                                                                            <span class="fas fa-bell" aria-hidden="true">
+                                                                                                        </asp:Panel>
+                                                                                                    </div>
+                                                                                                    </div>
+
+                                                                                                    <asp:Label ID="LB_IdEstado_dia" runat="server" Text='<%# Eval("ID_ACTIVIDAD_DIA_ESTADO") %>' Visible="false"></asp:Label>
+                                                                                                    <asp:Label ID="LB_EstadoDia" runat="server" Text='<%# Eval("ACTIVIDAD_DIA_ESTADO") %>' Visible="false"></asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="130px" />
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="Opciones">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label CssClass="success text-success" ToolTip="Día aprobado" Font-Size="20px" runat="server" ID="Val_DiaAprobado" Visible="false">
+                                                                                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                                                                                                    </asp:Label>
+                                                                                                    <asp:Label CssClass="success text-warning" ToolTip="Pendiente aprobación" Font-Size="20px" runat="server" ID="Pen_Aprobacion" Visible="false">
+                                                                                            <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>
+                                                                                                    </asp:Label>
+                                                                                                    <asp:ImageButton ID="actualizar_dia" runat="server" CausesValidation="False" Visible="false" CommandName="Actualizar_dia" ImageUrl="~/IMG/lapiz.png" ToolTip="Actualizar actividad" Width="22px"></asp:ImageButton>
+
+
+                                                                                                    <%--<asp:ImageButton ID="Evidencias" runat="server" CausesValidation="False" CommandName="Evidencias" ImageUrl="~/IMG/documentacion.png" ToolTip="Evidencias" Width="22px"></asp:ImageButton>--%>
+                                                                                                    <div class="btn-group" role="group" aria-label="...">
+
+                                                                                                        <asp:LinkButton ID="Evidencias" runat="server" CssClass="btn btn-default" CausesValidation="False" Style="color: #b10c0c" CommandName="Evidencias" ToolTip="Evidencias">
+                                                                                                        <span class=" far fa-file " aria-hidden="true"><%--</span><span class="badge">4</span>--%>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        <asp:LinkButton ID="Bitacora" runat="server" CausesValidation="False" CssClass="btn btn-default" CommandName="Bitacora" ToolTip="Bitacora">
+                                                                                                        <span class="far fa-comment-dots" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        <asp:LinkButton ID="Costos" runat="server" CausesValidation="False" CommandName="Costos" Style="color: green" ToolTip="Costos" CssClass="btn btn-default">
+                                                                                                        <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        <asp:Label ID="L_Alerta_bitacora" runat="server" Text='<%# Eval("alertaBitacora") %>' Visible="false"> </asp:Label>
+
+                                                                                                        <asp:Panel ID="D_Circle" runat="server" Style="color: white; font-size: 10px; position: absolute; left: 63px; top: 2px; z-index: 10;">
+
+                                                                                                            <%--Style="color: green; font-size: 5px; position: absolute; left: 60px; top: 2px; z-index: 10;"><span class="fas fa-circle" aria-hidden="true">--%>
+
+
+                                                                                                            <span style="background-color: green; border-radius: 100%; padding-left: 2px; padding-right: 2px;" aria-hidden="true">
+                                                                                                                <asp:Label runat="server" ID="lb_bitacora_m" Text='<%# Eval("alertaBitacora") %>'></asp:Label></span>
+
+                                                                                                        </asp:Panel>
+                                                                                                        </asp:Panel>
+
+                                                                                                        <asp:Label ID="L_Alerta_documentos" runat="server" Text='<%# Eval("archivos") %>' Visible="false"> </asp:Label>
+
+                                                                                                        <asp:Panel ID="D_Circle_documentos" runat="server"
+                                                                                                            Style="color: white; font-size: 10px; position: absolute; left: 24px; top: 2px; z-index: 10;">
+
+                                                                                                            <%--Style="color: green; font-size: 5px; position: absolute; left: 60px; top: 2px; z-index: 10;"><span class="fas fa-circle" aria-hidden="true">--%>
+
+                                                                                                            <span style="background-color: green; border-radius: 100%; padding-left: 2px; padding-right: 2px;" aria-hidden="true">
+                                                                                                                <asp:Label runat="server" ID="Label3" Text='<%# Eval("archivos") %>'></asp:Label></span>
+
+
+                                                                                                        </asp:Panel>
+                                                                                                    </div>
+
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="144px" />
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="" Visible="false">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="LB_Id_Actividad_Dia_Estado" runat="server" Text='<%# Eval("ID_ACTIVIDAD_DIA_ESTADO") %>' />
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" />
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="TIPO_MEDIDA_2" Visible="False">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="TIPO_MEDIDA_2" runat="server" Text='<%# Eval("TIPO_MEDIDA") %>'></asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
+                                                                                </div>
+
+                                                                                <asp:Panel ID="Panel25" runat="server" Visible="false">
+                                                                                    <div class="container-fluid">
+                                                                                        <div class="panel panel-default">
+                                                                                            <div class="panel-body">
+
+                                                                                                <div class="row" runat="server" visible="false">
+                                                                                                    <div class="col-md-1">
+                                                                                                        <p class="text-center">Día </p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <div class="input-group">
+                                                                                                            <asp:TextBox ID="TextBox18" runat="server" CssClass="form-control" placeholder="dd/MM/yyyy" aria-describedby="basic-addon2"></asp:TextBox>
+                                                                                                            <span class="input-group-addon glyphicon glyphicon-calendar" id="basic-addon2" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                                                        </div>
+                                                                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender4" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="basic-addon2" TargetControlID="TB_Fecha"></ajaxToolkit:CalendarExtender>
+                                                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator8" runat="server" ControlToValidate="TB_Fecha" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardar_dias">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator29" runat="server" ControlToValidate="TB_Fecha" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <p class="text-center">Hora inicio:</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <div class="input-group bootstrap-timepicker timepicker">
+                                                                                                            <asp:TextBox ID="TextBox19" runat="server" OnTextChanged="TB_HoraInicio_TextChanged" CssClass="form-control input-small"></asp:TextBox>
+                                                                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                                                                                        </div>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator32" runat="server" ControlToValidate="TB_HoraInicio" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <p class="text-center">Hora fin:</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <div class="input-group bootstrap-timepicker timepicker">
+                                                                                                            <asp:TextBox ID="TextBox20" runat="server" CssClass="form-control input-small"></asp:TextBox>
+                                                                                                            <span class="input-group-addon disabled"><i class="glyphicon glyphicon-time"></i></span>
+                                                                                                        </div>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator33" runat="server" ControlToValidate="TB_HoraFin" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-3">
+
+                                                                                                        <p class="text-center">Departamento</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="DropDownList10" runat="server" AutoPostBack="True" CssClass="form-control" OnSelectedIndexChanged="LD_DepartamentoDia_SelectedIndexChanged">
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator34" runat="server" ControlToValidate="LD_DepartamentoDia" CssClass="validador"
+                                                                                                            Display="Dynamic" InitialValue="0" ValidationGroup="guardar_dias">El departamento es obligatorio</asp:RequiredFieldValidator>
+
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+
+                                                                                                        <p class="text-center">Municipio</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="DropDownList11" runat="server" CssClass="form-control">
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator36" runat="server" ControlToValidate="LD_MunicipioDia" CssClass="validador"
+                                                                                                            Display="Dynamic" InitialValue="0" Style="font-weight: normal" ValidationGroup="guardar_dias">El municipio es obligatorio</asp:RequiredFieldValidator>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="row">
+
+                                                                                                    <%--<label class="col-md-3 label1">Actividad</label>--%>
+                                                                                                    <%--<div class="col-md-3">
+                                                                                                        <p class="text-center">Actividad</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="LD_tipo_actividad" runat="server" CssClass="form-control">
+                                                                                                           
+                                                                                                            <asp:ListItem Selected="True" Value="0">Seleccione</asp:ListItem>
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator529" runat="server" ControlToValidate="LD_tipo_actividad"
+                                                                                                            CssClass="validador" Display="Dynamic" InitialValue="0" Style="font-weight: normal"
+                                                                                                            ValidationGroup="guardar_dias">Seleccione</asp:RequiredFieldValidator>
+                                                                                                    </div>--%>
+
+
+
+                                                                                                    <div class="col-md-3">
+
+                                                                                                        <p class="text-center">Producto</p>
+                                                                                                        <%--Observación día--%>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="DropDownList12" runat="server" CssClass="form-control" Enabled="true">
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator37" runat="server" ControlToValidate="LD_Encuentro"
+                                                                                                            CssClass="validador" Display="Dynamic" InitialValue="0" Style="font-weight: normal" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                                <div runat="server" id="div5" visible="true">
+                                                                                                    <div class="row">
+
+                                                                                                        <div class="col-md-3">
+                                                                                                            <p class="text-center">Acción / Medida</p>
+                                                                                                        </div>
+                                                                                                        <div class="col-md-3">
+                                                                                                            <asp:TextBox ID="TextBox21" runat="server" Rows="3" CssClass="form-control" Text='<%# Eval("LUGAR_ACTIVIDAD") %>' TextMode="MultiLine"></asp:TextBox>
+                                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator38" runat="server" ControlToValidate="TB_Direccion_lugar"
+                                                                                                                CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+
+                                                                                                        </div>
+
+
+                                                                                                        <%--    <div class="col-md-3">
+                                                                                                            <p class="text-center">Bitácora de Avance </p>  
+                                                                                                        </div>
+                                                                                                        <div class="col-md-3">
+
+                                                                                                            <asp:TextBox ID="TB_actividad_detalle" runat="server" CssClass="form-control" Rows="3" ReadOnly="false"
+                                                                                                                placeholder="Descripción" TextMode="MultiLine"></asp:TextBox>
+                                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator23" runat="server"
+                                                                                                                ControlToValidate="TB_actividad_detalle" CssClass="validador"
+                                                                                                                Display="Dynamic" ValidationGroup="guardar_dias">Campo obligatorio</asp:RequiredFieldValidator>
+
+                                                                                                            <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender6" runat="server" TargetControlID="TB_actividad_detalle"
+                                                                                                                ValidChars="0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúÁÉÍÓÚ ,." Enabled="True" />
+
+                                                                                                            
+                                                                                                        </div>--%>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class=" panel-default panel">
+                                                                                                    <asp:Panel ID="Panel26" runat="server" CssClass=" panel-heading collapsed" ScrollBars="None" HorizontalAlign="Left">
+                                                                                                        <asp:Image ID="image5" runat="server" ImageUrl="~/Img/flecha_abajo.png" Width="20px" />
+                                                                                                        Habilitar costos 
+                                                                                                    </asp:Panel>
+                                                                                                    <ajaxToolkit:CollapsiblePanelExtender ID="CollapsiblePanelExtender5" runat="server" Collapsed="true"
+                                                                                                        CollapseControlID="Panel_costos" CollapsedImage="../../Img/flecha_abajo.png" CollapsedText="Mostrar ..." Enabled="True"
+                                                                                                        ExpandControlID="Panel_costos" ExpandedImage="../../Img/flecha_arriba.png" ExpandedText="Ocultar ... "
+                                                                                                        ImageControlID="image1" SuppressPostBack="True" TargetControlID="Panel_hcostos">
+                                                                                                    </ajaxToolkit:CollapsiblePanelExtender>
+
+                                                                                                    <asp:Panel runat="server" ID="Panel27" ScrollBars="None">
+                                                                                                        <br />
+                                                                                                        <div class=" container-fluid">
+                                                                                                            <%-- <div class="col-md-3">
+                                                                                                                <p class="text-center">Proyección costo Actividad</p>
+                                                                                                            </div>
+                                                                                                            <div class="col-md-3">
+                                                                                                                <asp:TextBox ID="TB_Proyeccion" runat="server" Text="0" CssClass="form-control">
+                                                                                                                </asp:TextBox>
+                                                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="TB_Proyeccion" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                                <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" runat="server" TargetControlID="TB_Proyeccion" ValidChars="0123456789" Enabled="True" />
+                                                                                                            </div>
+                                                                                                            <div class="col-md-3">
+                                                                                                                <p class="text-center">Costo Gestión Actividad</p>
+                                                                                                            </div>
+                                                                                                            <div class="col-md-3">
+
+                                                                                                                <asp:TextBox ID="TB_Gestion" runat="server" CssClass="form-control">
+                                                                                                                </asp:TextBox>
+                                                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator170" runat="server" Text="0" ControlToValidate="TB_Gestion" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                                <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender60" runat="server" TargetControlID="TB_Gestion"
+                                                                                                                    ValidChars="0123456789" Enabled="True" />
+                                                                                                            </div>--%>
+                                                                                                        </div>
+                                                                                                        <br />
+
+                                                                                                    </asp:Panel>
+                                                                                                </div>
+
+                                                                                                <div class="row col-md-4 col-md-offset-4 ">
+                                                                                                    <asp:LinkButton ID="LinkButton14" runat="server" CssClass="btn btn-block btn-danger " OnClick="guardar_dias_Click" ValidationGroup="guardar_dias">
+                                                                                        <span class="glyphicon glyphicon glyphicon-plus"></span>&nbsp;Agregar día 
+                                                                                                    </asp:LinkButton>
+                                                                                                </div>
+
+                                                                                                <div class="col-md-3 col-md-offset-1">
+                                                                                                    <asp:LinkButton ID="LinkButton15" Visible="false" runat="server" CssClass="btn btn-block btn-danger " OnClick="B_ActualizarDia_Click" ValidationGroup="guardar_dias">
+                                                                                        <span class="fas fa-edit"></span>&nbsp;Actualizar día 
+                                                                                                    </asp:LinkButton>
+                                                                                                </div>
+                                                                                                <div class="col-md-3 col-md-offset-3">
+                                                                                                    <asp:LinkButton ID="LinkButton16" Visible="false" runat="server" CssClass="btn btn-block btn-warning " OnClick="B_CancelarDia_Click">
+                                                                                        <span class="glyphicon glyphicon glyphicon-remove-circle"></span>&nbsp;cancelar
+                                                                                                    </asp:LinkButton>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </asp:Panel>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+
+                                                                    <asp:Panel ID="Panel28" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Suspendidas 
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <asp:Label runat="server" ID="Label13" Text="No hay medidas Suspendidas"></asp:Label>
+                                                                                <div class="row">
+                                                                                    <!--search (buscador)-->
+                                                                                    <div class="input-group">
+                                                                                        <asp:TextBox ID="TextBox22" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                        <asp:LinkButton ID="LinkButton17" runat="server" OnClick="search_gv_dias_cancelados_Click">
+                                                                                            <span class="fas fa-search" aria-hidden="true" style="position: absolute;top: 0px;z-index: 0;padding: 4%;left: 100%;border: 1px solid #cccccc;color: #95d095;"></span>
+                                                                                        </asp:LinkButton>
+                                                                                        <asp:LinkButton ID="LinkButton18" runat="server" OnClick="reset_gv_dias_cancelados_Click">
+                                                                                            <span class="fas fa-window-close" aria-hidden="true" style="position: absolute;top: 0px;left: 117%;border: 1px solid #cccccc;padding: 4%;"></span>
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
+                                                                                    <div class="col-md-12" style="height: 20px;"></div>
+                                                                                    <!-- fin search-->
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="GridView4"
+                                                                                        runat="server" AutoGenerateColumns="False" OnRowCommand="gv_dias_cancelados_RowCommand" OnRowDataBound="gv_dias_cancelados_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+
+                                                                                        <Columns>
+                                                                                            <asp:TemplateField HeaderText="id_actividad_responsable" Visible="False">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="proyeccion" runat="server" Text='<%# Eval("PROYECCION") %>'></asp:Label>
+                                                                                                    <asp:Label ID="gestion" runat="server" Text='<%# Eval("GESTION") %>'></asp:Label>
+                                                                                                    <asp:Label ID="id_actividad_dia" runat="server" Text='<%# Eval("id_actividad_dia") %>'></asp:Label>
+                                                                                                    <asp:Label ID="archivos" runat="server" Text='<%# Eval("archivos") %>'></asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:BoundField DataField="MUNICIPIO" HeaderText="Municipio" Visible="false" />
+                                                                                            <%--<asp:BoundField DataField="LUGAR_ACTIVIDAD" HeaderText="Medida" />--%>
+
+                                                                                            <asp:BoundField DataField="TIPO_MEDIDA" HeaderText="Tipo de medida" />
+                                                                                            <asp:BoundField DataField="ID_ACTIVIDAD_PRODUCTO" HeaderText="ID Producto / Id Medida" />
+                                                                                            <asp:BoundField DataField="PRODUCTO" HeaderText="Medida / Producto " />
+                                                                                            <asp:BoundField DataField="HORA_INICIO" HeaderText="Inicio" Visible="false" />
+                                                                                            <asp:BoundField DataField="HORA_FIN" HeaderText="Fin" Visible="false" />
+
+                                                                                            <asp:BoundField DataField="proyeccion" HeaderText="ID Acción / Id Actividad" />
+                                                                                            <%--<asp:BoundField DataField="DIA_ACTIVIDAD" HeaderText="Día" Visible="false" />--%>
+                                                                                            <%--<asp:BoundField DataField="LUGAR_ACTIVIDAD" HeaderText="Actividades " />--%>
+                                                                                            <asp:BoundField DataField="OBSERVACION_ACTIVIDAD_DIA" HeaderText="Actividades " />
+                                                                                            <asp:BoundField DataField="BITACORA" HeaderText="Bitácoras" Visible="false" />
+
+                                                                                            <asp:BoundField DataField="PROYECCION" HeaderText="Proyección costo" ItemStyle-HorizontalAlign="Center" Visible="false" />
+                                                                                            <asp:BoundField DataField="GESTION" HeaderText="Gestión costo" ItemStyle-HorizontalAlign="Center" Visible="false" />
+
+                                                                                            <asp:TemplateField HeaderText="Estado">
+                                                                                                <ItemTemplate>
+                                                                                                    <div id="estado_dia" runat="server" visible="false" class="btn-group btn-group-md" role="group" aria-label="...">
+                                                                                                        <asp:LinkButton ID="PorAprobar" runat="server" CssClass="btn btn-default" CommandName="Por_Aprobar" ToolTip="ENVIAR PARA APROBACIÓN">
+                                                                                                    <span class="glyphicon glyphicon-ok " aria-hidden="true"></span>        
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:LinkButton ID="AprobadoDia" runat="server" CssClass="btn btn-default" CommandName="Dia_aprobado" ToolTip="APROBADO">
+                                                                                                    <span class="glyphicon glyphicon-thumbs-up " aria-hidden="true"></span>     
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:LinkButton ID="DenegadoDia" runat="server" CssClass="btn btn-default" CommandName="Dia_denegado" ToolTip="NO APROBADO">
+                                                                                                    <span class="glyphicon glyphicon-thumbs-down " aria-hidden="true"></span>        
+                                                                                                        </asp:LinkButton>
+                                                                                                    </div>
+
+
+                                                                                                    <div class="input-group " style="display: block;">
+                                                                                                        <asp:LinkButton ID="L_Estado_dia" runat="server" CssClass="btn btn-block btn-default " CommandName="Estado_dia" ToolTip="Estado">
+                                                                                                            <%--Style=" width:160px "--%>
+                                                                                                            <span class="fas fa-edit" id="S_EstadoDia" runat="server" aria-hidden="true"></span>
+                                                                                                            <asp:Literal runat="server" ID="LI_Estado_dia" Text='<%# " "+Eval("ACTIVIDAD_DIA_ESTADO") %>'></asp:Literal>
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:Label ID="L_Alerta" runat="server" Text='<%# Eval("alerta") %>' Visible="false"> </asp:Label>
+
+                                                                                                        <asp:Panel ID="D_bell" runat="server" CssClass="alertabell"
+                                                                                                            Style="color: red; font-size: 18px; position: absolute; left: -7px; top: 1px; z-index: 10; animation-name: mover; animation-duration: 5s; animation-iteration-count: infinite;">
+                                                                                                            <span class="fas fa-bell" aria-hidden="true">
+                                                                                                        </asp:Panel>
+                                                                                                    </div>
+                                                                                                    </div>
+
+                                                                                                    <asp:Label ID="LB_IdEstado_dia" runat="server" Text='<%# Eval("ID_ACTIVIDAD_DIA_ESTADO") %>' Visible="false"></asp:Label>
+                                                                                                    <asp:Label ID="LB_EstadoDia" runat="server" Text='<%# Eval("ACTIVIDAD_DIA_ESTADO") %>' Visible="false"></asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="130px" />
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="Opciones">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label CssClass="success text-success" ToolTip="Día aprobado" Font-Size="20px" runat="server" ID="Val_DiaAprobado" Visible="false">
+                                                                                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                                                                                                    </asp:Label>
+                                                                                                    <asp:Label CssClass="success text-warning" ToolTip="Pendiente aprobación" Font-Size="20px" runat="server" ID="Pen_Aprobacion" Visible="false">
+                                                                                            <span class="glyphicon glyphicon-hourglass" aria-hidden="true"></span>
+                                                                                                    </asp:Label>
+                                                                                                    <asp:ImageButton ID="actualizar_dia" runat="server" CausesValidation="False" Visible="false" CommandName="Actualizar_dia" ImageUrl="~/IMG/lapiz.png" ToolTip="Actualizar actividad" Width="22px"></asp:ImageButton>
+
+
+                                                                                                    <%--<asp:ImageButton ID="Evidencias" runat="server" CausesValidation="False" CommandName="Evidencias" ImageUrl="~/IMG/documentacion.png" ToolTip="Evidencias" Width="22px"></asp:ImageButton>--%>
+                                                                                                    <div class="btn-group" role="group" aria-label="...">
+                                                                                                        <asp:LinkButton ID="Evidencias" runat="server" CssClass="btn btn-default" CausesValidation="False" Style="color: #b10c0c" CommandName="Evidencias" ToolTip="Evidencias">
+                                                                                                        <span class=" far fa-file " aria-hidden="true"><%--</span><span class="badge">4</span>--%>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        <asp:LinkButton ID="Bitacora" runat="server" CausesValidation="False" CssClass="btn btn-default" CommandName="Bitacora" ToolTip="Bitacora">
+                                                                                                        <span class="far fa-comment-dots" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        <asp:LinkButton ID="Costos" runat="server" CausesValidation="False" CommandName="Costos" Style="color: green" ToolTip="Costos" CssClass="btn btn-default">
+                                                                                                        <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+
+                                                                                                        <asp:Label ID="L_Alerta_bitacora" runat="server" Text='<%# Eval("alertaBitacora") %>' Visible="false"> </asp:Label>
+
+                                                                                                        <asp:Panel ID="D_Circle" runat="server"
+                                                                                                            Style="color: white; font-size: 10px; position: absolute; left: 63px; top: 2px; z-index: 10;">
+
+                                                                                                            <%--Style="color: green; font-size: 5px; position: absolute; left: 60px; top: 2px; z-index: 10;"><span class="fas fa-circle" aria-hidden="true">--%>
+
+
+                                                                                                            <span style="background-color: green; border-radius: 100%; padding-left: 2px; padding-right: 2px;" aria-hidden="true">
+                                                                                                                <asp:Label runat="server" ID="lb_bitacora_m" Text='<%# Eval("alertaBitacora") %>'></asp:Label></span>
+                                                                                                        </asp:Panel>
+
+                                                                                                        </asp:Panel>
+
+                                                                                                        <asp:Label ID="L_Alerta_documentos" runat="server" Text='<%# Eval("archivos") %>' Visible="false"> </asp:Label>
+
+                                                                                                        <asp:Panel ID="D_Circle_documentos" runat="server"
+                                                                                                            Style="color: white; font-size: 10px; position: absolute; left: 24px; top: 2px; z-index: 10;">
+
+                                                                                                            <%--Style="color: green; font-size: 5px; position: absolute; left: 60px; top: 2px; z-index: 10;"><span class="fas fa-circle" aria-hidden="true">--%>
+
+                                                                                                            <span style="background-color: green; border-radius: 100%; padding-left: 2px; padding-right: 2px;" aria-hidden="true">
+                                                                                                                <asp:Label runat="server" ID="Label3" Text='<%# Eval("archivos") %>'></asp:Label></span>
+
+
+                                                                                                        </asp:Panel>
+                                                                                                    </div>
+
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="144px" />
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="" Visible="false">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="LB_Id_Actividad_Dia_Estado" runat="server" Text='<%# Eval("ID_ACTIVIDAD_DIA_ESTADO") %>' />
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" />
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="TIPO_MEDIDA_2" Visible="False">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="TIPO_MEDIDA_2" runat="server" Text='<%# Eval("TIPO_MEDIDA") %>'></asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
+                                                                                </div>
+
+                                                                                <asp:Panel ID="Panel29" runat="server" Visible="false">
+                                                                                    <div class="container-fluid">
+                                                                                        <div class="panel panel-default">
+                                                                                            <div class="panel-body">
+
+                                                                                                <div class="row" runat="server" visible="false">
+                                                                                                    <div class="col-md-1">
+                                                                                                        <p class="text-center">Día </p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <div class="input-group">
+                                                                                                            <asp:TextBox ID="TextBox23" runat="server" CssClass="form-control" placeholder="dd/MM/yyyy" aria-describedby="basic-addon2"></asp:TextBox>
+                                                                                                            <span class="input-group-addon glyphicon glyphicon-calendar" id="basic-addon2" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                                                        </div>
+                                                                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender5" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="basic-addon2" TargetControlID="TB_Fecha"></ajaxToolkit:CalendarExtender>
+                                                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator9" runat="server" ControlToValidate="TB_Fecha" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardar_dias">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator40" runat="server" ControlToValidate="TB_Fecha" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <p class="text-center">Hora inicio:</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <div class="input-group bootstrap-timepicker timepicker">
+                                                                                                            <asp:TextBox ID="TextBox24" runat="server" OnTextChanged="TB_HoraInicio_TextChanged" CssClass="form-control input-small"></asp:TextBox>
+                                                                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                                                                                                        </div>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator41" runat="server" ControlToValidate="TB_HoraInicio" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <p class="text-center">Hora fin:</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <div class="input-group bootstrap-timepicker timepicker">
+                                                                                                            <asp:TextBox ID="TextBox25" runat="server" CssClass="form-control input-small"></asp:TextBox>
+                                                                                                            <span class="input-group-addon disabled"><i class="glyphicon glyphicon-time"></i></span>
+                                                                                                        </div>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator46" runat="server" ControlToValidate="TB_HoraFin" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-3">
+
+                                                                                                        <p class="text-center">Departamento</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="DropDownList13" runat="server" AutoPostBack="True" CssClass="form-control" OnSelectedIndexChanged="LD_DepartamentoDia_SelectedIndexChanged">
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator47" runat="server" ControlToValidate="LD_DepartamentoDia" CssClass="validador"
+                                                                                                            Display="Dynamic" InitialValue="0" ValidationGroup="guardar_dias">El departamento es obligatorio</asp:RequiredFieldValidator>
+
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+
+                                                                                                        <p class="text-center">Municipio</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="DropDownList14" runat="server" CssClass="form-control">
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator48" runat="server" ControlToValidate="LD_MunicipioDia" CssClass="validador"
+                                                                                                            Display="Dynamic" InitialValue="0" Style="font-weight: normal" ValidationGroup="guardar_dias">El municipio es obligatorio</asp:RequiredFieldValidator>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="row">
+
+                                                                                                    <%--<label class="col-md-3 label1">Actividad</label>--%>
+                                                                                                    <%--<div class="col-md-3">
+                                                                                                        <p class="text-center">Actividad</p>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="LD_tipo_actividad" runat="server" CssClass="form-control">
+                                                                                                           
+                                                                                                            <asp:ListItem Selected="True" Value="0">Seleccione</asp:ListItem>
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator529" runat="server" ControlToValidate="LD_tipo_actividad"
+                                                                                                            CssClass="validador" Display="Dynamic" InitialValue="0" Style="font-weight: normal"
+                                                                                                            ValidationGroup="guardar_dias">Seleccione</asp:RequiredFieldValidator>
+                                                                                                    </div>--%>
+
+
+
+                                                                                                    <div class="col-md-3">
+
+                                                                                                        <p class="text-center">Producto</p>
+                                                                                                        <%--Observación día--%>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-3">
+                                                                                                        <asp:DropDownList ID="DropDownList15" runat="server" CssClass="form-control" Enabled="true">
+                                                                                                        </asp:DropDownList>
+                                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator49" runat="server" ControlToValidate="LD_Encuentro"
+                                                                                                            CssClass="validador" Display="Dynamic" InitialValue="0" Style="font-weight: normal" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                                <div runat="server" id="div6" visible="true">
+                                                                                                    <div class="row">
+
+                                                                                                        <div class="col-md-3">
+                                                                                                            <p class="text-center">Acción / Medida</p>
+                                                                                                        </div>
+                                                                                                        <div class="col-md-3">
+                                                                                                            <asp:TextBox ID="TextBox26" runat="server" Rows="3" CssClass="form-control" Text='<%# Eval("LUGAR_ACTIVIDAD") %>' TextMode="MultiLine"></asp:TextBox>
+                                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator50" runat="server" ControlToValidate="TB_Direccion_lugar"
+                                                                                                                CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+
+                                                                                                        </div>
+
+
+                                                                                                        <%--    <div class="col-md-3">
+                                                                                                            <p class="text-center">Bitácora de Avance </p>  
+                                                                                                        </div>
+                                                                                                        <div class="col-md-3">
+
+                                                                                                            <asp:TextBox ID="TB_actividad_detalle" runat="server" CssClass="form-control" Rows="3" ReadOnly="false"
+                                                                                                                placeholder="Descripción" TextMode="MultiLine"></asp:TextBox>
+                                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator23" runat="server"
+                                                                                                                ControlToValidate="TB_actividad_detalle" CssClass="validador"
+                                                                                                                Display="Dynamic" ValidationGroup="guardar_dias">Campo obligatorio</asp:RequiredFieldValidator>
+
+                                                                                                            <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender6" runat="server" TargetControlID="TB_actividad_detalle"
+                                                                                                                ValidChars="0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúÁÉÍÓÚ ,." Enabled="True" />
+
+                                                                                                            
+                                                                                                        </div>--%>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class=" panel-default panel">
+                                                                                                    <asp:Panel ID="Panel30" runat="server" CssClass=" panel-heading collapsed" ScrollBars="None" HorizontalAlign="Left">
+                                                                                                        <asp:Image ID="image6" runat="server" ImageUrl="~/Img/flecha_abajo.png" Width="20px" />
+                                                                                                        Habilitar costos 
+                                                                                                    </asp:Panel>
+                                                                                                    <ajaxToolkit:CollapsiblePanelExtender ID="CollapsiblePanelExtender6" runat="server" Collapsed="true"
+                                                                                                        CollapseControlID="Panel_costos" CollapsedImage="../../Img/flecha_abajo.png" CollapsedText="Mostrar ..." Enabled="True"
+                                                                                                        ExpandControlID="Panel_costos" ExpandedImage="../../Img/flecha_arriba.png" ExpandedText="Ocultar ... "
+                                                                                                        ImageControlID="image1" SuppressPostBack="True" TargetControlID="Panel_hcostos">
+                                                                                                    </ajaxToolkit:CollapsiblePanelExtender>
+
+                                                                                                    <asp:Panel runat="server" ID="Panel31" ScrollBars="None">
+                                                                                                        <br />
+                                                                                                        <div class=" container-fluid">
+                                                                                                            <%-- <div class="col-md-3">
+                                                                                                                <p class="text-center">Proyección costo Actividad</p>
+                                                                                                            </div>
+                                                                                                            <div class="col-md-3">
+                                                                                                                <asp:TextBox ID="TB_Proyeccion" runat="server" Text="0" CssClass="form-control">
+                                                                                                                </asp:TextBox>
+                                                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator16" runat="server" ControlToValidate="TB_Proyeccion" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                                <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender5" runat="server" TargetControlID="TB_Proyeccion" ValidChars="0123456789" Enabled="True" />
+                                                                                                            </div>
+                                                                                                            <div class="col-md-3">
+                                                                                                                <p class="text-center">Costo Gestión Actividad</p>
+                                                                                                            </div>
+                                                                                                            <div class="col-md-3">
+
+                                                                                                                <asp:TextBox ID="TB_Gestion" runat="server" CssClass="form-control">
+                                                                                                                </asp:TextBox>
+                                                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator170" runat="server" Text="0" ControlToValidate="TB_Gestion" CssClass="validador" Display="Dynamic" ValidationGroup="guardar_dias">*</asp:RequiredFieldValidator>
+                                                                                                                <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender60" runat="server" TargetControlID="TB_Gestion"
+                                                                                                                    ValidChars="0123456789" Enabled="True" />
+                                                                                                            </div>--%>
+                                                                                                        </div>
+                                                                                                        <br />
+
+                                                                                                    </asp:Panel>
+                                                                                                </div>
+
+                                                                                                <div class="row col-md-4 col-md-offset-4 ">
+                                                                                                    <asp:LinkButton ID="LinkButton19" runat="server" CssClass="btn btn-block btn-danger " OnClick="guardar_dias_Click" ValidationGroup="guardar_dias">
+                                                                                        <span class="glyphicon glyphicon glyphicon-plus"></span>&nbsp;Agregar día 
+                                                                                                    </asp:LinkButton>
+                                                                                                </div>
+
+                                                                                                <div class="col-md-3 col-md-offset-1">
+                                                                                                    <asp:LinkButton ID="LinkButton20" Visible="false" runat="server" CssClass="btn btn-block btn-danger " OnClick="B_ActualizarDia_Click" ValidationGroup="guardar_dias">
+                                                                                        <span class="fas fa-edit"></span>&nbsp;Actualizar día 
+                                                                                                    </asp:LinkButton>
+                                                                                                </div>
+                                                                                                <div class="col-md-3 col-md-offset-3">
+                                                                                                    <asp:LinkButton ID="LinkButton21" Visible="false" runat="server" CssClass="btn btn-block btn-warning " OnClick="B_CancelarDia_Click">
+                                                                                        <span class="glyphicon glyphicon glyphicon-remove-circle"></span>&nbsp;cancelar
+                                                                                                    </asp:LinkButton>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </asp:Panel>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+
+                                                                    <asp:Button ID="Button1" Visible="false" runat="server" CssClass="btn-block btn btn-danger" OnClick="Btn_agregar_actividad_colectiva_Click" Text="Agregar Actividad" />
+
+                                                                </ContentTemplate>
+                                                                <Triggers>
+                                                                    <asp:AsyncPostBackTrigger ControlID="guardar_dias" />
+                                                                    <asp:AsyncPostBackTrigger ControlID="gv5" />
+                                                                    <asp:AsyncPostBackTrigger ControlID="TB_HoraInicio" />
+                                                                </Triggers>
+                                                            </asp:UpdatePanel>
+                                                        </div>
                                                     </div>
 
                                                 </div>
