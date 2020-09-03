@@ -1853,6 +1853,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Panel241.Visible = true;
             m_2.Visible = true;
             m_4.Visible = true;
+            m_PlanTraslado.Visible = true;
+            m_Balance.Visible = true;
             ViewState["estado"] = "2";
             //CargaGrid_archivo();
             Consulta_actividad_responsable(1);
@@ -6150,8 +6152,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 ViewState["id_responsable"] = Convert.ToInt32(Session["id_usuario"]);
                 m_2.Visible = false;
-                
+                m_PlanTraslado.Visible = false;
+                m_Balance.Visible = false;
+
                 Responsables.Visible = false;
+                pt.Visible = false;
                 //Responsables.CssClass = "tab-pane";
                 //Dias.CssClass = "tab-pane active";
                 Dias.Attributes.Add("class", "tab-pane active");
@@ -6172,8 +6177,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 ViewState["id_responsable"] = Convert.ToInt32(Session["id_usuario"]);
                 m_2.Visible = false;
-                
+                m_PlanTraslado.Visible = false;
+                m_Balance.Visible = false;
                 Responsables.Visible = false;
+                pt.Visible = false;
                 //Responsables.CssClass = "tab-pane";
                 //Dias.CssClass = "tab-pane active";
                 Dias.Attributes.Add("class", "tab-pane active");
@@ -6205,6 +6212,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv11.Columns[6].Visible = false;
 
             m_2.Visible = false;
+            m_PlanTraslado.Visible = false;
+            m_Balance.Visible = false;
 
             if (gv16.Rows.Count > 0)
             {
@@ -6302,6 +6311,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         gv16_visual();
         UP_DatosEvento.Update();
         UP_Responsable.Update();
+        Up_pt.Update();
         UP_Dias.Update();
         UP_Archivos.Update();
         UP_Detalle.Update();
