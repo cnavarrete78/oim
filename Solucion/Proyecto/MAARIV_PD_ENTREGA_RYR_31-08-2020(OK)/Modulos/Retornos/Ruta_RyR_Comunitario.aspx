@@ -10,7 +10,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 
     <script type="text/javascript" src="../../js/jquery191.min.js"></script>
-    
+
 
     <script type="text/javascript" src="../../js/boostrap3335.js"></script>
     <asp:ScriptManager ID="ScriptManager1" EnableScriptGlobalization="true" EnableScriptLocalization="true" runat="server"></asp:ScriptManager>
@@ -27,7 +27,7 @@
 
     <script src="../../js/PIRC/PDF_PIRC.js"></script>
 
-    
+
     <link href="../../css/fa-all.css" rel="stylesheet" />
     <script type="text/javascript">
         function pageLoad() {
@@ -181,8 +181,83 @@
                     $('[id$="LD_Municipio"]').empty();
                 }
             });
+            /* *******************************************
+             * codigo de liliana rodriguez             
+             *  *****************************************/
+            $('[id$="LD_Departamento_Salida"]').change(function () {
+                var id_territorial = 0;
+                var id_departamento = $('[id$="LD_Departamento_Salida"]').val();
+                if (id_departamento != '0') {
+                    L_D_MunicipiosSalida(id_territorial, id_departamento);
+                }
+                else {
+                    $('[id$="LD_Departamento_Salida"]').empty();
+                    $('[id$="LD_Municipio_Salida"]').empty();
+                }
+            });
 
+            $('[id$="LD_Departamento_Llegada"]').change(function () {
+                var id_territorial = 0;
+                var id_departamento = $('[id$="LD_Departamento_Llegada"]').val();
+                if (id_departamento != '0') {
+                    L_D_MunicipiosLlegada(id_territorial, id_departamento);
+                }
+                else {
+                    $('[id$="LD_Departamento_Llegada"]').empty();
+                    $('[id$="LD_Municipio_Llegada"]').empty();
+                }
+            });
+            function L_D_MunicipiosSalida(id_territorial, id_departamento) {
+                var dropdownlist = document.getElementById('ContentPlaceHolder1_LD_Municipio_Salida');
+                $.ajax({
+                    type: "GET",
+                    url: "/modulos/javascriptComun.aspx/L_D_Municipios?id_territorial=" + id_territorial + "&id_departamento=" + id_departamento,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        var obj = JSON.parse(response.d.resultado);
+                        $('#ContentPlaceHolder1_LD_Municipio_Salida').empty();
+                        var option = document.createElement("option");
+                        option.text = "seleccione Municipio"; option.value = "0"; dropdownlist.add(option);
+                        for (var i = 0; i < obj.length; i++) {
+                            var option = document.createElement("option");
+                            option.text = obj[i].municipio;
+                            option.value = obj[i].id_municipio;
+                            dropdownlist.add(option);
+                        }
+                    },
+                    error: function (xhr) {
+                        console.log(xhr);
+                        alert("Error", "No se cargaron los municipios");
+                    }
+                });
+            }
 
+            function L_D_MunicipiosLlegada(id_territorial, id_departamento) {
+                var dropdownlist = document.getElementById('ContentPlaceHolder1_LD_Municipio_Llegada');
+                $.ajax({
+                    type: "GET",
+                    url: "/modulos/javascriptComun.aspx/L_D_Municipios?id_territorial=" + id_territorial + "&id_departamento=" + id_departamento,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        var obj = JSON.parse(response.d.resultado);
+                        $('#ContentPlaceHolder1_LD_Municipio_Llegada').empty();
+                        var option = document.createElement("option");
+                        option.text = "seleccione Municipio"; option.value = "0"; dropdownlist.add(option);
+                        for (var i = 0; i < obj.length; i++) {
+                            var option = document.createElement("option");
+                            option.text = obj[i].municipio;
+                            option.value = obj[i].id_municipio;
+                            dropdownlist.add(option);
+                        }
+                    },
+                    error: function (xhr) {
+                        console.log(xhr);
+                        alert("Error", "No se cargaron los municipios");
+                    }
+                });
+            }
 
         }
 
@@ -323,7 +398,7 @@
         }
 
         /*Cambio alejandro*/
-        #ContentPlaceHolder1_m_2 > a, #ContentPlaceHolder1_m_4 > a, #ContentPlaceHolder1_m_5 > a, #ContentPlaceHolder1_m_6 > a, #ContentPlaceHolder1_m_7 > a, #ContentPlaceHolder1_m_8 > a, ContentPlaceHolder1_plan_traslado >a {
+        #ContentPlaceHolder1_m_2 > a, #ContentPlaceHolder1_m_4 > a, #ContentPlaceHolder1_m_5 > a, #ContentPlaceHolder1_m_6 > a, #ContentPlaceHolder1_m_7 > a, #ContentPlaceHolder1_m_8 > a,  #ContentPlaceHolder1_plan_traslado > a, #ContentPlaceHolder1_balance >a {
             background: none;
         }
 
@@ -431,67 +506,70 @@
         }
     </style>
 
-    <asp:Label runat="server" ID="L_mensaje" Text="" Visible="false" />
 
-    <asp:HiddenField ID="id_dependencia" runat="server" />
-    <%--ID de la dependencia a la cual pertenece la actividad--%>
-    <asp:HiddenField ID="id_actividad_nombre" runat="server" />
-    <%--Parametriza los metodos y valida la busqueda de las personas en la pestaña CONVOCATORIA segun el tipo y/o grupo de las actividades (focalización), cuando aplique--%>
-    <asp:HiddenField ID="id_actividad_responsable_rol" runat="server" />
-    <%--ID opción lista desplegable del ROL en la pestaña responsable al crear una actividad(default)--%>
-    <asp:HiddenField ID="id_usuario_territorio" runat="server" />
-    <%--Puede crear y actualizar sus eventos mientras esten en estado ACTIVO--%>
-    <asp:HiddenField ID="id_usuario_2da_instancia" runat="server" />
-    <%--Puede actualizar el estado de la actividad a REVISADO--%>
-    <asp:HiddenField ID="id_usuario_3ra_instancia" runat="server" />
-    <%--Puede actualizar el estado de la actividad a APROBADO--%>
-    <asp:HiddenField ID="id_val_pduplicadas_asist" runat="server" />
-    <%--Valida si se puede o no duplicar personas en las actividades (1->SI 2->NO)--%>
-    <asp:HiddenField ID="id_val_pduplicadas_convo" runat="server" />
-    <%--Valida si se puede o no duplicar personas en las actividades (1->SI 2->NO)--%>
-    <asp:HiddenField ID="archivo_filesystem" runat="server" />
-    <%--Establece la ruta del sistema de archivos donde se guardaran los docs y/o evidencias de este modulo--%>
-    <asp:HiddenField ID="opcion_tipo_archivo" runat="server" />
-    <%--Valida los tipos de documentos adjuntos para su cargue segun la actividad--%>
-    <asp:HiddenField ID="opcion_tipo_detalle" runat="server" />
-    <%--Valida las opciones de la lista desplegable de tipo detalle--%>
-    <asp:HiddenField ID="opcion_Subcategoria" runat="server" />
-    <%--Valida las opciones de las subcategorias--%>
-    <asp:HiddenField ID="opcion_rol_responsable" runat="server" />
-    <%--Valida las opciones para el rol de los responsables -> 0 para valor dafault(valores estandar) en el SP--%>
-    <asp:HiddenField ID="id_val_HV_asist" runat="server" />
-    <%--Valida hecho victimizante (0->no visible 1->modifica(obligatorio >=1) 2->modifica(no obligatorio)  3->consulta(HV persona, no modifica))--%>
-    <asp:HiddenField ID="id_val_HV_convo" runat="server" />
-    <%--Valida hecho victimizante (0->no visible 1->modifica(obligatorio >=1) 2->modifica(no obligatorio)  3->consulta(HV persona, no modifica))--%>
-    <asp:HiddenField ID="opcion_lista_usuarios" runat="server" />
-    <%--Valida el listado de usuarios para los filtros de busqueda, tanto en actividades como en responsables en el SP--%>
-    <asp:HiddenField ID="id_tipo_persona" runat="server" />
-    <%--Asigna el ID tipo persona al momento de crear personas nuevas en la tabla TBL_RPERSONA--%>
-    <asp:HiddenField ID="id_consultap_focalizados_asis" runat="server" />
-    <%--Asigna el ID de la opcion para la consulta de personas en asistencia. 1->consulta tabla tbl_rpersona 2->consulta tabla tbl_rpersona_focalizacion--%>
-    <asp:HiddenField ID="id_consultap_focalizados_convo" runat="server" />
-    <%--Asigna el ID de la opcion para la consulta de personas en convocatoria. 1->consulta tabla tbl_rpersona 2->consulta tabla tbl_rpersona_focalizacion--%>
+    <%--campos ocultos--%>
+    <div class="row">
+        <asp:Label runat="server" ID="L_mensaje" Text="" Visible="false" />
+        <asp:HiddenField ID="id_dependencia" runat="server" />
+        <%--ID de la dependencia a la cual pertenece la actividad--%>
+        <asp:HiddenField ID="id_actividad_nombre" runat="server" />
+        <%--Parametriza los metodos y valida la busqueda de las personas en la pestaña CONVOCATORIA segun el tipo y/o grupo de las actividades (focalización), cuando aplique--%>
+        <asp:HiddenField ID="id_actividad_responsable_rol" runat="server" />
+        <%--ID opción lista desplegable del ROL en la pestaña responsable al crear una actividad(default)--%>
+        <asp:HiddenField ID="id_usuario_territorio" runat="server" />
+        <%--Puede crear y actualizar sus eventos mientras esten en estado ACTIVO--%>
+        <asp:HiddenField ID="id_usuario_2da_instancia" runat="server" />
+        <%--Puede actualizar el estado de la actividad a REVISADO--%>
+        <asp:HiddenField ID="id_usuario_3ra_instancia" runat="server" />
+        <%--Puede actualizar el estado de la actividad a APROBADO--%>
+        <asp:HiddenField ID="id_val_pduplicadas_asist" runat="server" />
+        <%--Valida si se puede o no duplicar personas en las actividades (1->SI 2->NO)--%>
+        <asp:HiddenField ID="id_val_pduplicadas_convo" runat="server" />
+        <%--Valida si se puede o no duplicar personas en las actividades (1->SI 2->NO)--%>
+        <asp:HiddenField ID="archivo_filesystem" runat="server" />
+        <%--Establece la ruta del sistema de archivos donde se guardaran los docs y/o evidencias de este modulo--%>
+        <asp:HiddenField ID="opcion_tipo_archivo" runat="server" />
+        <%--Valida los tipos de documentos adjuntos para su cargue segun la actividad--%>
+        <asp:HiddenField ID="opcion_tipo_detalle" runat="server" />
+        <%--Valida las opciones de la lista desplegable de tipo detalle--%>
+        <asp:HiddenField ID="opcion_Subcategoria" runat="server" />
+        <%--Valida las opciones de las subcategorias--%>
+        <asp:HiddenField ID="opcion_rol_responsable" runat="server" />
+        <%--Valida las opciones para el rol de los responsables -> 0 para valor dafault(valores estandar) en el SP--%>
+        <asp:HiddenField ID="id_val_HV_asist" runat="server" />
+        <%--Valida hecho victimizante (0->no visible 1->modifica(obligatorio >=1) 2->modifica(no obligatorio)  3->consulta(HV persona, no modifica))--%>
+        <asp:HiddenField ID="id_val_HV_convo" runat="server" />
+        <%--Valida hecho victimizante (0->no visible 1->modifica(obligatorio >=1) 2->modifica(no obligatorio)  3->consulta(HV persona, no modifica))--%>
+        <asp:HiddenField ID="opcion_lista_usuarios" runat="server" />
+        <%--Valida el listado de usuarios para los filtros de busqueda, tanto en actividades como en responsables en el SP--%>
+        <asp:HiddenField ID="id_tipo_persona" runat="server" />
+        <%--Asigna el ID tipo persona al momento de crear personas nuevas en la tabla TBL_RPERSONA--%>
+        <asp:HiddenField ID="id_consultap_focalizados_asis" runat="server" />
+        <%--Asigna el ID de la opcion para la consulta de personas en asistencia. 1->consulta tabla tbl_rpersona 2->consulta tabla tbl_rpersona_focalizacion--%>
+        <asp:HiddenField ID="id_consultap_focalizados_convo" runat="server" />
+        <%--Asigna el ID de la opcion para la consulta de personas en convocatoria. 1->consulta tabla tbl_rpersona 2->consulta tabla tbl_rpersona_focalizacion--%>
 
-    <asp:HiddenField ID="opcion_tipo_detalle_costos" runat="server" />
-    <%--variable que carga los tipos de costos de un producto o actividad ---""··para colectiva ---""----%>
+        <asp:HiddenField ID="HiddenField1" runat="server" />
+        <asp:HiddenField ID="opcion_tipo_detalle_costos" runat="server" />
+        <%--variable que carga los tipos de costos de un producto o actividad ---""··para colectiva ---""----%>
 
+          <%--Campos ocultos desarrollo Liliana Rodriguez--%>
+        <asp:HiddenField ID="idComunidad" runat="server" />
+        <asp:HiddenField ID="idPlanAccionTraslado" runat="server" />
+
+
+
+    </div>
 
     <asp:Panel ID="Panel1" runat="server">
         <asp:UpdatePanel ID="UpdatePanel" UpdateMode="Conditional" runat="server">
-
             <ContentTemplate>
-
-
-
                 <div class="row titulo_tabla">
                     SEGUIMIENTO COMUNIDADES R Y R
                 </div>
-
                 <div id="myDiagrarmArbolProb" style="background-color: white; border: solid 1px black; width: 100%; height: 800px; display: none;"></div>
                 <div id="myDiagrarmArbolObjet" style="background-color: white; border: solid 1px black; width: 100%; height: 800px; display: none;"></div>
-
                 <div class="row center-block">
-
                     <%--panel de la izquierda--%>
                     <div class="col-md-3" style="border: 1px solid #eaeaea; min-height: 920px; background-color: #fcfcfc; border-radius: 9px 9px 9px 9px">
 
@@ -731,106 +809,106 @@
                     <div class="col-md-9" style="border: 1px solid #eaeaea; min-height: 920px; background-color: #fcfcfc; border-radius: 9px 9px 9px 9px">
 
                         <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 1041;" id="myModalEncuesta" aria-hidden="true">
-                    <div class="modal-dialog " style="width: 80%; max-height: 100vh; " role="document">
-                        <div>
-                            <%--style="overflow-y: scroll; max-height: 95%;"--%>
-                            <asp:UpdatePanel runat="server" ID="UpdatePanel8" UpdateMode="Conditional">
-                                <ContentTemplate>
-                                    <div class="modal-content">
-                                        <div class="">
+                            <div class="modal-dialog " style="width: 80%; max-height: 100vh;" role="document">
+                                <div>
+                                    <%--style="overflow-y: scroll; max-height: 95%;"--%>
+                                    <asp:UpdatePanel runat="server" ID="UpdatePanel8" UpdateMode="Conditional">
+                                        <ContentTemplate>
+                                            <div class="modal-content">
+                                                <div class="">
 
-                                            <div class="panel panel-danger" style="margin-bottom: 6px;">
+                                                    <div class="panel panel-danger" style="margin-bottom: 6px;">
 
-                                                <div class="panel-heading">
+                                                        <div class="panel-heading">
 
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h3>
-                                                        <asp:Literal ID="Li_diaActividad" runat="server"></asp:Literal></h3>
-                                                </div>
-                                                <div class="panel-body" style="max-height: 40vh;overflow-y: auto;">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h3>
+                                                                <asp:Literal ID="Li_diaActividad" runat="server"></asp:Literal></h3>
+                                                        </div>
+                                                        <div class="panel-body" style="max-height: 40vh; overflow-y: auto;">
 
-                                                    <div class="container-fluid">
-                                                        <div style="margin-top: 9px;">
+                                                            <div class="container-fluid">
+                                                                <div style="margin-top: 9px;">
 
-                                                            <asp:ListView ID="LV_Informe" runat="server" OnItemDataBound="LV_Informe_ItemDataBound">
-                                                                <ItemTemplate>
+                                                                    <asp:ListView ID="LV_Informe" runat="server" OnItemDataBound="LV_Informe_ItemDataBound">
+                                                                        <ItemTemplate>
 
-                                                                    <asp:Label ID="L_AdepTipo" runat="server" Visible="false" Text='<%# Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO") %>'></asp:Label>
-                                                                    <asp:Label ID="L_pregunta" runat="server" Visible="false" Text='<%# Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA") %>'></asp:Label>
-                                                                    <asp:Label ID="L_IdAdep" runat="server" Visible="false" Text='<%# Eval("ID_ACTIVIDAD_DIA_ENCUESTA_PREGUNTA") %>'></asp:Label>
-                                                                    <asp:Label ID="L_PreObli" runat="server" Visible="false" Text='<%# Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_OBLIGATORIO") %>'></asp:Label>
-
-
-                                                                    <asp:Label ID="L_IdRespuestaA" runat="server" Visible="false"></asp:Label>
-                                                                    <asp:Label ID="L_TieneRespuesta" runat="server" Visible="false"></asp:Label>
-
-                                                                    <div class="col-md-12" style="text-transform: none;" <%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() == "10"? "":"hidden" %>>
-                                                                        <asp:Panel ID="P_Titulo_Encuesta" runat="server" Visible='<%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() == "10"  %>' class="page-header">
-                                                                            <asp:Literal ID="Li_Titulo" runat="server" />
-                                                                        </asp:Panel>
-                                                                    </div>
+                                                                            <asp:Label ID="L_AdepTipo" runat="server" Visible="false" Text='<%# Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO") %>'></asp:Label>
+                                                                            <asp:Label ID="L_pregunta" runat="server" Visible="false" Text='<%# Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA") %>'></asp:Label>
+                                                                            <asp:Label ID="L_IdAdep" runat="server" Visible="false" Text='<%# Eval("ID_ACTIVIDAD_DIA_ENCUESTA_PREGUNTA") %>'></asp:Label>
+                                                                            <asp:Label ID="L_PreObli" runat="server" Visible="false" Text='<%# Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_OBLIGATORIO") %>'></asp:Label>
 
 
-                                                                    <%--<asp:Panel></asp:Panel>--%>
-                                                                    <asp:Panel ID="P_ListText" runat="server" Visible='<%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() != "10" ? true:false %>' class="form-group col-md-6 ">
-                                                                        <label class="control-label2">
-                                                                            <asp:Literal runat="server" ID="L_TexPregunt" Text='<%# Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA") %>'></asp:Literal>
-                                                                            <i class="reqjs fas fa-asterisk" <%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_OBLIGATORIO").ToString() == "1"? "":"hidden" %>></i>
-                                                                        </label>
-                                                                        <div>
-                                                                            <asp:DropDownList ID="LD_Respueta" runat="server" CssClass="form-control" Visible='<%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() == "1" ? true:false %>'>
-                                                                            </asp:DropDownList>
-                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator545" runat="server" ControlToValidate="LD_Respueta" CssClass="validador" Display="Dynamic" InitialValue="0" ValidationGroup="v_guardar_archivo">El tipo de archivo es obligatorio</asp:RequiredFieldValidator>
-                                                                            <asp:TextBox ID="TB_RespuestaAbierta" runat="server" Visible='<%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() == "2" ? true:false %>' placeholder="" CssClass="form-control"></asp:TextBox>
+                                                                            <asp:Label ID="L_IdRespuestaA" runat="server" Visible="false"></asp:Label>
+                                                                            <asp:Label ID="L_TieneRespuesta" runat="server" Visible="false"></asp:Label>
 
-                                                                            <asp:Literal runat="server"  Visible="false" Text="N/A" ID="L_Respuesta"></asp:Literal>
+                                                                            <div class="col-md-12" style="text-transform: none;" <%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() == "10"? "":"hidden" %>>
+                                                                                <asp:Panel ID="P_Titulo_Encuesta" runat="server" Visible='<%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() == "10"  %>' class="page-header">
+                                                                                    <asp:Literal ID="Li_Titulo" runat="server" />
+                                                                                </asp:Panel>
+                                                                            </div>
 
 
-                                                                            <%-- <asp:RadioButtonList ID="RB_informe" runat="server" Visible='<%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() == "12" ? true:false %>'>
+                                                                            <%--<asp:Panel></asp:Panel>--%>
+                                                                            <asp:Panel ID="P_ListText" runat="server" Visible='<%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() != "10" ? true:false %>' class="form-group col-md-6 ">
+                                                                                <label class="control-label2">
+                                                                                    <asp:Literal runat="server" ID="L_TexPregunt" Text='<%# Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA") %>'></asp:Literal>
+                                                                                    <i class="reqjs fas fa-asterisk" <%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_OBLIGATORIO").ToString() == "1"? "":"hidden" %>></i>
+                                                                                </label>
+                                                                                <div>
+                                                                                    <asp:DropDownList ID="LD_Respueta" runat="server" CssClass="form-control" Visible='<%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() == "1" ? true:false %>'>
+                                                                                    </asp:DropDownList>
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator545" runat="server" ControlToValidate="LD_Respueta" CssClass="validador" Display="Dynamic" InitialValue="0" ValidationGroup="v_guardar_archivo">El tipo de archivo es obligatorio</asp:RequiredFieldValidator>
+                                                                                    <asp:TextBox ID="TB_RespuestaAbierta" runat="server" Visible='<%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() == "2" ? true:false %>' placeholder="" CssClass="form-control"></asp:TextBox>
+
+                                                                                    <asp:Literal runat="server" Visible="false" Text="N/A" ID="L_Respuesta"></asp:Literal>
+
+
+                                                                                    <%-- <asp:RadioButtonList ID="RB_informe" runat="server" Visible='<%#Eval("ACTIVIDAD_DIA_ENCUESTA_PREGUNTA_TIPO").ToString() == "12" ? true:false %>'>
                                                                         </asp:RadioButtonList>--%>
-                                                                        </div>
-                                                                    </asp:Panel>
+                                                                                </div>
+                                                                            </asp:Panel>
 
 
-                                                                </ItemTemplate>
-                                                            </asp:ListView>
+                                                                        </ItemTemplate>
+                                                                    </asp:ListView>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <asp:Literal ID="Li_Prosgress" runat="server"></asp:Literal>
+
+
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                                                    <%--<button type="button" class="btn btn-primary">Save changes</button>--%>
+                                                                    <asp:LinkButton ID="LB_GuardarInforme" runat="server" OnClick="LB_GuardarInforme_Click" Visible="false" class="btn btn-primary" Text="Guardar" />
+
+                                                                </div>
+
+                                                            </div>
 
                                                         </div>
                                                     </div>
-                                                </div>
-
-                                                <div class="modal-footer">
-
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <asp:Literal ID="Li_Prosgress" runat="server"></asp:Literal>
-
-
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                                            <%--<button type="button" class="btn btn-primary">Save changes</button>--%>
-                                                            <asp:LinkButton ID="LB_GuardarInforme" runat="server" OnClick="LB_GuardarInforme_Click" Visible="false" class="btn btn-primary" Text="Guardar" />
-
-                                                        </div>
-
-                                                    </div>
-
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </ContentTemplate>
-                                <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="LB_GuardarInforme" />
-                                    <%--<asp:AsyncPostBackTrigger ControlID="B_actualizar_detalle" />--%>
-                                    <%--<asp:AsyncPostBackTrigger ControlID="B_CancelaDetalle" />--%>
-                                    <%--<asp:AsyncPostBackTrigger ControlID="LD_tipo_actividad" />--%>
-                                </Triggers>
-                            </asp:UpdatePanel>
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="LB_GuardarInforme" />
+                                            <%--<asp:AsyncPostBackTrigger ControlID="B_actualizar_detalle" />--%>
+                                            <%--<asp:AsyncPostBackTrigger ControlID="B_CancelaDetalle" />--%>
+                                            <%--<asp:AsyncPostBackTrigger ControlID="LD_tipo_actividad" />--%>
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
                         <div class="modal fade" visible="false" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>
@@ -1187,8 +1265,7 @@
                                                                             CssClass="table mGrid " ID="gv16" runat="server" AutoGenerateColumns="False"
                                                                             OnRowCommand="gv16_RowCommand"
                                                                             OnRowDataBound="gv16_RowDataBound"
-                                                                            OnPreRender="gv16_PreRender"
-                                                                            >
+                                                                            OnPreRender="gv16_PreRender">
                                                                             <AlternatingRowStyle BackColor="White" />
                                                                             <Columns>
 
@@ -1229,7 +1306,8 @@
 
                                                                                 <asp:TemplateField HeaderText="Tipo archivo">
                                                                                     <ItemTemplate>
-                                                                                        <asp:Label ID="tipo_actividad_archivo" runat="server" CssClass="textoIzq" Text='<%# Eval("TIPO_ACTIVIDAD_ARCHIVO") %>'></asp:Label> <%--TIPO_ACTIVIDAD_ARCHIVO_2--%>
+                                                                                        <asp:Label ID="tipo_actividad_archivo" runat="server" CssClass="textoIzq" Text='<%# Eval("TIPO_ACTIVIDAD_ARCHIVO") %>'></asp:Label>
+                                                                                        <%--TIPO_ACTIVIDAD_ARCHIVO_2--%>
                                                                                     </ItemTemplate>
                                                                                 </asp:TemplateField>
 
@@ -1327,9 +1405,9 @@
                                                                                         <%--<asp:ImageButton ID="ibtnGActualizar" runat="server" CausesValidation="False" CommandName="Actualizar_estado" ImageUrl="~/IMG/checked.png" CssClass="boton_img" ToolTip="Habilitar usuario" />--%>
                                                                                         <asp:DropDownList ID="LD_Cambiar_accion" Visible="false" runat="server" CssClass="form-control" Enabled="true">
                                                                                         </asp:DropDownList>
-                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator529" runat="server" ControlToValidate="LD_Cambiar_accion"
-                                                                                    CssClass="validador" Display="Dynamic" InitialValue="0" Style="font-weight: normal"
-                                                                                    ValidationGroup="guardar_cambio_actividad">Seleccione la actividad</asp:RequiredFieldValidator>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator529" runat="server" ControlToValidate="LD_Cambiar_accion"
+                                                                                            CssClass="validador" Display="Dynamic" InitialValue="0" Style="font-weight: normal"
+                                                                                            ValidationGroup="guardar_cambio_actividad">Seleccione la actividad</asp:RequiredFieldValidator>
                                                                                     </ItemTemplate>
                                                                                     <HeaderStyle Font-Size="X-Small" ForeColor="White" />
                                                                                 </asp:TemplateField>
@@ -1337,7 +1415,7 @@
                                                                                 <asp:TemplateField HeaderText="Guardar">
                                                                                     <ItemTemplate>
                                                                                         <%--<asp:ImageButton ID="ibtnGActualizar" runat="server" CausesValidation="False" CommandName="Actualizar_estado" ImageUrl="~/IMG/checked.png" CssClass="boton_img" ToolTip="Habilitar usuario" />--%>
-                                                                                        <asp:CheckBox ID="check_box" runat="server" Visible="false" OnClientClick="return false;" CssClass="left_check" AutoPostBack="false"/>
+                                                                                        <asp:CheckBox ID="check_box" runat="server" Visible="false" OnClientClick="return false;" CssClass="left_check" AutoPostBack="false" />
                                                                                     </ItemTemplate>
                                                                                     <HeaderStyle Font-Size="X-Small" ForeColor="White" />
                                                                                 </asp:TemplateField>
@@ -1498,9 +1576,9 @@
                                                                                 <asp:ListItem Selected="True" Value="0">Seleccione</asp:ListItem>
                                                                                 <asp:ListItem Value="13">ESTRATEGIA DE RECUPERACIÓN EMOCIONAL A NIVEL GRUPAL</asp:ListItem>
                                                                             </asp:DropDownList>
-                                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator529" runat="server" ControlToValidate="LD_tipo_actividad"
-                                                                                    CssClass="validador" Display="Dynamic" InitialValue="0" Style="font-weight: normal"
-                                                                                    ValidationGroup="guardar_detalle">Seleccione el estado</asp:RequiredFieldValidator>
+                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator529" runat="server" ControlToValidate="LD_tipo_actividad"
+                                                                                CssClass="validador" Display="Dynamic" InitialValue="0" Style="font-weight: normal"
+                                                                                ValidationGroup="guardar_detalle">Seleccione el estado</asp:RequiredFieldValidator>
                                                                         </div>
                                                                         <label class="col-md-2 label1">Estado detalle</label>
                                                                         <div class="col-md-4">
@@ -2231,7 +2309,7 @@
 
                                                                         <div class="col-md-9">
                                                                             <div class="row">
-                                                                                <asp:RadioButtonList runat="server" Visible="false"  RepeatDirection="Horizontal" RepeatLayout="Flow" ID="RB_Producto" AutoPostBack="true" CssClass="radiojose2" OnSelectedIndexChanged="RB_Producto_SelectedIndexChanged">
+                                                                                <asp:RadioButtonList runat="server" Visible="false" RepeatDirection="Horizontal" RepeatLayout="Flow" ID="RB_Producto" AutoPostBack="true" CssClass="radiojose2" OnSelectedIndexChanged="RB_Producto_SelectedIndexChanged">
 
                                                                                     <asp:ListItem Value="si" Selected="True" Text="Si"> Si</asp:ListItem>
                                                                                     <asp:ListItem Value="no" Text="No"> No</asp:ListItem>
@@ -2675,8 +2753,8 @@
                                                     <ul class="nav2 nav2-tabs pestana" role="tablist">
                                                         <li id="m_2" runat="server"><a href="#ContentPlaceHolder1_Responsables" aria-controls="Responsables" role="tab" data-toggle="tab">Responsables</a></li>
                                                         <li id="m_4" runat="server"><a href="#ContentPlaceHolder1_Dias" aria-controls="Dias" role="tab" data-toggle="tab">Acciones </a></li>
-                                                        <li id="m_PlanTraslado" runat="server" class="active"><a href="#ContentPlaceHolder1_plan_traslado" aria-controls="pt" role="tab" data-toggle="tab">Plan de acción del traslado </a></li>
-                                                        <li id="m_Balance" runat="server"><a href="#ContentPlaceHolder1_balance" aria-controls="Balance" role="tab" data-toggle="tab">Balance </a></li>
+                                                        <li id="m_PlanTraslado" runat="server" class="active"><a href="#ContentPlaceHolder1_plan_traslado" aria-controls="plan_traslado" role="tab" data-toggle="tab">Plan de acción del traslado </a></li>
+                                                        <li id="m_Balance" runat="server"><a href="#ContentPlaceHolder1_balance" aria-controls="balance" role="tab" data-toggle="tab">Balance </a></li>
                                                     </ul>
                                                     <!-- Tab panes -->
                                                     <div class="tab-content" style="padding-top: 20px">
@@ -2933,7 +3011,7 @@
                                                                                                     <%--<asp:ImageButton ID="Evidencias" runat="server" CausesValidation="False" CommandName="Evidencias" ImageUrl="~/IMG/documentacion.png" ToolTip="Evidencias" Width="22px"></asp:ImageButton>--%>
                                                                                                     <div class="btn-group" role="group" aria-label="...">
 
-                                                                                                        
+
 
                                                                                                         <asp:LinkButton ID="Evidencias" runat="server" CssClass="btn btn-default" CausesValidation="False" Style="color: #b10c0c" CommandName="Evidencias" ToolTip="Evidencias">
                                                                                                         <span class=" far fa-file " aria-hidden="true"><%--</span><span class="badge">4</span>--%>
@@ -2959,7 +3037,7 @@
                                                                                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                                                                         </asp:LinkButton>
 
-                                                                                                        
+
 
                                                                                                         <asp:Label ID="L_Alerta_bitacora" runat="server" Text='<%# Eval("alertaBitacora") %>' Visible="false"> </asp:Label>
 
@@ -3932,40 +4010,196 @@
                                                                 </Triggers>
                                                             </asp:UpdatePanel>
                                                         </div>
-                                                         <%--tab de PlanTraslado--%>
-                                                        <div role="tabpanel" class="tab-pane active" id="pt"    runat="server">
-                                                            <asp:UpdatePanel runat="server" ID="Up_pt" UpdateMode="Conditional">
+                                                        <%--tab de PlanTraslado--%>
+                                                        <div role="tabpanel" class="tab-pane active" id="plan_traslado" runat="server">
+                                                            <asp:UpdatePanel runat="server" ID="Up_plan_traslado" UpdateMode="Conditional">
                                                                 <ContentTemplate>
-                                                                    <asp:Panel ID="Panel2" runat="server" CssClass="container-fluid">
+                                                                    <asp:Panel ID="PanelPT" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
                                                                             <div class="panel-heading">
                                                                                 Comunidad 1
                                                                             </div>
                                                                             <div class="panel-body">
-                                                                                <asp:Label runat="server" ID="Label7" Text="INFORMACION DE LA COMUNIDAD"></asp:Label>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Total hogares a trasladar</label>
+                                                                                        <asp:TextBox ID="TextBox2" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Total personas a trasladar</label>
+                                                                                        <asp:TextBox ID="TextBox1" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Total personas a trasladar  incluidas en el RUV por desplazamiento forzado</label>
+                                                                                        <asp:TextBox ID="TextBox3" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Fecha de inicio del traslado</label>
+                                                                                        <asp:TextBox ID="TextBox16" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <%--DATOS DE SALIDA--%>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Departamento de salida</label>
+                                                                                        <asp:DropDownList ID="LD_Departamento_Salida" runat="server"
+                                                                                            CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator18" runat="server"
+                                                                                            ControlToValidate="LD_Departamento" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="Seleccione el Departamento" InitialValue="0"
+                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Municipio de salida</label>
+                                                                                        <asp:DropDownList ID="LD_Municipio_Salida" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator19" runat="server"
+                                                                                            ControlToValidate="LD_Municipio" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="Seleccione el municipio" InitialValue="0"
+                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Entorno urbano/rural de salida</label>
+                                                                                        <asp:DropDownList ID="DropDownList9" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator20" runat="server"
+                                                                                            ControlToValidate="LD_Municipio" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="Seleccione el municipio" InitialValue="0"
+                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Corregimiento/vereda/barrio de salida</label>
+                                                                                        <asp:TextBox ID="TextBox15" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <%--DATOS DE LLEGADA--%>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Departamento de llegada</label>
+                                                                                        <asp:DropDownList ID="LD_Departamento_Llegada" runat="server"
+                                                                                            CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server"
+                                                                                            ControlToValidate="LD_Departamento" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="Seleccione el Departamento" InitialValue="0"
+                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Municipio de llegada</label>
+                                                                                        <asp:DropDownList ID="LD_Municipio_Llegada" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator26" runat="server"
+                                                                                            ControlToValidate="LD_Municipio" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="Seleccione el municipio" InitialValue="0"
+                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Entorno urbano/rural de llegada</label>
+                                                                                        <asp:DropDownList ID="DropDownList12" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator27" runat="server"
+                                                                                            ControlToValidate="LD_Municipio" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="Seleccione el municipio" InitialValue="0"
+                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Corregimiento/vereda/barrio de llegada</label>
+                                                                                        <asp:TextBox ID="TextBox17" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <asp:LinkButton ID="LinkButton7" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_plan_Accion_traslado_Click" Text="Guardar Plan de Acción de Traslado">
+                                                                                            <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Guardar Plan de Acción de Traslado
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </asp:Panel>          
-                                                                     <asp:Panel ID="Panel3" runat="server" CssClass="container-fluid">
+                                                                    </asp:Panel>
+                                                                    <%--ENTIDADES QUE ACOMPAÑAN EL TRASLADO--%>
+                                                                    <asp:Panel ID="Panel3" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
                                                                             <div class="panel-heading">
-                                                                                DATOS DE LOS PROFESIONALES QUE REALIZAN EL ALISTAMIENTO LOGÍSTICO  
+                                                                                Entidades que acompañan el traslado (lugar de salida y lugar de llegada)  
                                                                             </div>
                                                                             <div class="panel-body">
-                                                                                <asp:Label runat="server" ID="Label12" Text="INFORMACION DE LOS PROFESIONALES"></asp:Label>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-1">
+                                                                                        <label class="label1 col-sm-">Entidad:</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-7">
+                                                                                        <asp:DropDownList ID="LD_Entidad" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator29" runat="server"
+                                                                                            ControlToValidate="LD_Municipio" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="Seleccione el municipio" InitialValue="0"
+                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                    <div class="col-md-4">
+                                                                                        <asp:LinkButton ID="LinkButton8" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_agregar_entidad_Click" Text="Agregar">
+                                                                                            <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Entidad
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_entidades"
+                                                                                        runat="server" AutoGenerateColumns="true " OnRowCommand="gv_entidades_RowCommand" OnRowDataBound="gv_entidades_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                        <Columns>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </asp:Panel>         
-                                                                     <asp:Panel ID="Panel5" runat="server" CssClass="container-fluid">
+                                                                    </asp:Panel>
+
+                                                                    <%--CATEGORIAS--%>
+                                                                    <asp:Panel ID="Panel22" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
                                                                             <div class="panel-heading">
-                                                                                INVENTARIO DE ELEMENTOS DE TRASTEO DEL HOGAR  
+                                                                                Categorias  
                                                                             </div>
                                                                             <div class="panel-body">
-                                                                                <asp:Label runat="server" ID="Label13" Text="ELEMENTOS DEL HOGAR"></asp:Label>
+                                                                                <div class="row">
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_categoria"
+                                                                                        runat="server" AutoGenerateColumns="true " OnRowCommand="gv_categoria_RowCommand" OnRowDataBound="gv_categoria_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                        <Columns>
+                                                                                            <asp:TemplateField HeaderText="id_actividad_responsable" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="proyeccion" runat="server" Text='<%# Eval("PROYECCION") %>'></asp:Label>
+                                                                                                    <asp:Label ID="gestion" runat="server" Text='<%# Eval("GESTION") %>'></asp:Label>
+                                                                                                    <asp:Label ID="id_actividad_dia" runat="server" Text='<%# Eval("id_actividad_dia") %>'></asp:Label>
+                                                                                                    <asp:Label ID="archivos" runat="server" Text='<%# Eval("archivos") %>'></asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:BoundField DataField="TIPO_MEDIDA" HeaderText="N°" />
+                                                                                            <asp:BoundField DataField="ID_ACTIVIDAD_PRODUCTO" HeaderText="Entidad" />
+                                                                                            <asp:BoundField DataField="PRODUCTO" HeaderText="Nombre del profesional" />
+                                                                                            <asp:BoundField DataField="HORA_FIN" HeaderText="Correo electrónico" Visible="true" />
+                                                                                            <asp:TemplateField HeaderText="Opciones">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label CssClass="success text-success" ToolTip="Día aprobado" Font-Size="20px" runat="server" ID="Val_DiaAprobado" Visible="false">
+                                                                                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                                                                                                    </asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="200px" />
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </asp:Panel>         
+                                                                    </asp:Panel>
+
                                                                 </ContentTemplate>
                                                                 <Triggers>
                                                                     <asp:AsyncPostBackTrigger ControlID="guardar_dias" />

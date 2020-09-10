@@ -1782,7 +1782,31 @@ namespace com.GACV.lgb.persistencia.fachada
 
         #endregion
 
-        
+
+        #region DESARROLLO RUTA COMUNITARIA  RYR
+
+        public DataSet GetTodasEntidadesRutaComunitaria()
+        {
+            return L_D.LD_Entidades_Ruta_Comunitaria();
+        }
+        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad)
+        {
+            return L_D.LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComunidad);
+        }
+        public bool LD_Insertar_plan_acción_traslado_entidad_Ruta_Comunitaria(int idPlan, int idEntidad)
+        {
+            return L_D.LD_Insertar_plan_acción_traslado_entidad_ruta_comunitaria(idPlan, idEntidad);
+        } 
+        public DataSet Get_Entidades_Plan_Accion_Traslado_Ruta_Comunitaria(int idPlan)
+        {
+            return L_D.LD_Consultar_plan_acción_traslado_Ruta_Comunitaria(idPlan);
+        }
+        public DataSet Get_Entidades_Plan_Accion_Traslado_Entidad(int idPlan)
+        {
+            return L_D.LD_Consultar_plan_acción_traslado_Entidad_Ruta_Comunitaria(idPlan);
+        }
+        #endregion
+
     }
 
 }
