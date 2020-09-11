@@ -414,7 +414,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             LD_Encuentro.Items.Insert(0, new ListItem("Seleccione", "0"));
 
 
-            
+
             ViewState["fase"] = "Ruta";
 
             gv5.Columns[2].Visible = false;
@@ -438,7 +438,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
             LD_Encuentro.Items.Insert(0, new ListItem("Seleccione", "0"));
 
-            
+
             ViewState["fase"] = "Ruta";
 
             gv5.Columns[2].Visible = false;
@@ -458,7 +458,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             LD_Encuentro.Items.Insert(0, new ListItem("1. Encuentro 1 – Día 1 - Círculos concéntricos y Mapa de la comunidad (liderado por profesionales)", "1. Encuentro 1 – Día 1 - Círculos concéntricos y Mapa de la comunidad (liderado por profesionales)"));
             LD_Encuentro.Items.Insert(0, new ListItem("Seleccione", "0"));
 
-            
+
             ViewState["fase"] = "Ruta";
 
             //div_implementacion.Visible = true;
@@ -809,7 +809,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     }
 
-    
+
 
     #region LISTAS DESPLEGABLES - ADMIN ACTIVIDADES
 
@@ -2103,7 +2103,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 ViewState["gv5"] = null;
                 lb_no_seguimiento.Visible = true;
             }
-           
+
 
 
             gv_categoria.Visible = true;
@@ -4350,11 +4350,13 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     m_PlanTraslado.Visible = true;
                     m_PlanTraslado.Visible = true;
                     m_Balance.Visible = true;
-                    PanelPT.Visible = true;
-                    GetTodasEntidadesRutaComunitaria();
-                    LlenarTablaPlanEntidades(1);
+                    PanelPT.Visible = true;                    
+                    GetTodasEntidadesRutaComunitaria();                    
                     LlenarCombosDepartamento();
-
+                    LlenarCombosEntorno();
+                    GetPlanTraslado();
+                    GetCategoria_plan_acción_traslado_Entidad_Ruta_Comunitaria();
+                    LlenarTablaPlanEntidades();
                 }
                 else
                 {
@@ -4934,7 +4936,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 gv51 = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 RB_Producto.SelectedValue = "si";
                 RB_Producto_SelectedIndexChanged(sender, e);
-                
+
                 if (Convert.ToInt32(ViewState["id_nombre_actividad"]) != 255)
                 {
                     label_medida_producto.Visible = false;
@@ -5175,7 +5177,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 if (Convert.ToInt32(ViewState["id_nombre_actividad"]) == 48 || Convert.ToInt32(ViewState["id_nombre_actividad"]) == 255)
                 {
-                    
+
                     if (((Label)e.Row.FindControl("ACTIVIDAD_D")).Text == "Gestión de Cierre de Fase" || ((Label)e.Row.FindControl("ACTIVIDAD_D")).Text == "8. Cierre de Fase")
                     {
                         ((LinkButton)e.Row.FindControl("Encuesta")).Visible = true;
@@ -5184,17 +5186,17 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     {
                         ((LinkButton)e.Row.FindControl("Encuesta")).Visible = false;
                     }
-                    
+
                 }
                 else
                 {
                     ((LinkButton)e.Row.FindControl("Encuesta")).Visible = false;
                 }
             }
-            
 
 
-            
+
+
 
             if (Convert.ToString(Session["rol"]) != "1" && Convert.ToString(Session["rol"]) != "37" && Convert.ToString(Session["rol"]) != "145")
             {
@@ -5882,10 +5884,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             //        e.Row.FindControl("ibtnGEliminar_archivo").Visible = false;
             //    }
             //}
-            
-            
-            ((DropDownList)e.Row.FindControl("LD_Cambiar_accion")).SelectedValue = ((Label)e.Row.FindControl("ID_ACTIVIDAD_DIA")).Text;  
-            
+
+
+            ((DropDownList)e.Row.FindControl("LD_Cambiar_accion")).SelectedValue = ((Label)e.Row.FindControl("ID_ACTIVIDAD_DIA")).Text;
+
 
 
         }
@@ -9301,7 +9303,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         RB_Producto.SelectedValue = "si";
         RB_Producto_SelectedIndexChanged(sender, e);
-        
+
         L_D_productos();
         if (Convert.ToInt32(ViewState["id_nombre_actividad"]) != 255)
         {
@@ -9469,7 +9471,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         gv_dias_cancelados.DataBind();
 
     }
-    
+
     protected void gv11_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         GridViewRow gv51;
@@ -10536,7 +10538,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             LD_productos.Visible = false;
             label_medida_producto.Visible = true;
             TextBox12.Visible = true;
-            
+
         }
         else if (RB_Producto.SelectedValue == "no")
         {
@@ -10865,7 +10867,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Adjuntar_archivos_act adjuntar_archivos = new Adjuntar_archivos_act();
         try
         {
-            
+
         }
         catch
         {
@@ -10875,7 +10877,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     protected void gv_entidades_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
-        {           
+        {
         }
     }
     protected void gv_entidades_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -10884,7 +10886,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     protected void gv_categoria_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         DataSet ds = new DataSet();
-        Adjuntar_archivos_act adjuntar_archivos = new Adjuntar_archivos_act();        
+        Adjuntar_archivos_act adjuntar_archivos = new Adjuntar_archivos_act();
         try
         {
 
@@ -10902,7 +10904,25 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
     protected void gv_categoria_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-    }   
+    }
+    public void GetPlanTraslado() {
+        DataSet dsPT = new DataSet();
+        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        dsPT = FachadaPersistencia.getInstancia().GetPlanTrasladoPorComunidad(idComunidad);
+        if (!dsPT.Tables[0].Rows.Count.Equals(0))
+        {
+            txTotalHogares.Text = dsPT.Tables[0].Rows[0]["TOTAL_HOGARES_TRASLADAR"].ToString();
+            txTotalPersonas.Text = dsPT.Tables[0].Rows[0]["TOTAL_PERSONAS_TRASLADAR"].ToString();
+            txTotalRUV.Text = dsPT.Tables[0].Rows[0]["TOTAL_PERSONAS_TRASLADAR_RUV"].ToString();
+            txCorregimiento_Salida.Text = dsPT.Tables[0].Rows[0]["CORREGIMIENTO_SALIDA"].ToString();
+            txCorregimiento_Llegada.Text = dsPT.Tables[0].Rows[0]["CORREGIMIENTO_LLEGADA"].ToString();
+
+            LD_Entorno_Salida.SelectedValue = dsPT.Tables[0].Rows[0]["ID_ENTORNO_SALIDA"].ToString();
+            LD_Entorno_Llegada.SelectedValue = dsPT.Tables[0].Rows[0]["ID_ENTORNO_LLEGADA"].ToString();
+
+            idPlanAccionTraslado.Value = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"].ToString();
+        }
+    }
     public void GetTodasEntidadesRutaComunitaria()
     {
         DataSet dsPE = new DataSet();
@@ -10917,7 +10937,52 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             LD_Entidad.DataBind();
         }
     }
+    public void GetCategoria_plan_acción_traslado_Entidad_Ruta_Comunitaria()
+    {
+        int idPlan = Convert.ToInt32(idPlanAccionTraslado.Value);
+        DataSet dsPE = new DataSet();
+        dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Categoria_plan_acción_traslado_Entidad_Ruta_Comunitaria(idPlan);        
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            gv_categoria.Visible = true;
+            gv_categoria.DataSource = dsPE;
+            gv_categoria.DataBind();
+        }
+        else
+        {
+            gv_categoria.Visible = false;
+            gv_categoria.DataSource = dsPE;
+            gv_categoria.DataBind();
+        }
+    }
+
     protected void btn_guardar_plan_Accion_traslado_Click(object sender, EventArgs e)
+    {
+        DataSet ds = new DataSet();
+        try
+        {
+            //todos los datos son obligatorios de diligenciamiento pero se validan en el aspx
+            int idComuniad = Convert.ToInt32(TB_Nit.Text);
+            int totalHogares = Convert.ToInt32(txTotalHogares.Text);
+            int totalPersonas = Convert.ToInt32(txTotalPersonas.Text);
+            int totalRUV = Convert.ToInt32(txTotalRUV.Text);
+            //int id_MunSalida = Convert.ToInt32(LD_Municipio_Salida.SelectedValue);
+            //int idMunLlegada = Convert.ToInt32(LD_Municipio_Llegada.SelectedValue);
+            int id_MunSalida = 1;
+            int idMunLlegada = 2;
+            int idEntornoSalida = Convert.ToInt32(LD_Entorno_Salida.SelectedValue);
+            int idEntornoLlegada = Convert.ToInt32(LD_Entorno_Llegada.SelectedValue);
+            string corregimmientoSalida = txCorregimiento_Salida.Text;
+            string corregimientoLlegada = txCorregimiento_Llegada.Text;
+            int idPlan = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComuniad, totalHogares, totalPersonas, totalRUV, id_MunSalida, idMunLlegada, idEntornoSalida, idEntornoLlegada, corregimmientoSalida, corregimientoLlegada);
+            idPlanAccionTraslado.Value = idPlan.ToString();
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error adicionar la entidad." + ex.Message, 0);
+        }
+    }
+    protected void btn_agregar_entidad_Click(object sender, EventArgs e)
     {
         DataSet ds = new DataSet();
         try
@@ -10925,10 +10990,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             if (Convert.ToInt32(LD_Entidad.SelectedValue) != 0)
             {
                 int idComuniad = Convert.ToInt32(TB_Nit.Text);
+                int idPlan = Convert.ToInt32(idPlanAccionTraslado.Value);
                 int idEntidad = Convert.ToInt32(LD_Entidad.SelectedValue);
-                int idPlan = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComuniad);
-                idPlanAccionTraslado.Value = idPlan.ToString();
-                LlenarTablaPlanEntidades(idPlan);
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_entidad_Ruta_Comunitaria(idPlan, idEntidad);
+                LlenarTablaPlanEntidades();
             }
             else
             {
@@ -10940,31 +11005,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes("Error adicionar la entidad." + ex.InnerException.Message, 0);
         }
     }
-    protected void btn_agregar_entidad_Click(object sender, EventArgs e)
+    public void LlenarTablaPlanEntidades()
     {
-        DataSet ds = new DataSet();
-        try
-        {
-            if (Convert.ToInt32(LD_Entidad.SelectedValue) != 0)
-            {                
-                int idComuniad = Convert.ToInt32(TB_Nit.Text) ;
-                int idPlan = 1;
-                int idEntidad = Convert.ToInt32(LD_Entidad.SelectedValue);
-                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_entidad_Ruta_Comunitaria(idPlan,idEntidad);                              
-                LlenarTablaPlanEntidades(1);
-            }
-            else
-            {
-                Mensajes("Seleccione una entidad", 0);
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Mensajes("Error adicionar la entidad." + ex.InnerException.Message , 0);
-        }        
-    }
-    public void LlenarTablaPlanEntidades(int idPlan)
-    {
+        int idPlan = Convert.ToInt32(idPlanAccionTraslado.Value);
         DataSet dsPE = new DataSet();
         dsPE = FachadaPersistencia.getInstancia().Get_Entidades_Plan_Accion_Traslado_Entidad(idPlan);
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
@@ -10980,7 +11023,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_entidades.DataBind();
         }
     }
-    public void LlenarCombosDepartamento() {
+    public void LlenarCombosDepartamento()
+    {
         DataSet dsDepartamento = new DataSet();
 
         dsDepartamento = FachadaPersistencia.getInstancia().L_D_Departamentos(0);
@@ -11008,6 +11052,18 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
     }
 
+    public void LlenarCombosEntorno()
+    {
+        LD_Entorno_Salida.Items.Clear();
+        LD_Entorno_Salida.Items.Insert(0, new ListItem("Seleccione", "0"));
+        LD_Entorno_Salida.Items.Insert(1, new ListItem("Rural", "1"));
+        LD_Entorno_Salida.Items.Insert(2, new ListItem("Urbano", "2"));
+
+        LD_Entorno_Llegada.Items.Clear();
+        LD_Entorno_Llegada.Items.Insert(0, new ListItem("Seleccione", "0"));
+        LD_Entorno_Llegada.Items.Insert(1, new ListItem("Rural", "1"));
+        LD_Entorno_Llegada.Items.Insert(2, new ListItem("Urbano", "2"));
+    }
     #endregion
 
 }

@@ -398,7 +398,7 @@
         }
 
         /*Cambio alejandro*/
-        #ContentPlaceHolder1_m_2 > a, #ContentPlaceHolder1_m_4 > a, #ContentPlaceHolder1_m_5 > a, #ContentPlaceHolder1_m_6 > a, #ContentPlaceHolder1_m_7 > a, #ContentPlaceHolder1_m_8 > a,  #ContentPlaceHolder1_plan_traslado > a, #ContentPlaceHolder1_balance >a {
+        #ContentPlaceHolder1_m_2 > a, #ContentPlaceHolder1_m_4 > a, #ContentPlaceHolder1_m_5 > a, #ContentPlaceHolder1_m_6 > a, #ContentPlaceHolder1_m_7 > a, #ContentPlaceHolder1_m_8 > a, #ContentPlaceHolder1_plan_traslado > a, #ContentPlaceHolder1_balance > a {
             background: none;
         }
 
@@ -453,6 +453,10 @@
             margin: 0 !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
+        }
+        .validador {
+            color   :red;
+            font-style: italic;
         }
     </style>
 
@@ -553,7 +557,7 @@
         <asp:HiddenField ID="opcion_tipo_detalle_costos" runat="server" />
         <%--variable que carga los tipos de costos de un producto o actividad ---""··para colectiva ---""----%>
 
-          <%--Campos ocultos desarrollo Liliana Rodriguez--%>
+        <%--Campos ocultos desarrollo Liliana Rodriguez--%>
         <asp:HiddenField ID="idComunidad" runat="server" />
         <asp:HiddenField ID="idPlanAccionTraslado" runat="server" />
 
@@ -4023,21 +4027,26 @@
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Total hogares a trasladar</label>
-                                                                                        <asp:TextBox ID="TextBox2" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <asp:TextBox ID="txTotalHogares" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Total personas a trasladar</label>
-                                                                                        <asp:TextBox ID="TextBox1" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <asp:TextBox ID="txTotalPersonas" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Total personas a trasladar  incluidas en el RUV por desplazamiento forzado</label>
-                                                                                        <asp:TextBox ID="TextBox3" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <asp:TextBox ID="txTotalRUV" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Fecha de inicio del traslado</label>
-                                                                                        <asp:TextBox ID="TextBox16" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <asp:TextBox ID="txFechaInicioTraslado" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator28" runat="server"
+                                                                                                ControlToValidate="txFechaInicioTraslado" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="guardarPlanTraslado">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <%--DATOS DE SALIDA--%>
@@ -4048,33 +4057,38 @@
                                                                                             CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator18" runat="server"
-                                                                                            ControlToValidate="LD_Departamento" CssClass="validador" Display="Dynamic"
-                                                                                            ErrorMessage="Seleccione el Departamento" InitialValue="0"
-                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                            ControlToValidate="LD_Departamento_Salida" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"
+                                                                                            ValidationGroup="guardarPlanTraslado"></asp:RequiredFieldValidator>
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Municipio de salida</label>
                                                                                         <asp:DropDownList ID="LD_Municipio_Salida" runat="server" CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator19" runat="server"
-                                                                                            ControlToValidate="LD_Municipio" CssClass="validador" Display="Dynamic"
-                                                                                            ErrorMessage="Seleccione el municipio" InitialValue="0"
-                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                            ControlToValidate="LD_Municipio_Salida" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"
+                                                                                            ValidationGroup="guardarPlanTraslado"></asp:RequiredFieldValidator>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Entorno urbano/rural de salida</label>
-                                                                                        <asp:DropDownList ID="DropDownList9" runat="server" CssClass="form-control">
+                                                                                        <asp:DropDownList ID="LD_Entorno_Salida" runat="server" CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator20" runat="server"
-                                                                                            ControlToValidate="LD_Municipio" CssClass="validador" Display="Dynamic"
-                                                                                            ErrorMessage="Seleccione el municipio" InitialValue="0"
-                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                            ControlToValidate="LD_Entorno_Salida" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"
+                                                                                            ValidationGroup="guardarPlanTraslado"></asp:RequiredFieldValidator>
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Corregimiento/vereda/barrio de salida</label>
-                                                                                        <asp:TextBox ID="TextBox15" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <asp:TextBox ID="txCorregimiento_Salida" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                         <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator32" runat="server"
+                                                                                                ControlToValidate="txCorregimiento_Salida" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="guardarPlanTraslado">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <%--DATOS DE LLEGADA--%>
@@ -4085,38 +4099,43 @@
                                                                                             CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server"
-                                                                                            ControlToValidate="LD_Departamento" CssClass="validador" Display="Dynamic"
-                                                                                            ErrorMessage="Seleccione el Departamento" InitialValue="0"
-                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                            ControlToValidate="LD_Departamento_Llegada" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"
+                                                                                            ValidationGroup="guardarPlanTraslado"></asp:RequiredFieldValidator>
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Municipio de llegada</label>
                                                                                         <asp:DropDownList ID="LD_Municipio_Llegada" runat="server" CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator26" runat="server"
-                                                                                            ControlToValidate="LD_Municipio" CssClass="validador" Display="Dynamic"
-                                                                                            ErrorMessage="Seleccione el municipio" InitialValue="0"
-                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                            ControlToValidate="LD_Municipio_Llegada" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"
+                                                                                            ValidationGroup="guardarPlanTraslado"></asp:RequiredFieldValidator>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Entorno urbano/rural de llegada</label>
-                                                                                        <asp:DropDownList ID="DropDownList12" runat="server" CssClass="form-control">
+                                                                                        <asp:DropDownList ID="LD_Entorno_Llegada" runat="server" CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator27" runat="server"
-                                                                                            ControlToValidate="LD_Municipio" CssClass="validador" Display="Dynamic"
-                                                                                            ErrorMessage="Seleccione el municipio" InitialValue="0"
-                                                                                            ValidationGroup="guardar"></asp:RequiredFieldValidator>
+                                                                                            ControlToValidate="LD_Entorno_Llegada" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"
+                                                                                            ValidationGroup="guardarPlanTraslado"></asp:RequiredFieldValidator>
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Corregimiento/vereda/barrio de llegada</label>
-                                                                                        <asp:TextBox ID="TextBox17" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <asp:TextBox ID="txCorregimiento_Llegada" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                         <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator33" runat="server"
+                                                                                                ControlToValidate="txCorregimiento_Llegada" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="guardarPlanTraslado">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
-                                                                                        <asp:LinkButton ID="LinkButton7" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_plan_Accion_traslado_Click" Text="Guardar Plan de Acción de Traslado">
+                                                                                        <asp:LinkButton ID="guardarPlanTraslado" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_plan_Accion_traslado_Click" Text="Guardar Plan de Acción de Traslado" ValidationGroup="guardarPlanTraslado">
                                                                                             <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Guardar Plan de Acción de Traslado
                                                                                         </asp:LinkButton>
                                                                                     </div>
@@ -4168,31 +4187,11 @@
                                                                                 Categorias  
                                                                             </div>
                                                                             <div class="panel-body">
-                                                                                <div class="row">
+                                                                                 <div class="row">
                                                                                     <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_categoria"
                                                                                         runat="server" AutoGenerateColumns="true " OnRowCommand="gv_categoria_RowCommand" OnRowDataBound="gv_categoria_RowDataBound">
                                                                                         <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                         <Columns>
-                                                                                            <asp:TemplateField HeaderText="id_actividad_responsable" Visible="true">
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:Label ID="proyeccion" runat="server" Text='<%# Eval("PROYECCION") %>'></asp:Label>
-                                                                                                    <asp:Label ID="gestion" runat="server" Text='<%# Eval("GESTION") %>'></asp:Label>
-                                                                                                    <asp:Label ID="id_actividad_dia" runat="server" Text='<%# Eval("id_actividad_dia") %>'></asp:Label>
-                                                                                                    <asp:Label ID="archivos" runat="server" Text='<%# Eval("archivos") %>'></asp:Label>
-                                                                                                </ItemTemplate>
-                                                                                            </asp:TemplateField>
-                                                                                            <asp:BoundField DataField="TIPO_MEDIDA" HeaderText="N°" />
-                                                                                            <asp:BoundField DataField="ID_ACTIVIDAD_PRODUCTO" HeaderText="Entidad" />
-                                                                                            <asp:BoundField DataField="PRODUCTO" HeaderText="Nombre del profesional" />
-                                                                                            <asp:BoundField DataField="HORA_FIN" HeaderText="Correo electrónico" Visible="true" />
-                                                                                            <asp:TemplateField HeaderText="Opciones">
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:Label CssClass="success text-success" ToolTip="Día aprobado" Font-Size="20px" runat="server" ID="Val_DiaAprobado" Visible="false">
-                                                                                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-                                                                                                    </asp:Label>
-                                                                                                </ItemTemplate>
-                                                                                                <ItemStyle HorizontalAlign="Center" Width="200px" />
-                                                                                            </asp:TemplateField>
                                                                                         </Columns>
                                                                                     </asp:GridView>
                                                                                 </div>

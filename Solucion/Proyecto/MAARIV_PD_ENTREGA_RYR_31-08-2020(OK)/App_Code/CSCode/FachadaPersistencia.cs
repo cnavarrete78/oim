@@ -1784,14 +1784,17 @@ namespace com.GACV.lgb.persistencia.fachada
 
 
         #region DESARROLLO RUTA COMUNITARIA  RYR
-
+        public DataSet GetPlanTrasladoPorComunidad(int idComunidad)
+        {
+            return L_D.LD_PlanTrasladoPorComunidad(idComunidad);
+        }
         public DataSet GetTodasEntidadesRutaComunitaria()
         {
             return L_D.LD_Entidades_Ruta_Comunitaria();
         }
-        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad)
+        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int totalHogares, int totalPersonas, int totalRUV, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada)
         {
-            return L_D.LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComunidad);
+            return L_D.LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComunidad,totalHogares,totalPersonas, totalRUV, id_MunSalida, idMunLlegada, idEntornoSalida, idEntornoLlegada, corregimmientoSalida, corregimientoLlegada);
         }
         public bool LD_Insertar_plan_acción_traslado_entidad_Ruta_Comunitaria(int idPlan, int idEntidad)
         {
@@ -1800,6 +1803,10 @@ namespace com.GACV.lgb.persistencia.fachada
         public DataSet Get_Entidades_Plan_Accion_Traslado_Ruta_Comunitaria(int idPlan)
         {
             return L_D.LD_Consultar_plan_acción_traslado_Ruta_Comunitaria(idPlan);
+        }
+        public DataSet Get_Consultar_Categoria_plan_acción_traslado_Entidad_Ruta_Comunitaria(int idPlan)
+        {
+            return L_D.LD_Consultar_Categoria_plan_acción_traslado_Entidad_Ruta_Comunitaria(idPlan);
         }
         public DataSet Get_Entidades_Plan_Accion_Traslado_Entidad(int idPlan)
         {

@@ -4683,7 +4683,34 @@ namespace com.GACV.lgb.persistencia.dao
 
 
         #region Desarrollo ruta comunitaria
-        // Obtener la lista de las entidades por departamento y municipio
+        public DataSet LD_PlanTrasladoPorComunidad(int idComunidad)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_RYR_GET_TB_PLAN_ACCION_TRASLADO", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_COMUNIDAD", idComunidad);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
 
         public DataSet LD_Entidades_Ruta_Comunitaria()
         {
@@ -4708,7 +4735,7 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return ds;
         }
-        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad)
+        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int totalHogares, int  totalPersonas, int totalRUV, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada)
         {
             int idPlanTraslado = 0;
             try
@@ -4718,7 +4745,7 @@ namespace com.GACV.lgb.persistencia.dao
                 con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
                 con.Open();
 
-                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_TB_PLAN_ACCION_TRASLADO", con);
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_PLAN_ACCION_TRASLADO", con);
                 Command.CommandType = CommandType.StoredProcedure;
                 Command.Connection = con;
    
@@ -4726,12 +4753,41 @@ namespace com.GACV.lgb.persistencia.dao
                 oParam.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam);
 
+                SqlParameter oParam1 = new SqlParameter("@TOTAL_HOGARES_TRASLADAR", totalHogares);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+                SqlParameter oParam2 = new SqlParameter("@TOTAL_PERSONAS_TRASLADAR", totalPersonas);
+                oParam2.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam2);
+                SqlParameter oParam3 = new SqlParameter("@TOTAL_PERSONAS_TRASLADAR_RUV", totalRUV);
+                oParam3.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam3);
+
+                SqlParameter oParam4 = new SqlParameter("@ID_MUNICIPIO_SALIDA", id_MunSalida);
+                oParam4.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam4);
+                SqlParameter oParam5 = new SqlParameter("@ID_MUNICIPIO_LLEGADA", idMunLlegada);
+                oParam5.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam5);
+                SqlParameter oParam6 = new SqlParameter("@ID_ENTORNO_SALIDA", idEntornoSalida);
+                oParam6.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam6);
+                SqlParameter oParam7 = new SqlParameter("@ID_ENTORNO_LLEGADA", idEntornoLlegada);
+                oParam7.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam7);
+                SqlParameter oParam8 = new SqlParameter("@CORREGIMIENTO_SALIDA", corregimmientoSalida);
+                oParam8.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam8);
+                SqlParameter oParam9 = new SqlParameter("@CORREGIMIENTO_LLEGADA", corregimientoLlegada);
+                oParam9.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam9);
+
                 SqlParameter OutputParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", SqlDbType.Int);
                 OutputParam.Direction = ParameterDirection.Output;
                 Command.Parameters.Add(OutputParam);
                 Command.ExecuteNonQuery();
 
-                idPlanTraslado = Convert.ToInt32(Command.Parameters["ID_PLAN_ACCION_TRASLADO"].Value);     
+                idPlanTraslado = Convert.ToInt32(Command.Parameters["@ID_PLAN_ACCION_TRASLADO"].Value);     
                 
                 con.Close();
                 return idPlanTraslado;
@@ -4813,6 +4869,35 @@ namespace com.GACV.lgb.persistencia.dao
                 con.Open();
 
                 SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_PLAN_ACCION_TRASLADO_ENTIDAD", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
+        public DataSet LD_Consultar_Categoria_plan_acción_traslado_Entidad_Ruta_Comunitaria(int idPlan)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_RYR_GET_CATEGORIA_TRASLADO_POR_ID_PLAN_TRASLADO", con);
                 Command.CommandType = CommandType.StoredProcedure;
                 Command.Connection = con;
 
