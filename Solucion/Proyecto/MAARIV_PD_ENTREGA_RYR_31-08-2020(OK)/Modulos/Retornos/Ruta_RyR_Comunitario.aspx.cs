@@ -2102,13 +2102,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 ViewState["ds_dias_actividad"] = null;
                 ViewState["gv5"] = null;
                 lb_no_seguimiento.Visible = true;
-            }
-
-
-
-            gv_categoria.Visible = true;
-            gv_categoria.DataSource = ds;
-            gv_categoria.DataBind();
+            }           
 
             if (!ds2.Tables[0].Rows.Count.Equals(0))
             {
@@ -10900,6 +10894,17 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
+            TextBox txtResultado = (TextBox)e.Row.FindControl("RESULTADO");
+            DataRow drGV = ((DataRowView)e.Row.DataItem).Row;
+            txtResultado.Text = drGV["RESULTADO"].ToString();
+
+            TextBox txtAcciones = (TextBox)e.Row.FindControl("ACCIONES");
+            DataRow drGVAcciones = ((DataRowView)e.Row.DataItem).Row;
+            txtAcciones.Text = drGVAcciones["ACCIONES"].ToString();
+
+            TextBox txtObservaciones = (TextBox)e.Row.FindControl("OBSERVACIONES");
+            DataRow drGVObservaciones = ((DataRowView)e.Row.DataItem).Row;
+            txtObservaciones.Text = drGVObservaciones["OBSERVACIONES"].ToString();
         }
     }
     protected void gv_categoria_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -10941,12 +10946,12 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         int idPlan = Convert.ToInt32(idPlanAccionTraslado.Value);
         DataSet dsPE = new DataSet();
-        dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Categoria_plan_acción_traslado_Entidad_Ruta_Comunitaria(idPlan);        
+        dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Categoria_plan_acción_traslado_Entidad_Ruta_Comunitaria(idPlan);
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
         {
             gv_categoria.Visible = true;
             gv_categoria.DataSource = dsPE;
-            gv_categoria.DataBind();
+            gv_categoria.DataBind();                       
         }
         else
         {
@@ -10961,6 +10966,45 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         try
         {
+            //todos los datos son obligatorios de diligenciamiento pero se validan en el aspx
+            int idComuniad = Convert.ToInt32(TB_Nit.Text);
+            int totalHogares = Convert.ToInt32(txTotalHogares.Text);
+            int totalPersonas = Convert.ToInt32(txTotalPersonas.Text);
+            int totalRUV = Convert.ToInt32(txTotalRUV.Text);
+            //int id_MunSalida = Convert.ToInt32(LD_Municipio_Salida.SelectedValue);
+            //int idMunLlegada = Convert.ToInt32(LD_Municipio_Llegada.SelectedValue);
+            int id_MunSalida = 1;
+            int idMunLlegada = 2;
+            int idEntornoSalida = Convert.ToInt32(LD_Entorno_Salida.SelectedValue);
+            int idEntornoLlegada = Convert.ToInt32(LD_Entorno_Llegada.SelectedValue);
+            string corregimmientoSalida = txCorregimiento_Salida.Text;
+            string corregimientoLlegada = txCorregimiento_Llegada.Text;
+            int idPlan = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComuniad, totalHogares, totalPersonas, totalRUV, id_MunSalida, idMunLlegada, idEntornoSalida, idEntornoLlegada, corregimmientoSalida, corregimientoLlegada);
+            idPlanAccionTraslado.Value = idPlan.ToString();
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error adicionar la entidad." + ex.Message, 0);
+        }
+    }
+
+    protected void btn_guardar_Categorias_Click(object sender, EventArgs e)
+    {
+        DataSet ds = new DataSet();
+        try
+        {
+
+            if (gv_categoria.Rows.Count > 0)
+            {
+                for (int i = 0; i < gv_categoria.Rows.Count; i++)
+                {
+                    TextBox txt1 = (TextBox)gv_categoria.Rows[i].Cells[2].FindControl("RESULTADO");
+                    DataRow drGV = ((DataRowView)gv_categoria.Rows[i].DataItem).Row;
+                    var a = drGV["RESULTADO"].ToString();
+                }
+            }
+
+
             //todos los datos son obligatorios de diligenciamiento pero se validan en el aspx
             int idComuniad = Convert.ToInt32(TB_Nit.Text);
             int totalHogares = Convert.ToInt32(txTotalHogares.Text);

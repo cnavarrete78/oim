@@ -454,8 +454,9 @@
             margin-left: 0 !important;
             margin-right: 0 !important;
         }
+
         .validador {
-            color   :red;
+            color: red;
             font-style: italic;
         }
     </style>
@@ -4084,7 +4085,7 @@
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Corregimiento/vereda/barrio de salida</label>
                                                                                         <asp:TextBox ID="txCorregimiento_Salida" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
-                                                                                         <span style="font-weight: normal">
+                                                                                        <span style="font-weight: normal">
                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator32" runat="server"
                                                                                                 ControlToValidate="txCorregimiento_Salida" CssClass="validador" Display="Dynamic"
                                                                                                 ValidationGroup="guardarPlanTraslado">* Campo obligatorio</asp:RequiredFieldValidator>
@@ -4126,7 +4127,7 @@
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Corregimiento/vereda/barrio de llegada</label>
                                                                                         <asp:TextBox ID="txCorregimiento_Llegada" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
-                                                                                         <span style="font-weight: normal">
+                                                                                        <span style="font-weight: normal">
                                                                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator33" runat="server"
                                                                                                 ControlToValidate="txCorregimiento_Llegada" CssClass="validador" Display="Dynamic"
                                                                                                 ValidationGroup="guardarPlanTraslado">* Campo obligatorio</asp:RequiredFieldValidator>
@@ -4173,6 +4174,14 @@
                                                                                         runat="server" AutoGenerateColumns="true " OnRowCommand="gv_entidades_RowCommand" OnRowDataBound="gv_entidades_RowDataBound">
                                                                                         <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                         <Columns>
+                                                                                            <asp:TemplateField HeaderText="Acciones">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                                                    </asp:LinkButton>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="80px" />
+                                                                                            </asp:TemplateField>
                                                                                         </Columns>
                                                                                     </asp:GridView>
                                                                                 </div>
@@ -4187,13 +4196,38 @@
                                                                                 Categorias  
                                                                             </div>
                                                                             <div class="panel-body">
-                                                                                 <div class="row">
+                                                                                <div class="row">
                                                                                     <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_categoria"
-                                                                                        runat="server" AutoGenerateColumns="true " OnRowCommand="gv_categoria_RowCommand" OnRowDataBound="gv_categoria_RowDataBound">
+                                                                                        runat="server" AutoGenerateColumns="false " OnRowCommand="gv_categoria_RowCommand" OnRowDataBound="gv_categoria_RowDataBound">
                                                                                         <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                         <Columns>
+                                                                                            <asp:BoundField DataField="N°" HeaderText="N°" />
+                                                                                            <asp:BoundField DataField="NOMBRE" HeaderText="NOMBRE" />
+                                                                                            <asp:TemplateField HeaderText="RESULTADO" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="RESULTADO" runat="server" TextMode="MultiLine" ></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="ACCIONES" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="ACCIONES" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="OBSERVACIONES" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="OBSERVACIONES" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>                                                                                            
                                                                                         </Columns>
                                                                                     </asp:GridView>
+                                                                                </div>
+                                                                                  <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <asp:LinkButton ID="LinkButton7" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_Categorias_Click" Text="Categorias" >
+                                                                                            <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Guardar Categorias
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
