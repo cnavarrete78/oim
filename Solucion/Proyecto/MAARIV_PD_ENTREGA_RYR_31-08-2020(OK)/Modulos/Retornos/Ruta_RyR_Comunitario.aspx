@@ -4019,6 +4019,7 @@
                                                         <div role="tabpanel" class="tab-pane active" id="plan_traslado" runat="server">
                                                             <asp:UpdatePanel runat="server" ID="Up_plan_traslado" UpdateMode="Conditional">
                                                                 <ContentTemplate>
+                                                                    <%--PANEL INICIAL DE DATOS DEL TRASLASO--%>
                                                                     <asp:Panel ID="PanelPT" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
                                                                             <div class="panel-heading">
@@ -4144,6 +4145,50 @@
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
+                                                                    <%--PERSONAS QUE NO SE VAN A TRASLADAR--%>
+                                                                    <asp:Panel ID="Panel2" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Personas que NO se van a trasladar  
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-4">
+                                                                                        <label class="label1 col-sm-">Documento de identidad:</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-4">
+                                                                                        <asp:TextBox ID="txDocumento" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator34" runat="server"
+                                                                                                ControlToValidate="txCorregimiento_Salida" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="buscarDocumento">* Campo obligatorio para la búsqueda</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="col-md-4">
+                                                                                        <asp:LinkButton ID="LinkButton9" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_buscar_persona_Click" Text="Buscar" ValidationGroup="buscarDocumento">
+                                                                                            <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Buscar
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_noTrasladar"
+                                                                                        runat="server" AutoGenerateColumns="true " OnRowCommand="gv_noTrasladar_RowCommand" OnRowDataBound="gv_noTrasladar_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                        <Columns>
+                                                                                            <asp:TemplateField HeaderText="Acciones">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                                                    </asp:LinkButton>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="80px" />
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
                                                                     <%--ENTIDADES QUE ACOMPAÑAN EL TRASLADO--%>
                                                                     <asp:Panel ID="Panel3" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
@@ -4176,9 +4221,11 @@
                                                                                         <Columns>
                                                                                             <asp:TemplateField HeaderText="Acciones">
                                                                                                 <ItemTemplate>
-                                                                                                    <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
+                                                                                                    <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                        <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
                                                                                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                                                                                    </asp:LinkButton>
+                                                                                                        </asp:LinkButton>
+                                                                                                    </div>
                                                                                                 </ItemTemplate>
                                                                                                 <ItemStyle HorizontalAlign="Center" Width="80px" />
                                                                                             </asp:TemplateField>
@@ -4188,7 +4235,6 @@
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
-
                                                                     <%--CATEGORIAS--%>
                                                                     <asp:Panel ID="Panel22" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
@@ -4205,7 +4251,7 @@
                                                                                             <asp:BoundField DataField="NOMBRE" HeaderText="NOMBRE" />
                                                                                             <asp:TemplateField HeaderText="RESULTADO" Visible="true">
                                                                                                 <ItemTemplate>
-                                                                                                    <asp:TextBox ID="RESULTADO" runat="server" TextMode="MultiLine" ></asp:TextBox>
+                                                                                                    <asp:TextBox ID="RESULTADO" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                             <asp:TemplateField HeaderText="ACCIONES" Visible="true">
@@ -4218,16 +4264,113 @@
                                                                                                 <ItemTemplate>
                                                                                                     <asp:TextBox ID="OBSERVACIONES" runat="server" TextMode="MultiLine"></asp:TextBox>
                                                                                                 </ItemTemplate>
-                                                                                            </asp:TemplateField>                                                                                            
+                                                                                            </asp:TemplateField>
                                                                                         </Columns>
                                                                                     </asp:GridView>
                                                                                 </div>
-                                                                                  <div class="row">
+                                                                                <div class="row">
                                                                                     <div class="col-md-12">
-                                                                                        <asp:LinkButton ID="LinkButton7" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_Categorias_Click" Text="Categorias" >
+                                                                                        <asp:LinkButton ID="LinkButton7" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_Categorias_Click" Text="Categorias">
                                                                                             <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Guardar Categorias
                                                                                         </asp:LinkButton>
                                                                                     </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+                                                                    <%--BALANCE DEL PROCESO DEL TRASLADO--%>
+                                                                    <asp:Panel ID="Panel5" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Balance Del Proceso Del Traslado Y Llegada De Las Personas Al Lugar De Destino
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-12">Actividad</label>
+                                                                                        <asp:TextBox ID="txActividad" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator38" runat="server"
+                                                                                                ControlToValidate="txActividad" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarActividad">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-12">Responsable</label>
+                                                                                        <asp:TextBox ID="txResponsable" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator37" runat="server"
+                                                                                                ControlToValidate="txResponsable" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarActividad">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-12">Cumplido</label>
+                                                                                        <asp:DropDownList ID="LD_Cumplido" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator40" runat="server"
+                                                                                                ControlToValidate="LD_Cumplido" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarActividad">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-12">Observaciones</label>
+                                                                                        <asp:TextBox ID="txObservaciones" runat="server" CssClass="form-control" ForeColor="Black" TextMode="MultiLine"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator41" runat="server"
+                                                                                                ControlToValidate="txObservaciones" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarActividad">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <%-- <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-">Evidencia:</label>                                                                                    
+                                                                                        <asp:DropDownList ID="LD_evidencia" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator36" runat="server"
+                                                                                            ControlToValidate="LD_evidencia" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="Seleccione el tipo de evidencia" InitialValue="0"
+                                                                                            ValidationGroup="agregarActividad"></asp:RequiredFieldValidator>
+                                                                                    </div>                                                                                   
+                                                                                </div>--%>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <asp:LinkButton ID="LinkButton10" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_agregar_Actividad_Click" Text="Agregar Actividad" ValidationGroup="agregarActividad">
+                                                                                            <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar Actividad
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_balancale_traslado"
+                                                                                        runat="server" AutoGenerateColumns="true " OnRowCommand="gv_balancale_traslado_RowCommand" OnRowDataBound="gv_balancale_traslado_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                        <Columns>
+                                                                                            <asp:TemplateField HeaderText="Acciones">
+                                                                                                <ItemTemplate>
+                                                                                                    <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                        <asp:LinkButton ID="btn_eliminar_balance" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:LinkButton ID="btn_actualizar_balance" runat="server" CssClass="btn btn-default btn-sm" ToolTip="EDITAR" CommandName="Editar" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:LinkButton ID="btn_evidencias_balance" runat="server" CssClass="btn btn-default btn-sm" ToolTip="EVIDENCIA" CommandName="Evidencia" Visible="true">
+                                                                                                        <span class="far fa-file" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+                                                                                                    </div>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="120px" />
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
