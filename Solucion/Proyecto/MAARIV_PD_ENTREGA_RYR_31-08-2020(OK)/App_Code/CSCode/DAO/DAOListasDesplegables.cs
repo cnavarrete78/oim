@@ -4931,6 +4931,122 @@ namespace com.GACV.lgb.persistencia.dao
             return true;
         }
 
+        public bool LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string profesional, int idEntidad, string telefono, string correo)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_PLAN_ACCION_TRASLADO_PROFESIONALES", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParam1 = new SqlParameter("@ID_COMUNIDAD", idComuidad);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+
+                SqlParameter oParam2 = new SqlParameter("@PROFESIONAL", profesional);
+                oParam2.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam2);
+
+                SqlParameter oParam3 = new SqlParameter("@ID_ENTIDAD", idEntidad);
+                oParam3.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam3);
+
+                SqlParameter oParam4 = new SqlParameter("@TELEFONO", telefono);
+                oParam4.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam4);
+
+                SqlParameter oParam5 = new SqlParameter("@CORREO_ELECTRONICO", correo);
+                oParam5.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam5);
+
+                SqlParameter oParam6 = new SqlParameter("@ID", id);
+                oParam6.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam6);
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public bool LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria(int id, int idPlan, int idComunidad, DateTime fechaRegistro, int idMunicipio, string direccion,  int idDt, int idEntidad, string profesional , string correo )
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_PLAN_ACCION_TRASLADO_ALISTAMIENTO", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParam1 = new SqlParameter("@ID_COMUNIDAD", idComunidad);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+
+                SqlParameter oParam2 = new SqlParameter("@FECHA_REGISTRO", fechaRegistro);
+                oParam2.SqlDbType = SqlDbType.Date;
+                Command.Parameters.Add(oParam2);
+
+                SqlParameter oParam3 = new SqlParameter("@ID_DIRECCION_TERRITORIAL", idDt);
+                oParam3.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam3);
+
+                SqlParameter oParam4 = new SqlParameter("@ID_MUNICIPIO", idMunicipio);
+                oParam4.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam4);
+
+                SqlParameter oParam5 = new SqlParameter("@DIRECCION", direccion);
+                oParam5.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam5);
+
+                SqlParameter oParam6 = new SqlParameter("@ID", id);
+                oParam6.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam6);
+
+                SqlParameter oParam7 = new SqlParameter("@ID_ENTIDAD", idEntidad);
+                oParam7.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam7);
+
+                SqlParameter oParam8 = new SqlParameter("@PROFESIONAL_REGISTRO", profesional);
+                oParam8.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam8);
+
+                SqlParameter oParam9 = new SqlParameter("@CORREO_ELECTRONICO", correo);
+                oParam9.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam9);
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
         public DataSet LD_Consultar_plan_acción_traslado_Ruta_Comunitaria(int idPlan)
         {
             DataSet ds = new DataSet();
@@ -5052,6 +5168,64 @@ namespace com.GACV.lgb.persistencia.dao
                 con.Open();
 
                 SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_PLAN_ACCION_TRASLADO_BALANCE_TRASLADO", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
+        public DataSet LD_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(int idPlan)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_PLAN_ACCION_TRASLADO_PROFESIONALES", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
+        public DataSet LD_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria(int idPlan)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_PLAN_ACCION_TRASLADO_ALISTAMIENTO", con);
                 Command.CommandType = CommandType.StoredProcedure;
                 Command.Connection = con;
 

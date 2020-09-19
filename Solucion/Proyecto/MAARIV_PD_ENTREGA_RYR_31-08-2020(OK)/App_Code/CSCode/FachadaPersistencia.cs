@@ -1800,15 +1800,24 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Insertar_plan_acción_traslado_entidad_ruta_comunitaria(idPlan, idEntidad);
         }
-        public bool LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string actividad, string responsable, bool cumplida, string observaciones)
-        {
-            return L_D.LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(id, idPlan,  idComuidad,  actividad,  responsable,  cumplida,  observaciones);
-        }
         public bool LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(int idCategoria, int idPlan, int idComuidad, string resultado, string acciones, string observaciones)
         {
             return L_D.LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(idCategoria, idPlan,  idComuidad,  resultado,  acciones,  observaciones);
         }
-        
+        public bool LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string actividad, string responsable, bool cumplida, string observaciones)
+        {
+            return L_D.LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(id, idPlan, idComuidad, actividad, responsable, cumplida, observaciones);
+        }
+        public bool LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string profesional, int idEntidad, string telefono, string correo)
+        {
+            return L_D.LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(id, idPlan, idComuidad, profesional, idEntidad, telefono, correo);
+        }
+
+        public bool LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria(int id, int idPlan, int idComunidad, DateTime fechaRegistro, int idMunicipio, string direccion, int idDt, int idEntidad, string profesional, string correo)
+        {
+            return L_D.LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria( id,  idPlan, idComunidad,  fechaRegistro,  idMunicipio,  direccion,  idDt,  idEntidad,  profesional,  correo);
+        }
+
         public DataSet Get_Entidades_Plan_Accion_Traslado_Ruta_Comunitaria(int idPlan)
         {
             return L_D.LD_Consultar_plan_acción_traslado_Ruta_Comunitaria(idPlan);
@@ -1829,6 +1838,15 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_plan_acción_traslado_balance_traslado_ruta_comunitaria(idPlan);
         }
+        public DataSet Get_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(int idPlan)
+        {
+            return L_D.LD_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(idPlan);
+        }
+        public DataSet Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria(int idPlan)
+        {
+            return L_D.LD_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria(idPlan);
+        }
+
         #endregion
 
     }
