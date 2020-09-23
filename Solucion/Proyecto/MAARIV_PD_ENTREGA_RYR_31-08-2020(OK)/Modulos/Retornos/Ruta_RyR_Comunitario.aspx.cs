@@ -4353,6 +4353,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         Get_plan_acción_traslado_balance_traslado_ruta_comunitaria();
                         Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria();
                         Get_plan_acción_traslado_profesionales_traslado_ruta_comunitaria();
+                        Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria();
                         Get_Tipo_Evidencia();
                         break;
                     case 304:// si es Fase 8 - cierre / balance del acompañamiento -desarrollo que muestra los desarrollos de Liliana rodriguez
@@ -10982,7 +10983,39 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     protected void gv_profesionales_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
     }
+    protected void gv_inventario_traslado_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        DataSet ds = new DataSet();
+        try
+        {
+            if (e.CommandName == "AgregarEnseres")
+            {
+                GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                ViewState["idHogar"] = Convert.ToInt32(gv_inventario_traslado.DataKeys[gvRow.RowIndex].Values[0].ToString());
+                string representante = ((Label)gvRow.FindControl("representante")).Text;
+                lblReprentante.Text = representante;
+                Get_plan_acción_traslado_Inventario_hogar_enseres_ruta_comunitaria();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEnseres", "$('#myModalEnseres').modal();", true);
+                UpdatePanelInventarioEnseres.Update();
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void gv_inventario_traslado_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            TextBox txtResultado = (TextBox)e.Row.FindControl("RESULTADO");
+            DataRow drGV = ((DataRowView)e.Row.DataItem).Row;
 
+        }
+    }
+    protected void gv_inventario_traslado_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+    }
     public void GetPlanTraslado()
     {
         DataSet dsPT = new DataSet();
@@ -11088,6 +11121,18 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_entidades.DataBind();
         }
     }
+    public void Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria()
+    {
+        DataSet dsPT = new DataSet();
+        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        dsPT = FachadaPersistencia.getInstancia().Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria(idComunidad);
+        if (!dsPT.Tables[0].Rows.Count.Equals(0))
+        {
+            gv_inventario_traslado.Visible = true;
+            gv_inventario_traslado.DataSource = dsPT;
+            gv_inventario_traslado.DataBind();
+        }
+    }
     public void Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria()
     {
         DataSet dsPT = new DataSet();
@@ -11109,6 +11154,51 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         }
     }
+    public void Get_plan_acción_traslado_Inventario_hogar_enseres_ruta_comunitaria()
+    {
+        DataSet dsPT = new DataSet();
+
+        int idHogar = Convert.ToInt32(ViewState["idHogar"]);
+        dsPT = FachadaPersistencia.getInstancia().Get_plan_acción_traslado_Inventario_hogar_enseres_ruta_comunitaria(idHogar);
+        if (!dsPT.Tables[0].Rows.Count.Equals(0))
+        {
+            txEstufas.Text = dsPT.Tables[0].Rows[0]["ESTUFAS"].ToString();
+            txNeveras.Text = dsPT.Tables[0].Rows[0]["NEVERAS"].ToString();
+            txMenaje.Text = dsPT.Tables[0].Rows[0]["UTENCILIOS_COCINA"].ToString();
+            txCamas.Text = dsPT.Tables[0].Rows[0]["CAMAS"].ToString();
+            txColchones.Text = dsPT.Tables[0].Rows[0]["COLCHONES"].ToString();
+            txCobijas.Text = dsPT.Tables[0].Rows[0]["COBIJAS"].ToString();
+            txSofas.Text = dsPT.Tables[0].Rows[0]["SOFAS"].ToString();
+            txSillas.Text = dsPT.Tables[0].Rows[0]["SILLAS"].ToString();
+            txMesas.Text = dsPT.Tables[0].Rows[0]["MESAS"].ToString();
+            txEquiposSonido.Text = dsPT.Tables[0].Rows[0]["EQUIPOS_DE_SONIDO"].ToString();
+            txJuguetes.Text = dsPT.Tables[0].Rows[0]["JUGUTES_ROPA"].ToString();
+            txBicicletas.Text = dsPT.Tables[0].Rows[0]["BICICLETAS"].ToString();
+            txMotos.Text = dsPT.Tables[0].Rows[0]["MOTOS"].ToString();
+            txTulas.Text = dsPT.Tables[0].Rows[0]["TULAS"].ToString();
+            txPeso.Text = dsPT.Tables[0].Rows[0]["PESO"].ToString();
+        }
+        else
+        {
+            txEstufas.Text = "";
+            txNeveras.Text = "";
+            txMenaje.Text = "";
+            txCamas.Text = "";
+            txColchones.Text = "";
+            txCobijas.Text = "";
+            txSofas.Text = "";
+            txSillas.Text = "";
+            txMesas.Text = "";
+            txEquiposSonido.Text = "";
+            txJuguetes.Text = "";
+            txBicicletas.Text = "";
+            txMotos.Text = "";
+            txTulas.Text = "";
+            txPeso.Text = "";
+
+        }
+        
+    }
     protected void btn_guardar_plan_Accion_traslado_Click(object sender, EventArgs e)
     {
         DataSet ds = new DataSet();
@@ -11120,7 +11210,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             int totalPersonas = Convert.ToInt32(txTotalPersonas.Text);
             int totalRUV = Convert.ToInt32(txTotalRUV.Text);
             int id_MunSalida = Convert.ToInt32(LD_Municipio_Salida.SelectedValue);
-            int idMunLlegada = Convert.ToInt32(LD_Municipio_Llegada.SelectedValue);            
+            int idMunLlegada = Convert.ToInt32(LD_Municipio_Llegada.SelectedValue);
             int idEntornoSalida = Convert.ToInt32(LD_Entorno_Salida.SelectedValue);
             int idEntornoLlegada = Convert.ToInt32(LD_Entorno_Llegada.SelectedValue);
             string corregimmientoSalida = txCorregimiento_Salida.Text;
@@ -11240,7 +11330,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             Mensajes("Error al guardar información del alistamiento logistico." + ex, 0);
         }
-    }    
+    }
     protected void btn_agregar_profesional_encargado_Click(object sender, EventArgs e)
     {
         DataSet ds = new DataSet();
@@ -11261,6 +11351,40 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes("Error al guardar información del profesional encargado." + ex, 0);
         }
     }
+    protected void btn_GuardarEnseres(object sender, EventArgs e)
+    {
+        try
+        {
+            //int idPlan = Convert.ToInt32(idPlanAccionTraslado.Value);
+            int idPlan = 1;
+            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            int idHogar = Convert.ToInt32(ViewState["idHogar"]);
+            int estufas = Convert.ToInt32(txEstufas.Text);
+            int neveras = Convert.ToInt32(txNeveras.Text);
+            int utenciliosCocina = Convert.ToInt32(txMenaje.Text);
+            int camas = Convert.ToInt32(txCamas.Text);
+            int colchones = Convert.ToInt32(txColchones.Text);
+            int cobijas = Convert.ToInt32(txCobijas.Text);
+            int sofas = Convert.ToInt32(txSofas.Text);
+            int sillas = Convert.ToInt32(txSillas.Text);
+            int mesas = Convert.ToInt32(txMesas.Text);
+            int equiposSonido = Convert.ToInt32(txEquiposSonido.Text);
+            int juguetes = Convert.ToInt32(txJuguetes.Text);
+            int bicicletas = Convert.ToInt32(txBicicletas.Text);
+            int motos = Convert.ToInt32(txMotos.Text);                        
+            int tulas = Convert.ToInt32(txTulas.Text);
+            int peso = Convert.ToInt32(txMotos.Text);
+            bool rotulacion = true;
+            bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria(0, idPlan, idComunidad, idHogar, estufas, neveras, utenciliosCocina, camas, colchones, cobijas, sofas, sillas, mesas, equiposSonido, juguetes, bicicletas, motos, tulas, peso, rotulacion);
+            Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria();
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
     protected void LlenarMunicipiosPlanSalida_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (LD_Departamento_Salida.SelectedValue != "")
@@ -11372,7 +11496,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
     public void LlenarComboMunicipioLlegada(int idDepartamento)
     {
-        DataSet dsMunicipios = new DataSet();        
+        DataSet dsMunicipios = new DataSet();
         dsMunicipios = FachadaPersistencia.getInstancia().L_D_Municipio(idDepartamento, 0, 0);
         LD_Municipio_Llegada.Items.Clear();
         if (!dsMunicipios.Tables[0].Rows.Count.Equals(0))
@@ -11420,7 +11544,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             LD_Entidad.DataBind();
             LD_Entidad.Items.Insert(0, new ListItem("Seleccione la entidad", "0"));
         }
-        LD_EntidadRegistra.Items.Clear();        
+        LD_EntidadRegistra.Items.Clear();
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
         {
             LD_EntidadRegistra.DataValueField = "ID_ENTIDAD";
@@ -11430,7 +11554,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             LD_EntidadRegistra.Items.Insert(0, new ListItem("Seleccione la entidad", "0"));
         }
 
-        LD_EntidadProfesionalRegistra.Items.Clear();        
+        LD_EntidadProfesionalRegistra.Items.Clear();
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
         {
             LD_EntidadProfesionalRegistra.DataValueField = "ID_ENTIDAD";

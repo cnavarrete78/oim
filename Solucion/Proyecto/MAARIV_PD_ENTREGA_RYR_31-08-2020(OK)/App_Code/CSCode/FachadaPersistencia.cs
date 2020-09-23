@@ -1818,6 +1818,11 @@ namespace com.GACV.lgb.persistencia.fachada
             return L_D.LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria( id,  idPlan, idComunidad,  fechaRegistro,  idMunicipio,  direccion,  idDt,  idEntidad,  profesional,  correo);
         }
 
+        public bool LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria(int id, int idPlan, int idComunidad, int idHogar, int estufas, int neveras, int utenciliosCocina, int camas, int colchones,int cobijas, int sofas, int sillas, int mesas, int equiposSonido, int juguetes, int bicicletas, int motos, int tulas, int peso, bool rotulacion)
+        {
+            return L_D.LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria( id,  idPlan,  idComunidad,  idHogar,  estufas,  neveras,  utenciliosCocina,  camas,  colchones, cobijas,  sofas,  sillas,  mesas,  equiposSonido,  juguetes,  bicicletas,  motos,  tulas,  peso,  rotulacion);
+        }
+
         public DataSet Get_Entidades_Plan_Accion_Traslado_Ruta_Comunitaria(int idPlan)
         {
             return L_D.LD_Consultar_plan_acción_traslado_Ruta_Comunitaria(idPlan);
@@ -1845,6 +1850,16 @@ namespace com.GACV.lgb.persistencia.fachada
         public DataSet Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria(int idPlan)
         {
             return L_D.LD_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria(idPlan);
+        }
+
+        public DataSet Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria(int idComunidad)
+        {
+            return L_D.LD_plan_acción_traslado_Inventario_hogar_ruta_comunitaria(idComunidad);
+        }
+
+        public DataSet Get_plan_acción_traslado_Inventario_hogar_enseres_ruta_comunitaria(int idHogar)
+        {
+            return L_D.LD_plan_acción_traslado_Inventario_hogar_enseres_ruta_comunitaria(idHogar);
         }
 
         #endregion
