@@ -4138,7 +4138,7 @@
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <asp:LinkButton ID="guardarPlanTraslado" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_plan_Accion_traslado_Click" Text="Guardar Plan de Acción de Traslado" ValidationGroup="guardarPlanTraslado">
-                                                                                            <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Guardar Plan de Acción de Traslado
+                                                                                            Guardar Plan de Acción de Traslado
                                                                                         </asp:LinkButton>
                                                                                     </div>
                                                                                 </div>
@@ -4166,7 +4166,7 @@
                                                                                     </div>
                                                                                     <div class="col-md-4">
                                                                                         <asp:LinkButton ID="LinkButton9" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_buscar_persona_Click" Text="Buscar" ValidationGroup="buscarDocumento">
-                                                                                            <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Buscar
+                                                                                            Buscar
                                                                                         </asp:LinkButton>
                                                                                     </div>
                                                                                 </div>
@@ -4582,7 +4582,7 @@
                                                                                                 </ItemTemplate>
                                                                                                 <ItemStyle HorizontalAlign="Center" />
                                                                                             </asp:TemplateField>
-<%--                                                                                            <asp:BoundField DataField="TULAS" HeaderText="TULAS" />
+                                                                                            <%--                                                                                            <asp:BoundField DataField="TULAS" HeaderText="TULAS" />
                                                                                             <asp:BoundField DataField="PESO" HeaderText="PESO" />                                                                                         
                                                                                             <asp:TemplateField HeaderText="ROTULACION">
                                                                                                 <ItemTemplate>
@@ -4591,7 +4591,7 @@
                                                                                                 <ItemStyle HorizontalAlign="Center" />
                                                                                             </asp:TemplateField>--%>
 
-                                                                                         
+
                                                                                             <asp:TemplateField HeaderText="id_nombre_actividad" Visible="false">
                                                                                                 <ItemTemplate>
                                                                                                     <asp:Label ID="representante" runat="server" Text='<%# Eval("REPRESENTANTE_HOGAR") %>'> </asp:Label>
@@ -4764,7 +4764,7 @@
                                                                     </div>
                                                                 </asp:Panel>
 
-
+                                                                <%--MEDIOS DE TRANSPORTE--%>
                                                                 <asp:Panel ID="Panel29" runat="server" CssClass="container-fluid">
                                                                     <div class="panel panel-danger">
                                                                         <div class="panel-heading">
@@ -4811,6 +4811,18 @@
                                                                         <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender20" runat="server" TargetControlID="txPeso"
                                                                             ValidChars="0123456789" Enabled="True" />
                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator91" runat="server" ControlToValidate="txPeso" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <label class="label1 col-sm-12">Rotulación Tulas y Enseres</label>
+                                                                        <asp:DropDownList ID="LD_Rotulacion" runat="server" CssClass="form-control">
+                                                                        </asp:DropDownList>
+                                                                        <span style="font-weight: normal">
+                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator92" runat="server"
+                                                                                ControlToValidate="LD_Rotulacion" CssClass="validador" Display="Dynamic"
+                                                                                ValidationGroup="guardarEnseres">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                             </asp:Panel>
