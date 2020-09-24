@@ -4831,7 +4831,7 @@ namespace com.GACV.lgb.persistencia.dao
         }
 
 
-        public bool LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(int idCategoria, int idPlan, int idComuidad, string resultado,string acciones,string observaciones)
+        public bool LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(int idCategoria, int idPlan, int idComuidad, string resultado, string acciones, string observaciones)
         {
             try
             {
@@ -4879,7 +4879,7 @@ namespace com.GACV.lgb.persistencia.dao
             return true;
         }
 
-        public bool LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(int id , int idPlan, int idComuidad, string actividad, string responsable, bool cumplida,  string observaciones)
+        public bool LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string actividad, string responsable, bool cumplida, string observaciones)
         {
             try
             {
@@ -4919,6 +4919,227 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam6 = new SqlParameter("@ID", id);
                 oParam6.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam6);
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public bool LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string profesional, int idEntidad, string telefono, string correo)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_PLAN_ACCION_TRASLADO_PROFESIONALES", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParam1 = new SqlParameter("@ID_COMUNIDAD", idComuidad);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+
+                SqlParameter oParam2 = new SqlParameter("@PROFESIONAL", profesional);
+                oParam2.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam2);
+
+                SqlParameter oParam3 = new SqlParameter("@ID_ENTIDAD", idEntidad);
+                oParam3.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam3);
+
+                SqlParameter oParam4 = new SqlParameter("@TELEFONO", telefono);
+                oParam4.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam4);
+
+                SqlParameter oParam5 = new SqlParameter("@CORREO_ELECTRONICO", correo);
+                oParam5.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam5);
+
+                SqlParameter oParam6 = new SqlParameter("@ID", id);
+                oParam6.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam6);
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public bool LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria(int id, int idPlan, int idComunidad, DateTime fechaRegistro, int idMunicipio, string direccion, int idDt, int idEntidad, string profesional, string correo)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_PLAN_ACCION_TRASLADO_ALISTAMIENTO", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParam1 = new SqlParameter("@ID_COMUNIDAD", idComunidad);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+
+                SqlParameter oParam2 = new SqlParameter("@FECHA_REGISTRO", fechaRegistro);
+                oParam2.SqlDbType = SqlDbType.Date;
+                Command.Parameters.Add(oParam2);
+
+                SqlParameter oParam3 = new SqlParameter("@ID_DIRECCION_TERRITORIAL", idDt);
+                oParam3.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam3);
+
+                SqlParameter oParam4 = new SqlParameter("@ID_MUNICIPIO", idMunicipio);
+                oParam4.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam4);
+
+                SqlParameter oParam5 = new SqlParameter("@DIRECCION", direccion);
+                oParam5.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam5);
+
+                SqlParameter oParam6 = new SqlParameter("@ID", id);
+                oParam6.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam6);
+
+                SqlParameter oParam7 = new SqlParameter("@ID_ENTIDAD", idEntidad);
+                oParam7.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam7);
+
+                SqlParameter oParam8 = new SqlParameter("@PROFESIONAL_REGISTRO", profesional);
+                oParam8.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam8);
+
+                SqlParameter oParam9 = new SqlParameter("@CORREO_ELECTRONICO", correo);
+                oParam9.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam9);
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public bool LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria(int id, int idPlan, int idComunidad,int idHogar, int estufas, int neveras, int utenciliosCocina,int camas, int colchones,int cobijas,  int sofas, int sillas, int mesas, int equiposSonido, int juguetes, int bicicletas, int motos, int tulas, int peso,  bool rotulacion)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_PLAN_ACCION_TRASLADO_INVENTARIO_HOGAR", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO",idPlan );
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParam1 = new SqlParameter("@ID_COMUNIDAD", idComunidad);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+
+                SqlParameter oParam2 = new SqlParameter("@ID_HOGAR", idHogar);
+                oParam2.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam2);
+
+                SqlParameter oParam3 = new SqlParameter("@ESTUFAS", estufas);
+                oParam3.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam3);
+
+                SqlParameter oParam4 = new SqlParameter("@NEVERAS", neveras);
+                oParam4.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam4);
+
+                SqlParameter oParam5 = new SqlParameter("@UTENCILIOS_COCINA", utenciliosCocina);
+                oParam5.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam5);
+
+                SqlParameter oParam6 = new SqlParameter("@ID", id);
+                oParam6.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam6);
+
+                SqlParameter oParam7 = new SqlParameter("@CAMAS", camas);
+                oParam7.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam7);
+
+                SqlParameter oParam8 = new SqlParameter("@COLCHONES", colchones);
+                oParam8.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam8);
+
+                SqlParameter oParam9 = new SqlParameter("@SOFAS",sofas );
+                oParam9.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam9);
+
+                SqlParameter oParam10 = new SqlParameter("@SILLAS", sillas );
+                oParam10.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam10);
+
+                SqlParameter oParam11 = new SqlParameter("@MESAS", mesas);
+                oParam11.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam11);
+
+                SqlParameter oParam12 = new SqlParameter("@EQUIPOS_DE_SONIDO", equiposSonido);
+                oParam12.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam12);
+
+                SqlParameter oParam13 = new SqlParameter("@JUGUTES_ROPA",juguetes );
+                oParam13.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam13);
+
+                SqlParameter oParam14 = new SqlParameter("@BICICLETAS", bicicletas);
+                oParam14.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam14);
+
+                SqlParameter oParam15 = new SqlParameter("@MOTOS", motos);
+                oParam15.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam15);
+
+                SqlParameter oParam16 = new SqlParameter("@TULAS", tulas);
+                oParam16.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam16);
+
+                SqlParameter oParam17 = new SqlParameter("@PESO", peso );
+                oParam17.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam17);
+
+                SqlParameter oParam18 = new SqlParameter("@ROTULACION",rotulacion );
+                oParam18.SqlDbType = SqlDbType.Bit;
+                Command.Parameters.Add(oParam18);
+
+                SqlParameter oParam19 = new SqlParameter("@COBIJAS", cobijas);
+                oParam19.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam19);
+                
 
                 Command.ExecuteNonQuery();
                 con.Close();
@@ -5056,6 +5277,122 @@ namespace com.GACV.lgb.persistencia.dao
                 Command.Connection = con;
 
                 SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
+        public DataSet LD_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(int idPlan)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_PLAN_ACCION_TRASLADO_PROFESIONALES", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
+        public DataSet LD_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria(int idPlan)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_PLAN_ACCION_TRASLADO_ALISTAMIENTO", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
+        public DataSet LD_plan_acción_traslado_Inventario_hogar_ruta_comunitaria(int idComunidad)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_PLAN_ACCION_TRASLADO_INVENTARIO_HOGAR", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_COMUNIDAD", idComunidad);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
+        public DataSet LD_plan_acción_traslado_Inventario_hogar_enseres_ruta_comunitaria(int idHogar)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_PLAN_ACCION_TRASLADO_INVENTARIO_HOGAR_ENSERES", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_HOGAR", idHogar);
                 oParam.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam);
 

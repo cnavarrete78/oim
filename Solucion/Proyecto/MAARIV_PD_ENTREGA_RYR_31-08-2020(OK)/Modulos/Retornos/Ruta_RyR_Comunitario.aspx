@@ -184,80 +184,80 @@
             /* *******************************************
              * codigo de liliana rodriguez             
              *  *****************************************/
-            $('[id$="LD_Departamento_Salida"]').change(function () {
-                var id_territorial = 0;
-                var id_departamento = $('[id$="LD_Departamento_Salida"]').val();
-                if (id_departamento != '0') {
-                    L_D_MunicipiosSalida(id_territorial, id_departamento);
-                }
-                else {
-                    $('[id$="LD_Departamento_Salida"]').empty();
-                    $('[id$="LD_Municipio_Salida"]').empty();
-                }
-            });
+            //$('[id$="LD_Departamento_Salida"]').change(function () {
+            //    var id_territorial = 0;
+            //    var id_departamento = $('[id$="LD_Departamento_Salida"]').val();
+            //    if (id_departamento != '0') {
+            //        L_D_MunicipiosSalida(id_territorial, id_departamento);
+            //    }
+            //    else {
+            //        $('[id$="LD_Departamento_Salida"]').empty();
+            //        $('[id$="LD_Municipio_Salida"]').empty();
+            //    }
+            //});
 
-            $('[id$="LD_Departamento_Llegada"]').change(function () {
-                var id_territorial = 0;
-                var id_departamento = $('[id$="LD_Departamento_Llegada"]').val();
-                if (id_departamento != '0') {
-                    L_D_MunicipiosLlegada(id_territorial, id_departamento);
-                }
-                else {
-                    $('[id$="LD_Departamento_Llegada"]').empty();
-                    $('[id$="LD_Municipio_Llegada"]').empty();
-                }
-            });
-            function L_D_MunicipiosSalida(id_territorial, id_departamento) {
-                var dropdownlist = document.getElementById('ContentPlaceHolder1_LD_Municipio_Salida');
-                $.ajax({
-                    type: "GET",
-                    url: "/modulos/javascriptComun.aspx/L_D_Municipios?id_territorial=" + id_territorial + "&id_departamento=" + id_departamento,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (response) {
-                        var obj = JSON.parse(response.d.resultado);
-                        $('#ContentPlaceHolder1_LD_Municipio_Salida').empty();
-                        var option = document.createElement("option");
-                        option.text = "seleccione Municipio"; option.value = "0"; dropdownlist.add(option);
-                        for (var i = 0; i < obj.length; i++) {
-                            var option = document.createElement("option");
-                            option.text = obj[i].municipio;
-                            option.value = obj[i].id_municipio;
-                            dropdownlist.add(option);
-                        }
-                    },
-                    error: function (xhr) {
-                        console.log(xhr);
-                        alert("Error", "No se cargaron los municipios");
-                    }
-                });
-            }
+            //$('[id$="LD_Departamento_Llegada"]').change(function () {
+            //    var id_territorial = 0;
+            //    var id_departamento = $('[id$="LD_Departamento_Llegada"]').val();
+            //    if (id_departamento != '0') {
+            //        L_D_MunicipiosLlegada(id_territorial, id_departamento);
+            //    }
+            //    else {
+            //        $('[id$="LD_Departamento_Llegada"]').empty();
+            //        $('[id$="LD_Municipio_Llegada"]').empty();
+            //    }
+            //});
+            //function L_D_MunicipiosSalida(id_territorial, id_departamento) {
+            //    var dropdownlist = document.getElementById('ContentPlaceHolder1_LD_Municipio_Salida');
+            //    $.ajax({
+            //        type: "GET",
+            //        url: "/modulos/javascriptComun.aspx/L_D_Municipios?id_territorial=" + id_territorial + "&id_departamento=" + id_departamento,
+            //        contentType: "application/json; charset=utf-8",
+            //        dataType: "json",
+            //        success: function (response) {
+            //            var obj = JSON.parse(response.d.resultado);
+            //            $('#ContentPlaceHolder1_LD_Municipio_Salida').empty();
+            //            var option = document.createElement("option");
+            //            option.text = "seleccione Municipio"; option.value = "0"; dropdownlist.add(option);
+            //            for (var i = 0; i < obj.length; i++) {
+            //                var option = document.createElement("option");
+            //                option.text = obj[i].municipio;
+            //                option.value = obj[i].id_municipio;
+            //                dropdownlist.add(option);
+            //            }
+            //        },
+            //        error: function (xhr) {
+            //            console.log(xhr);
+            //            alert("Error", "No se cargaron los municipios");
+            //        }
+            //    });
+            //}
 
-            function L_D_MunicipiosLlegada(id_territorial, id_departamento) {
-                var dropdownlist = document.getElementById('ContentPlaceHolder1_LD_Municipio_Llegada');
-                $.ajax({
-                    type: "GET",
-                    url: "/modulos/javascriptComun.aspx/L_D_Municipios?id_territorial=" + id_territorial + "&id_departamento=" + id_departamento,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (response) {
-                        var obj = JSON.parse(response.d.resultado);
-                        $('#ContentPlaceHolder1_LD_Municipio_Llegada').empty();
-                        var option = document.createElement("option");
-                        option.text = "seleccione Municipio"; option.value = "0"; dropdownlist.add(option);
-                        for (var i = 0; i < obj.length; i++) {
-                            var option = document.createElement("option");
-                            option.text = obj[i].municipio;
-                            option.value = obj[i].id_municipio;
-                            dropdownlist.add(option);
-                        }
-                    },
-                    error: function (xhr) {
-                        console.log(xhr);
-                        alert("Error", "No se cargaron los municipios");
-                    }
-                });
-            }
+            //function L_D_MunicipiosLlegada(id_territorial, id_departamento) {
+            //    var dropdownlist = document.getElementById('ContentPlaceHolder1_LD_Municipio_Llegada');
+            //    $.ajax({
+            //        type: "GET",
+            //        url: "/modulos/javascriptComun.aspx/L_D_Municipios?id_territorial=" + id_territorial + "&id_departamento=" + id_departamento,
+            //        contentType: "application/json; charset=utf-8",
+            //        dataType: "json",
+            //        success: function (response) {
+            //            var obj = JSON.parse(response.d.resultado);
+            //            $('#ContentPlaceHolder1_LD_Municipio_Llegada').empty();
+            //            var option = document.createElement("option");
+            //            option.text = "seleccione Municipio"; option.value = "0"; dropdownlist.add(option);
+            //            for (var i = 0; i < obj.length; i++) {
+            //                var option = document.createElement("option");
+            //                option.text = obj[i].municipio;
+            //                option.value = obj[i].id_municipio;
+            //                dropdownlist.add(option);
+            //            }
+            //        },
+            //        error: function (xhr) {
+            //            console.log(xhr);
+            //            alert("Error", "No se cargaron los municipios");
+            //        }
+            //    });
+            //}
 
         }
 
@@ -4055,7 +4055,7 @@
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Departamento de salida</label>
-                                                                                        <asp:DropDownList ID="LD_Departamento_Salida" runat="server"
+                                                                                        <asp:DropDownList ID="LD_Departamento_Salida" runat="server" AutoPostBack="True" OnSelectedIndexChanged="LlenarMunicipiosPlanSalida_SelectedIndexChanged"
                                                                                             CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator18" runat="server"
@@ -4097,7 +4097,7 @@
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Departamento de llegada</label>
-                                                                                        <asp:DropDownList ID="LD_Departamento_Llegada" runat="server"
+                                                                                        <asp:DropDownList ID="LD_Departamento_Llegada" runat="server" AutoPostBack="True" OnSelectedIndexChanged="LlenarMunicipiosPlanLlegada_SelectedIndexChanged"
                                                                                             CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator21" runat="server"
@@ -4375,7 +4375,234 @@
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
+                                                                    <%--Alistamiento Logístico De Enseres De Las Personas Que Se Trasladarán--%>
+                                                                    <asp:Panel ID="Panel24" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Alistamiento Logístico De Enseres De Las Personas Que Se Trasladarán
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-12">FECHA Y LUGAR DEL REGISTRO DE ENSERES</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Fecha del Registro</label>
+                                                                                        <asp:TextBox ID="txtFechaRegistro" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator36" runat="server"
+                                                                                                ControlToValidate="txtFechaRegistro" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarRegistroAlistamiento">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Departamento</label>
+                                                                                        <asp:DropDownList ID="LD_DepartamentoAlistamiento" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="LlenarMunicipiosAlistamiento_SelectedIndexChanged">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator47" runat="server"
+                                                                                            ControlToValidate="LD_DepartamentoAlistamiento" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"
+                                                                                            ValidationGroup="agregarRegistroAlistamiento"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Municipio</label>
+                                                                                        <asp:DropDownList ID="LD_MunicipioAlistamiento" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator48" runat="server"
+                                                                                            ControlToValidate="LD_MunicipioAlistamiento" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"
+                                                                                            ValidationGroup="agregarRegistroAlistamiento"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Dirección:</label>
+                                                                                        <asp:TextBox ID="txtDireccionRegistro" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator49" runat="server"
+                                                                                                ControlToValidate="txtDireccionRegistro" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarRegistroAlistamiento">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-12">DATOS DE LA ENTIDAD QUE REALIZA EL REGISTRO</label>
+                                                                                    </div>
+                                                                                </div>
 
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Entidad que realiza el registro</label>
+                                                                                        <asp:DropDownList ID="LD_EntidadRegistra" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator50" runat="server"
+                                                                                                ControlToValidate="LD_EntidadRegistra" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarRegistroAlistamiento">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Dirección territorial</label>
+                                                                                        <asp:DropDownList ID="LD_DireccionTerritorialProfesionalEncargado" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator60" runat="server"
+                                                                                                ControlToValidate="LD_DireccionTerritorialProfesionalEncargado" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarRegistroAlistamiento">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Profesional encargado de realizar el registro</label>
+                                                                                        <asp:TextBox ID="txtProfesionalEncargado" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator46" runat="server"
+                                                                                                ControlToValidate="txtProfesionalEncargado" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarRegistroAlistamiento">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Correo electrónico</label>
+                                                                                        <asp:TextBox ID="txCorreoProfesionalEncargado" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <asp:LinkButton ID="LinkButton11" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_agregar_Datos_Alistamiento_Traslado_Click" Text="Guardar" ValidationGroup="agregarRegistroAlistamiento">
+                                                                                            <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Guardar
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+                                                                    <%--Datos de los profesionales que realizan el Alistamiento Logístico De Enseres De Las Personas Que Se Trasladarán--%>
+                                                                    <asp:Panel ID="Panel25" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Profesionales que realizan el Alistamiento Logístico
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Nombres y apellidos</label>
+                                                                                        <asp:TextBox ID="txNombresProfesionalRealiza" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator51" runat="server"
+                                                                                                ControlToValidate="txNombresProfesionalRealiza" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarProfesionalRegistroAlistamiento">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Entidad que realiza el registro</label>
+                                                                                        <asp:DropDownList ID="LD_EntidadProfesionalRegistra" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator77" runat="server"
+                                                                                                ControlToValidate="LD_EntidadProfesionalRegistra" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarProfesionalRegistroAlistamiento">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Teléfono:</label>
+                                                                                        <asp:TextBox ID="txTelefonoProfesionalRegistra" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator76" runat="server"
+                                                                                                ControlToValidate="txTelefonoProfesionalRegistra" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarProfesionalRegistroAlistamiento">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Correo electrónico</label>
+                                                                                        <asp:TextBox ID="txCorreoProfesionalRegistroAlistamiento" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <asp:LinkButton ID="LinkButton12" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_agregar_profesional_encargado_Click" Text="Agregar" ValidationGroup="agregarProfesionalRegistroAlistamiento">
+                                                                                            <span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_profesionales"
+                                                                                        runat="server" AutoGenerateColumns="true " OnRowCommand="gv_profesionales_RowCommand" OnRowDataBound="gv_profesionales_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                        <Columns>
+                                                                                            <asp:TemplateField HeaderText="Acciones">
+                                                                                                <ItemTemplate>
+                                                                                                    <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                        <asp:LinkButton ID="btn_eliminar_balance" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+                                                                                                        <asp:LinkButton ID="btn_actualizar_balance" runat="server" CssClass="btn btn-default btn-sm" ToolTip="EDITAR" CommandName="Editar" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+                                                                                                    </div>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="120px" />
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+                                                                    <%--INVENTARIO DE ELEMENTOS DE TRASTEO DEL HOGAR --%>
+                                                                    <asp:Panel ID="Panel26" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                INVENTARIO DE ELEMENTOS DE TRASTEO DEL HOGAR 
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_inventario_traslado" DataKeyNames="HOGAR"
+                                                                                        runat="server" AutoGenerateColumns="false " AllowPaging="true" OnRowCommand="gv_inventario_traslado_RowCommand" OnRowDataBound="gv_inventario_traslado_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                        <Columns>
+                                                                                            <asp:BoundField DataField="HOGAR" HeaderText="N Hogar" />
+                                                                                            <asp:BoundField DataField="REPRESENTANTE_HOGAR" HeaderText="REPRESENTANTE HOGAR" />
+                                                                                            <asp:BoundField DataField="DOCUMENTO" HeaderText="DOCUMENTO" />
+                                                                                            <asp:TemplateField HeaderText="ENSERES y MEDIOS DE TRANSPORTE">
+                                                                                                <ItemTemplate>
+                                                                                                    <div class="btn-group" role="group" aria-label="...">
+                                                                                                        <asp:LinkButton ID="AgregarEnseres" runat="server" Visible="true" CssClass="btn btn-default" CausesValidation="False" Style="color: cadetblue" CommandName="AgregarEnseres">
+                                                                                                                <span class="fas fa-edit" aria-hidden="true">
+                                                                                                        </asp:LinkButton>
+                                                                                                    </div>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" />
+                                                                                            </asp:TemplateField>
+<%--                                                                                            <asp:BoundField DataField="TULAS" HeaderText="TULAS" />
+                                                                                            <asp:BoundField DataField="PESO" HeaderText="PESO" />                                                                                         
+                                                                                            <asp:TemplateField HeaderText="ROTULACION">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:CheckBox ID="check_box" runat="server" Visible="true" OnClientClick="return false;" CssClass="left_check" AutoPostBack="false"  Checked="<%# Eval("ROTULACION") %>" />
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" />
+                                                                                            </asp:TemplateField>--%>
+
+                                                                                         
+                                                                                            <asp:TemplateField HeaderText="id_nombre_actividad" Visible="false">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="representante" runat="server" Text='<%# Eval("REPRESENTANTE_HOGAR") %>'> </asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
                                                                 </ContentTemplate>
                                                                 <Triggers>
                                                                     <asp:AsyncPostBackTrigger ControlID="guardar_dias" />
@@ -4394,6 +4621,219 @@
                             </asp:UpdatePanel>
                             <asp:HiddenField ID="TabName" runat="server" />
                         </div>
+
+                        <%--modales de inventario--%>
+                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalEnseres" aria-hidden="true">
+                            <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>
+                            <div class="modal-dialog modal-sm" role="document">
+
+                                <asp:UpdatePanel runat="server" ID="UpdatePanelInventarioEnseres" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <div class="modal-content">
+                                            <div class="">
+
+                                                <div class="panel panel-danger">
+
+                                                    <div class="panel-heading">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <asp:Label ID="lblReprentante" runat="server" Visible="true" CssClass="text-warning"></asp:Label>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <asp:Panel ID="DetalleEnseres" runat="server" Visible="true">
+                                                                <%--  ENSERES COCINA--%>
+                                                                <asp:Panel ID="Panel27" runat="server" CssClass="container-fluid">
+                                                                    <div class="panel panel-danger">
+                                                                        <div class="panel-heading">
+                                                                            ENSERES COCINA
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Estufas 
+                                                                <asp:TextBox ID="txEstufas" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender1" runat="server" TargetControlID="txEstufas"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator61" runat="server" ControlToValidate="txEstufas" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Neveras 
+                                                                <asp:TextBox ID="txNeveras" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender2" runat="server" TargetControlID="txNeveras"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator78" runat="server" ControlToValidate="txNeveras" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Menaje o utencilios de cocina (loza, ollas, etc.)
+                                                               <asp:TextBox ID="txMenaje" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender3" runat="server" TargetControlID="txMenaje"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator79" runat="server" ControlToValidate="txMenaje" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </asp:Panel>
+
+                                                                <%-- ENSERES HABITACION--%>
+                                                                <asp:Panel ID="Panel28" runat="server" CssClass="container-fluid">
+                                                                    <div class="panel panel-danger">
+                                                                        <div class="panel-heading">
+                                                                            ENSERES HABITACION
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Camas
+                                                               <asp:TextBox ID="txCamas" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender4" runat="server" TargetControlID="txCamas"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator80" runat="server" ControlToValidate="txCamas" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Colchones
+                                                               <asp:TextBox ID="txColchones" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender8" runat="server" TargetControlID="txColchones"
+                                                                                        ValidChars="0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzáéíóúÁÉÍÓÚ_-(),. " Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator81" runat="server" ControlToValidate="txColchones" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Cobijas
+                                                               <asp:TextBox ID="txCobijas" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender9" runat="server" TargetControlID="txCobijas"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator82" runat="server" ControlToValidate="txCobijas" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Sofas
+                                                               <asp:TextBox ID="txSofas" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender10" runat="server" TargetControlID="txSofas"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator83" runat="server" ControlToValidate="txSofas" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Sillas
+                                                               <asp:TextBox ID="txSillas" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender13" runat="server" TargetControlID="txSillas"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator84" runat="server" ControlToValidate="txSillas" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Mesas
+                                                               <asp:TextBox ID="txMesas" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender14" runat="server" TargetControlID="txMesas"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator85" runat="server" ControlToValidate="txMesas" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Equipos de sonido
+                                                               <asp:TextBox ID="txEquiposSonido" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender15" runat="server" TargetControlID="txEquiposSonido"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator86" runat="server" ControlToValidate="txEquiposSonido" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Juguetes, Ropa
+                                                               <asp:TextBox ID="txJuguetes" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender16" runat="server" TargetControlID="txJuguetes"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator87" runat="server" ControlToValidate="txJuguetes" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </asp:Panel>
+
+
+                                                                <asp:Panel ID="Panel29" runat="server" CssClass="container-fluid">
+                                                                    <div class="panel panel-danger">
+                                                                        <div class="panel-heading">
+                                                                            MEDIOS DE TRANSPORTE
+                                                                        </div>
+                                                                        <div class="panel-body">
+
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Bicicletas
+                                                               <asp:TextBox ID="txBicicletas" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender17" runat="server" TargetControlID="txBicicletas"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator88" runat="server" ControlToValidate="txBicicletas" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    Motos
+                                                               <asp:TextBox ID="txMotos" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender18" runat="server" TargetControlID="txMotos"
+                                                                                        ValidChars="0123456789" Enabled="True" />
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator89" runat="server" ControlToValidate="txMotos" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </asp:Panel>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        Tulas
+                                                               <asp:TextBox ID="txTulas" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                        <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender19" runat="server" TargetControlID="txTulas"
+                                                                            ValidChars="0123456789" Enabled="True" />
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator90" runat="server" ControlToValidate="txTulas" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        Peso
+                                                               <asp:TextBox ID="txPeso" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                        <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender20" runat="server" TargetControlID="txPeso"
+                                                                            ValidChars="0123456789" Enabled="True" />
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator91" runat="server" ControlToValidate="txPeso" CssClass="validador" Display="Dynamic" ValidationGroup="guardarEnseres">El campo es obligatorio</asp:RequiredFieldValidator>
+                                                                    </div>
+                                                                </div>
+                                                            </asp:Panel>
+                                                            <asp:Label ID="Label7" runat="server" Text="" Visible="false" CssClass="text-warning"></asp:Label>
+                                                            <div class="row">
+                                                                <asp:LinkButton ID="btnGuardarEnseres" runat="server" Visible="true" CssClass="btn-block btn btn-danger"
+                                                                    OnClick="btn_GuardarEnseres" ValidationGroup="guardarEnseres">Guardar 
+                                                                </asp:LinkButton>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ContentTemplate>
+                                    <Triggers>
+                                        <%--<asp:AsyncPostBackTrigger ControlID="btn_GuardarEnseres" />--%>
+                                    </Triggers>
+                                </asp:UpdatePanel>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 </center>
