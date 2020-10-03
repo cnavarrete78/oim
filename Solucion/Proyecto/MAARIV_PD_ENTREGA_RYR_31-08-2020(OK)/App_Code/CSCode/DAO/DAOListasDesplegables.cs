@@ -4830,6 +4830,36 @@ namespace com.GACV.lgb.persistencia.dao
             return true;
         }
 
+        public bool LD_Eliminar_plan_acción_traslado_entidad_ruta_comunitaria(int idPlan, int idEntidad)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_ELIMINAR_TB_PLAN_ACCION_TRASLADO_ENTIDAD", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParam1 = new SqlParameter("@ID_ENTIDAD", idEntidad);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
 
         public bool LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(int idCategoria, int idPlan, int idComuidad, string resultado, string acciones, string observaciones)
         {
@@ -4879,6 +4909,113 @@ namespace com.GACV.lgb.persistencia.dao
             return true;
         }
 
+        public bool LD_Insertar_plan_acción_traslado_Categorizacion_entidad_ruta_comunitaria(int idPlan, int idEntidad, int idCategoria)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_TB_PLAN_ACCION_TRASLADO_CATEGORIA_ENTIDAD", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParam1 = new SqlParameter("@ID_ENTIDAD", idEntidad);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+
+                SqlParameter oParam2 = new SqlParameter("@ID_CATEGORIA", idCategoria);
+                oParam2.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam2);
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public bool LD_Eliminar_plan_acción_traslado_caracterizacion_entidad_ruta_comunitaria(int idPlan, int idEntidad, int idCategoria)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_ELIMINAR_TB_PLAN_ACCION_TRASLADO_CATEGORIA_ENTIDAD", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParam1 = new SqlParameter("@ID_ENTIDAD", idEntidad);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+
+                SqlParameter oParam2 = new SqlParameter("@ID_CATEGORIA", idCategoria);
+                oParam2.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam2);
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public DataSet LD_Consultar_plan_acción_traslado_categorias_Entidad_Ruta_Comunitaria(int idPlan, int idCategoria)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_PLAN_ACCION_TRASLADO_CATEGORIA_ENTIDAD", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParam2 = new SqlParameter("@ID_CATEGORIA", idCategoria);
+                oParam2.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam2);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
+
+
         public bool LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string actividad, string responsable, bool cumplida, string observaciones)
         {
             try
@@ -4919,6 +5056,62 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam6 = new SqlParameter("@ID", id);
                 oParam6.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam6);
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public bool LD_Eliminar_plan_acción_traslado_balance_traslado_Ruta_Comunitaria(int id)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_ELIMINAR_TB_PLAN_ACCION_TRASLADO_BALANCE_TRASLADO", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID", id);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public bool LD_Eliminar_plan_acción_traslado_profesionales_traslado_Ruta_Comunitaria(int id)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_ELIMINAR_TB_PLAN_ACCION_TRASLADO_PROFESIONALES", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID", id);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
 
                 Command.ExecuteNonQuery();
                 con.Close();
