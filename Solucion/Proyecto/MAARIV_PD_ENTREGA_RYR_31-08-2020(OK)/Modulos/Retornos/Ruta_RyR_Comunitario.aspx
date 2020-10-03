@@ -4151,17 +4151,56 @@
                                                                                         <label class="label1 col-sm-">Documento de identidad:</label>
                                                                                     </div>
                                                                                     <div class="col-md-4">
-                                                                                        <asp:TextBox ID="txDocumento" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
-                                                                                        <span style="font-weight: normal">
-                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator34" runat="server"
-                                                                                                ControlToValidate="txCorregimiento_Salida" CssClass="validador" Display="Dynamic"
-                                                                                                ValidationGroup="buscarDocumento">* Campo obligatorio para la búsqueda</asp:RequiredFieldValidator>
-                                                                                        </span>
+                                                                                        <asp:TextBox ID="txDocumento" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                        <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender21" runat="server" TargetControlID="txDocumento"
+                                                                                            ValidChars="0123456789" Enabled="True" />
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator93" runat="server" ControlToValidate="txDocumento" CssClass="validador" Display="Dynamic" ValidationGroup="buscarDocumento">El campo es obligatorio</asp:RequiredFieldValidator>
                                                                                     </div>
                                                                                     <div class="col-md-4">
                                                                                         <asp:LinkButton ID="LinkButton9" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_buscar_persona_Click" Text="Buscar" ValidationGroup="buscarDocumento">
                                                                                             Buscar
                                                                                         </asp:LinkButton>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">                                                                                    
+                                                                                        <label class="label1 col-sm-12" style="color:red" runat="server"  id="lblMensajePersona">No se encontraron registros para la busqueda!!</label>
+                                                                                    </div>
+                                                                                <div class="row">
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_personas"
+                                                                                        runat="server" AutoGenerateColumns="false" OnRowCommand="gv_personas_RowCommand" OnRowDataBound="gv_personas_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                        <Columns>
+                                                                                              <asp:TemplateField HeaderText="HOGAR" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="HOGAR" runat="server" Text='<%# Eval("HOGAR") %>'> </asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                              <asp:TemplateField HeaderText="NOMBRES Y APELLIDOS" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="PERSONA" runat="server" Text='<%# Eval("PERSONA") %>'> </asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                              <asp:TemplateField HeaderText="DOCUMENTO" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="DOCUMENTO" runat="server" Text='<%# Eval("DOCUMENTO") %>'> </asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="Acciones">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="SELECCIONAR" CommandName="seleccionar" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+                                                                                                    </asp:LinkButton>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="80px" />
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
+                                                                                </div>
+
+                                                                                  <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-12">LISTADO DE PERSONAS QUE NO SE TRASLADAN</label>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
@@ -4371,7 +4410,7 @@
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_balancale_traslado"
-                                                                                        runat="server" AutoGenerateColumns="false" OnRowCommand="gv_balancale_traslado_RowCommand" OnRowDataBound="gv_balancale_traslado_RowDataBound" >
+                                                                                        runat="server" AutoGenerateColumns="false" OnRowCommand="gv_balancale_traslado_RowCommand" OnRowDataBound="gv_balancale_traslado_RowDataBound">
                                                                                         <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                         <Columns>
                                                                                             <asp:TemplateField HeaderText="id" Visible="false">
@@ -4399,11 +4438,11 @@
                                                                                                     <asp:Label ID="cumplida" runat="server" Text='<%# Eval("CUMPLIDA") %>'> </asp:Label>
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
-                                                                                           <asp:TemplateField HeaderText="CUMPLIDA">
+                                                                                            <asp:TemplateField HeaderText="CUMPLIDA">
                                                                                                 <ItemTemplate>
-                                                                                                    <asp:CheckBox ID="CUMPLIDA2" runat="server" Checked='<%# Eval("CUMPLIDA") %>'   ViewStateMode="Disabled" />
+                                                                                                    <asp:CheckBox ID="CUMPLIDA2" runat="server" Checked='<%# Eval("CUMPLIDA") %>' ViewStateMode="Disabled" />
                                                                                                 </ItemTemplate>
-                                                                                            </asp:TemplateField>                                                                                          
+                                                                                            </asp:TemplateField>
                                                                                             <asp:TemplateField HeaderText="Acciones">
                                                                                                 <ItemTemplate>
                                                                                                     <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
@@ -4419,7 +4458,7 @@
                                                                                                     </div>
                                                                                                 </ItemTemplate>
                                                                                                 <ItemStyle HorizontalAlign="Center" Width="120px" />
-                                                                                            </asp:TemplateField>                                                                                           
+                                                                                            </asp:TemplateField>
                                                                                         </Columns>
                                                                                     </asp:GridView>
                                                                                 </div>

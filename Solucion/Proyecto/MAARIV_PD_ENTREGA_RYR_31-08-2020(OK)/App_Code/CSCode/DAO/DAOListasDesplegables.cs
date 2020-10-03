@@ -5600,6 +5600,95 @@ namespace com.GACV.lgb.persistencia.dao
             return ds;
         }
 
+        public DataSet Get_Persona_Plan_Accion_Traslado_por_numero_documento(string numDocumetno)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_BUSQUEDA_PERSONA_POR_NUMERO_DOCUMENTO", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@NUMERO_DOCUMENTO", numDocumetno);
+                oParam.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam);
+        
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+        public bool LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(string numDocumento, bool seTraslada)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_PLAN_ACCION_TRASLADO_BALANCE_TRASLADO", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@NUMERO_DOCUMENTO", numDocumento);
+                oParam.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParam2 = new SqlParameter("@SETRASLADA", seTraslada);
+                oParam2.SqlDbType = SqlDbType.Bit;
+                Command.Parameters.Add(oParam2);
+
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+        public DataSet LD_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(int idPlan)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_PERSONAS_NO_SE_TRASLADAN", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
         #endregion
     }
 

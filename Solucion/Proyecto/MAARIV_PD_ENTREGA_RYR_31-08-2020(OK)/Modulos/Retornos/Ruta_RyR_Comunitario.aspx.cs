@@ -4349,6 +4349,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         LlenarComboEntidadesRutaComunitaria();
                         GetPlanTraslado();
                         GetCategoria_plan_acción_traslado_Ruta_Comunitaria();
+                        lblMensajePersona.Visible = false;
+                        Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria();
                         Get_Entidades_Plan_Accion_Traslado_Entidad();
                         Get_plan_acción_traslado_balance_traslado_ruta_comunitaria();
                         Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria();
@@ -11083,6 +11085,44 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     protected void gv_inventario_traslado_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
     }
+    protected void gv_personas_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        DataSet ds = new DataSet();
+        try
+        {
+            if (e.CommandName == "seleccionar")
+            {
+
+                GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                string numDocumento = ((Label)gvRow.FindControl("DOCUMENTO")).Text;
+                bool seTraslada = true;
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria( numDocumento,  seTraslada);
+                if (exitoso) {
+                    Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria();
+                }
+                else
+                {
+                    Mensajes("No se realizo la operación.", 0);
+                }                             
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void gv_personas_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            
+        }
+    }
+    protected void gv_personas_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+    }
+
+
     public void GetPlanTraslado()
     {
         DataSet dsPT = new DataSet();
@@ -11372,6 +11412,24 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_entidades_caracterizacion.DataBind();
         }
     }
+    public void Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria()
+    {
+        int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
+        DataSet dsPE = new DataSet();
+        dsPE = FachadaPersistencia.getInstancia().Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(idPlan);
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            gv_noTrasladar.Visible = true;
+            gv_noTrasladar.DataSource = dsPE;
+            gv_noTrasladar.DataBind();
+        }
+        else
+        {
+            gv_noTrasladar.Visible = false;
+            gv_noTrasladar.DataSource = dsPE;
+            gv_noTrasladar.DataBind();
+        }
+    }
     protected void btn_agregar_entidad_Click(object sender, EventArgs e)
     {
         DataSet ds = new DataSet();
@@ -11407,6 +11465,24 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         try
         {
+            string numDocumento= txDocumento.Text;
+            DataSet dsPE = new DataSet();
+            dsPE = FachadaPersistencia.getInstancia().Get_Persona_Plan_Accion_Traslado_por_numero_documento(numDocumento);
+            if (!dsPE.Tables[0].Rows.Count.Equals(0))
+            {
+                gv_personas.Visible = true;
+                gv_personas.DataSource = dsPE;
+                gv_personas.DataBind();
+                lblMensajePersona.Visible = false;
+                txDocumento.Text = "";
+            }
+            else
+            {
+                gv_personas.Visible = false;
+                gv_personas.DataSource = dsPE;
+                gv_personas.DataBind();                
+                lblMensajePersona.Visible = true;
+            }
         }
         catch (System.Exception ex)
         {
