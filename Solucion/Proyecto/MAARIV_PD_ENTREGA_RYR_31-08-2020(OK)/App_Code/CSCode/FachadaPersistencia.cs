@@ -1800,9 +1800,29 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Insertar_plan_acción_traslado_entidad_ruta_comunitaria(idPlan, idEntidad);
         }
+        public bool LD_Eliminar_plan_acción_traslado_entidad_Ruta_Comunitaria(int idPlan, int idEntidad)
+        {
+            return L_D.LD_Eliminar_plan_acción_traslado_entidad_ruta_comunitaria(idPlan, idEntidad);
+        }
         public bool LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(int idCategoria, int idPlan, int idComuidad, string resultado, string acciones, string observaciones)
         {
             return L_D.LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(idCategoria, idPlan,  idComuidad,  resultado,  acciones,  observaciones);
+        }
+        public bool LD_Insertar_plan_acción_traslado_categoria_entidad_Ruta_Comunitaria(int idPlan, int idEntidad, int idCategoria)
+        {
+            return L_D.LD_Insertar_plan_acción_traslado_Categorizacion_entidad_ruta_comunitaria(idPlan, idEntidad, idCategoria);
+        }
+        public bool LD_Eliminar_plan_acción_traslado_categoria_entidad_Ruta_Comunitaria(int idPlan, int idEntidad, int idCategoria)
+        {
+            return L_D.LD_Eliminar_plan_acción_traslado_caracterizacion_entidad_ruta_comunitaria(idPlan, idEntidad, idCategoria);
+        }
+        public bool LD_Eliminar_plan_acción_traslado_balance_traslado_Ruta_Comunitaria(int id)
+        {
+            return L_D.LD_Eliminar_plan_acción_traslado_balance_traslado_Ruta_Comunitaria(id);
+        }
+        public bool LD_Eliminar_plan_acción_traslado_profesionales_traslado_Ruta_Comunitaria(int id)
+        {
+            return L_D.LD_Eliminar_plan_acción_traslado_profesionales_traslado_Ruta_Comunitaria(id);
         }
         public bool LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string actividad, string responsable, bool cumplida, string observaciones)
         {
@@ -1830,6 +1850,10 @@ namespace com.GACV.lgb.persistencia.fachada
         public DataSet Get_Consultar_Categoria_plan_acción_traslado_Ruta_Comunitaria(int idPlan)
         {
             return L_D.LD_Consultar_Categoria_plan_acción_traslado_Ruta_Comunitaria(idPlan);
+        }
+        public DataSet Get_Entidades_Plan_Accion_Traslado_categorias_Entidad(int idPlan, int idCategoria)
+        {
+            return L_D.LD_Consultar_plan_acción_traslado_categorias_Entidad_Ruta_Comunitaria(idPlan, idCategoria);
         }
         public DataSet Get_Entidades_Plan_Accion_Traslado_Entidad(int idPlan)
         {
@@ -1860,6 +1884,20 @@ namespace com.GACV.lgb.persistencia.fachada
         public DataSet Get_plan_acción_traslado_Inventario_hogar_enseres_ruta_comunitaria(int idHogar)
         {
             return L_D.LD_plan_acción_traslado_Inventario_hogar_enseres_ruta_comunitaria(idHogar);
+        }
+
+        public DataSet Get_Persona_Plan_Accion_Traslado_por_numero_documento(string numDocumento)
+        {
+            return L_D.Get_Persona_Plan_Accion_Traslado_por_numero_documento(numDocumento);
+        }
+        public bool LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(string numDocumento, bool seTraslada)
+        {
+            return LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria( numDocumento,  seTraslada);
+        }
+
+        public DataSet Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(int idPlan)
+        {
+            return L_D.LD_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(idPlan);
         }
 
         #endregion
