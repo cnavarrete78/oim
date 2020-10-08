@@ -4350,6 +4350,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         GetPlanTraslado();
                         GetCategoria_plan_acción_traslado_Ruta_Comunitaria();
                         lblMensajePersona.Visible = false;
+                        lblListadoPersonasNoTrasladan.Visible = false;
                         Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria();
                         Get_Entidades_Plan_Accion_Traslado_Entidad();
                         Get_plan_acción_traslado_balance_traslado_ruta_comunitaria();
@@ -10927,7 +10928,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 int idCaracterizacion = Convert.ToInt32(((Label)gvRow.FindControl("idCaracterizacion")).Text);
                 ViewState["idCategoria"] = idCaracterizacion;
                 string Caracterizacion = ((Label)gvRow.FindControl("Caracterizacion")).Text;
-                lblCaracterizacion.Text =  Caracterizacion;
+                lblCaracterizacion.Text = Caracterizacion;
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEntidadesCaractizacion", "$('#myModalEntidadesCaractizacion').modal();", true);
                 UpdatePanelCaracterizacionEntidades.Update();
                 Get_Entidades_Plan_Accion_Traslado_Ctegorias_Entidad();
@@ -10964,7 +10965,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Adjuntar_archivos_act adjuntar_archivos = new Adjuntar_archivos_act();
         try
         {
-
+            if (e.CommandName == "Eliminar")
+            {
+                EliminarPersonaNoSeTraslada(e);
+            }
         }
         catch
         {
@@ -10975,6 +10979,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
+
         }
     }
     protected void gv_noTrasladar_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -10993,8 +10998,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             if (e.CommandName == "Editar")
             {
                 GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
-                txActividad.Text= ((Label)gvRow.FindControl("actividad")).Text;
-                txResponsable.Text= ((Label)gvRow.FindControl("responsable")).Text;
+                txActividad.Text = ((Label)gvRow.FindControl("actividad")).Text;
+                txResponsable.Text = ((Label)gvRow.FindControl("responsable")).Text;
                 txObservaciones.Text = ((Label)gvRow.FindControl("observaciones")).Text;
                 LD_Cumplido.Items.Clear();
                 LD_Cumplido.Items.Insert(0, new ListItem("Si", "True"));
@@ -11016,7 +11021,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
     protected void gv_balancale_traslado_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-    }   
+    }
     protected void gv_profesionales_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         DataSet ds = new DataSet();
@@ -11090,20 +11095,24 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         try
         {
-            if (e.CommandName == "seleccionar")
+            if (e.CommandName == "Seleccionar")
             {
-
                 GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
-                string numDocumento = ((Label)gvRow.FindControl("DOCUMENTO")).Text;
-                bool seTraslada = true;
-                bool exitoso = FachadaPersistencia.getInstancia().LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria( numDocumento,  seTraslada);
-                if (exitoso) {
+                int idPersona = Convert.ToInt32(((Label)gvRow.FindControl("ID_PERSONA")).Text);
+                bool seTraslada = false;
+                int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);    
+                int idComunidad = Convert.ToInt32(TB_Nit.Text);
+                //string motivo = txMotivoNoTraslado.Text;
+                string motivo = "";
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(idPlan, idComunidad, idPersona, seTraslada, motivo);
+                if (exitoso)
+                {
                     Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria();
                 }
                 else
                 {
                     Mensajes("No se realizo la operación.", 0);
-                }                             
+                }
             }
         }
         catch
@@ -11115,7 +11124,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
-            
+
         }
     }
     protected void gv_personas_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -11361,7 +11370,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes("Error adicionar la entidad." + ex.Message, 0);
         }
     }
-
     protected void btn_agregar_entidad_caracterizacion_Click(object sender, EventArgs e)
     {
         DataSet ds = new DataSet();
@@ -11419,16 +11427,19 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         dsPE = FachadaPersistencia.getInstancia().Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(idPlan);
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
         {
+            lblListadoPersonasNoTrasladan.Visible = true;
             gv_noTrasladar.Visible = true;
             gv_noTrasladar.DataSource = dsPE;
             gv_noTrasladar.DataBind();
         }
         else
         {
+            lblListadoPersonasNoTrasladan.Visible = false;
             gv_noTrasladar.Visible = false;
             gv_noTrasladar.DataSource = dsPE;
             gv_noTrasladar.DataBind();
         }
+        gv_personas.Visible = false;
     }
     protected void btn_agregar_entidad_Click(object sender, EventArgs e)
     {
@@ -11441,7 +11452,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
                 int idEntidad = Convert.ToInt32(LD_Entidad.SelectedValue);
                 bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_entidad_Ruta_Comunitaria(idPlan, idEntidad);
-                if (exitoso) {
+                if (exitoso)
+                {
                     LD_Entidad.SelectedValue = "0";
                     Get_Entidades_Plan_Accion_Traslado_Entidad();
                 }
@@ -11465,7 +11477,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         try
         {
-            string numDocumento= txDocumento.Text;
+            string numDocumento = txDocumento.Text;
             DataSet dsPE = new DataSet();
             dsPE = FachadaPersistencia.getInstancia().Get_Persona_Plan_Accion_Traslado_por_numero_documento(numDocumento);
             if (!dsPE.Tables[0].Rows.Count.Equals(0))
@@ -11480,7 +11492,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 gv_personas.Visible = false;
                 gv_personas.DataSource = dsPE;
-                gv_personas.DataBind();                
+                gv_personas.DataBind();
                 lblMensajePersona.Visible = true;
             }
         }
@@ -11497,7 +11509,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             int idComunidad = Convert.ToInt32(TB_Nit.Text);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             int id = 0;
-            if (ViewState["idBalanceTraslado"] !=  null) {
+            if (ViewState["idBalanceTraslado"] != null)
+            {
                 id = Convert.ToInt32(ViewState["idBalanceTraslado"]);
             }
             string actividad = txActividad.Text;
@@ -11597,7 +11610,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             throw;
         }
     }
-
     protected void LlenarMunicipiosPlanSalida_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (LD_Departamento_Salida.SelectedValue != "")
@@ -11790,7 +11802,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             LD_EntidadCaracterizacion.DataBind();
             LD_EntidadCaracterizacion.Items.Insert(0, new ListItem("Seleccione la entidad", "0"));
         }
-        
+
     }
     private void EliminarEntidadQueAcompanaElTraslado(GridViewCommandEventArgs e)
     {
@@ -11799,16 +11811,17 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             int idEntidad = Convert.ToInt32(((Label)gvRow.FindControl("idEntidad")).Text);
-                         
+
             bool exitoso = FachadaPersistencia.getInstancia().LD_Eliminar_plan_acción_traslado_entidad_Ruta_Comunitaria(idPlan, idEntidad);
-            if (exitoso) {
+            if (exitoso)
+            {
                 Get_Entidades_Plan_Accion_Traslado_Entidad();
                 Mensajes("El registro ha sido eliminado correctamente", 0);
             }
             else
             {
                 Mensajes("Se generó un error al borrar el registro", 0);
-            }            
+            }
 
         }
         catch (System.Exception ex)
@@ -11885,6 +11898,33 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         }
     }
+
+    private void EliminarPersonaNoSeTraslada(GridViewCommandEventArgs e)
+    {
+        try
+        {
+            GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+            int idPersona = Convert.ToInt32(((Label)gvRow.FindControl("ID_PERSONASI")).Text);
+            bool seTraslada = true;
+            int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
+            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            string motivo = "";
+            bool exitoso = FachadaPersistencia.getInstancia().LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(idPlan, idComunidad, idPersona, seTraslada, motivo);
+            if (exitoso)
+            {
+                Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria();
+            }
+            else
+            {
+                Mensajes("No se realizo la operación.", 0);
+            }          
+        }
+        catch (System.Exception ex)
+        {
+
+        }
+    }
+
     #endregion
 
 }

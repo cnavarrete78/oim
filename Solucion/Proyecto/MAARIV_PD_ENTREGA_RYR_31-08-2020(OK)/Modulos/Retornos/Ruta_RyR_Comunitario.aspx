@@ -4162,52 +4162,55 @@
                                                                                         </asp:LinkButton>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="row">                                                                                    
-                                                                                        <label class="label1 col-sm-12" style="color:red" runat="server"  id="lblMensajePersona">No se encontraron registros para la busqueda!!</label>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                          <label class="label1 col-sm-12">Motivo por el cual no se trasalda la persona:</label>                                                                                      
+                                                                                        <asp:TextBox ID="txMotivoNoTraslado" runat="server" CssClass="form-control"></asp:TextBox>
                                                                                     </div>
+
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <label class="label1 col-sm-12" style="color: red" runat="server" id="lblMensajePersona">No se encontraron registros para la busqueda!!</label>
+                                                                                </div>
                                                                                 <div class="row">
                                                                                     <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_personas"
                                                                                         runat="server" AutoGenerateColumns="false" OnRowCommand="gv_personas_RowCommand" OnRowDataBound="gv_personas_RowDataBound">
                                                                                         <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                         <Columns>
-                                                                                              <asp:TemplateField HeaderText="HOGAR" Visible="true">
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:Label ID="HOGAR" runat="server" Text='<%# Eval("HOGAR") %>'> </asp:Label>
-                                                                                                </ItemTemplate>
-                                                                                            </asp:TemplateField>
-                                                                                              <asp:TemplateField HeaderText="NOMBRES Y APELLIDOS" Visible="true">
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:Label ID="PERSONA" runat="server" Text='<%# Eval("PERSONA") %>'> </asp:Label>
-                                                                                                </ItemTemplate>
-                                                                                            </asp:TemplateField>
-                                                                                              <asp:TemplateField HeaderText="DOCUMENTO" Visible="true">
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:Label ID="DOCUMENTO" runat="server" Text='<%# Eval("DOCUMENTO") %>'> </asp:Label>
-                                                                                                </ItemTemplate>
-                                                                                            </asp:TemplateField>
-
+                                                                                            <asp:BoundField DataField="HOGAR" HeaderText="HOGAR" Visible="true" />
+                                                                                            <asp:BoundField DataField="PERSONA" HeaderText="PERSONA" Visible="true" />
+                                                                                            <asp:BoundField DataField="DOCUMENTO" HeaderText="DOCUMENTO" Visible="true" />
                                                                                             <asp:TemplateField HeaderText="Acciones">
                                                                                                 <ItemTemplate>
-                                                                                                    <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="SELECCIONAR" CommandName="seleccionar" Visible="true">
-                                                                                                        <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
-                                                                                                    </asp:LinkButton>
+                                                                                                    <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                        <asp:LinkButton ID="btn_eliminar_balance" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Seleccionar persona" CommandName="Seleccionar" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                                                                                        </asp:LinkButton>
+                                                                                                    </div>
                                                                                                 </ItemTemplate>
-                                                                                                <ItemStyle HorizontalAlign="Center" Width="80px" />
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="120px" />
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="ID_PERSONA" Visible="false">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="ID_PERSONA" runat="server" Text='<%# Eval("ID_PERSONA") %>'> </asp:Label>
+                                                                                                </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                         </Columns>
                                                                                     </asp:GridView>
                                                                                 </div>
-
-                                                                                  <div class="row">
+                                                                                <div class="row">
                                                                                     <div class="col-md-12">
-                                                                                        <label class="label1 col-sm-12">LISTADO DE PERSONAS QUE NO SE TRASLADAN</label>
+                                                                                        <label class="label1 col-sm-12" runat="server" id="lblListadoPersonasNoTrasladan">LISTADO DE PERSONAS QUE NO SE TRASLADAN</label>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_noTrasladar"
-                                                                                        runat="server" AutoGenerateColumns="true " OnRowCommand="gv_noTrasladar_RowCommand" OnRowDataBound="gv_noTrasladar_RowDataBound">
+                                                                                        runat="server" AutoGenerateColumns="false" OnRowCommand="gv_noTrasladar_RowCommand" OnRowDataBound="gv_noTrasladar_RowDataBound">
                                                                                         <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                         <Columns>
+                                                                                            <asp:BoundField DataField="HOGAR" HeaderText="HOGAR" Visible="true" />
+                                                                                            <asp:BoundField DataField="PERSONA" HeaderText="PERSONA" Visible="true" />
+                                                                                            <asp:BoundField DataField="DOCUMENTO" HeaderText="DOCUMENTO" Visible="true" />
                                                                                             <asp:TemplateField HeaderText="Acciones">
                                                                                                 <ItemTemplate>
                                                                                                     <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
@@ -4215,6 +4218,11 @@
                                                                                                     </asp:LinkButton>
                                                                                                 </ItemTemplate>
                                                                                                 <ItemStyle HorizontalAlign="Center" Width="80px" />
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="ID_PERSONA" Visible="false">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="ID_PERSONASI" runat="server" Text='<%# Eval("ID_PERSONA") %>'> </asp:Label>
+                                                                                                </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                         </Columns>
                                                                                     </asp:GridView>
@@ -5035,7 +5043,7 @@
                                 </asp:UpdatePanel>
 
                             </div>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
                 </center>

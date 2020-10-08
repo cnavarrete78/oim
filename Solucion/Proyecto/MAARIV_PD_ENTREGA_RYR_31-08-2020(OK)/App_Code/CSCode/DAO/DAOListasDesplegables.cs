@@ -5628,7 +5628,7 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return ds;
         }
-        public bool LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(string numDocumento, bool seTraslada)
+        public bool LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(int idPlan,int idComunidad, int idPersona, bool seTraslada, string motivo)
         {
             try
             {
@@ -5637,18 +5637,29 @@ namespace com.GACV.lgb.persistencia.dao
                 con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
                 con.Open();
 
-                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_PLAN_ACCION_TRASLADO_BALANCE_TRASLADO", con);
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_PLAN_ACCION_TRASLADO_PERSONA_NO_TRASLADA", con);
                 Command.CommandType = CommandType.StoredProcedure;
                 Command.Connection = con;
 
-                SqlParameter oParam = new SqlParameter("@NUMERO_DOCUMENTO", numDocumento);
-                oParam.SqlDbType = SqlDbType.Text;
+                SqlParameter oParam = new SqlParameter("@ID_COMUNIDAD", idComunidad);
+                oParam.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam);
 
-                SqlParameter oParam2 = new SqlParameter("@SETRASLADA", seTraslada);
-                oParam2.SqlDbType = SqlDbType.Bit;
+                SqlParameter oParam1 = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+
+                SqlParameter oParam2 = new SqlParameter("@ID_PERSONA", idPersona);
+                oParam2.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam2);
 
+                SqlParameter oParam3 = new SqlParameter("@MOTIVO", motivo);
+                oParam3.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam3);
+
+                SqlParameter oParam4 = new SqlParameter("@SETRASLADA", seTraslada);
+                oParam4.SqlDbType = SqlDbType.Bit;
+                Command.Parameters.Add(oParam4);
 
                 Command.ExecuteNonQuery();
                 con.Close();
