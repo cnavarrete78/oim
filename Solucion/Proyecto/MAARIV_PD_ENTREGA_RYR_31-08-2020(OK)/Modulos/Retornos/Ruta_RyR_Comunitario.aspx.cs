@@ -4351,6 +4351,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         GetCategoria_plan_acción_traslado_Ruta_Comunitaria();
                         lblMensajePersona.Visible = false;
                         lblListadoPersonasNoTrasladan.Visible = false;
+                        dvMotivo.Visible = false;
                         Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria();
                         Get_Entidades_Plan_Accion_Traslado_Entidad();
                         Get_plan_acción_traslado_balance_traslado_ruta_comunitaria();
@@ -11102,11 +11103,12 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 bool seTraslada = false;
                 int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);    
                 int idComunidad = Convert.ToInt32(TB_Nit.Text);
-                //string motivo = txMotivoNoTraslado.Text;
-                string motivo = "";
+                string motivo = txMotivoNoTraslado.Text;
                 bool exitoso = FachadaPersistencia.getInstancia().LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(idPlan, idComunidad, idPersona, seTraslada, motivo);
                 if (exitoso)
                 {
+                    txMotivoNoTraslado.Text = "";
+                    dvMotivo.Visible = false;
                     Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria();
                 }
                 else
@@ -11486,6 +11488,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 gv_personas.DataSource = dsPE;
                 gv_personas.DataBind();
                 lblMensajePersona.Visible = false;
+                dvMotivo.Visible = true;
                 txDocumento.Text = "";
             }
             else
@@ -11493,6 +11496,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 gv_personas.Visible = false;
                 gv_personas.DataSource = dsPE;
                 gv_personas.DataBind();
+                dvMotivo.Visible = false;
                 lblMensajePersona.Visible = true;
             }
         }

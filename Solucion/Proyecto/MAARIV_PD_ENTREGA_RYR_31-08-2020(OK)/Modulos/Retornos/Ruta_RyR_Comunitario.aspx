@@ -4023,7 +4023,7 @@
                                                                     <asp:Panel ID="PanelPT" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
                                                                             <div class="panel-heading">
-                                                                                Comunidad 1
+                                                                                 <asp:Label ID="tituloComunidad" runat="server" Visible="true" CssClass="text-warning"></asp:Label>
                                                                             </div>
                                                                             <div class="panel-body">
                                                                                 <div class="row">
@@ -4139,6 +4139,9 @@
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
                                                                     <%--PERSONAS QUE NO SE VAN A TRASLADAR--%>
                                                                     <asp:Panel ID="Panel2" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
@@ -4161,13 +4164,6 @@
                                                                                             Buscar
                                                                                         </asp:LinkButton>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-12">
-                                                                                          <label class="label1 col-sm-12">Motivo por el cual no se trasalda la persona:</label>                                                                                      
-                                                                                        <asp:TextBox ID="txMotivoNoTraslado" runat="server" CssClass="form-control"></asp:TextBox>
-                                                                                    </div>
-
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <label class="label1 col-sm-12" style="color: red" runat="server" id="lblMensajePersona">No se encontraron registros para la busqueda!!</label>
@@ -4198,6 +4194,13 @@
                                                                                         </Columns>
                                                                                     </asp:GridView>
                                                                                 </div>
+                                                                                <div class="row" runat="server" id="dvMotivo">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-12">Motivo por el cual no se trasalda la persona:</label>
+                                                                                        <asp:TextBox ID="txMotivoNoTraslado" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                    </div>
+
+                                                                                </div>
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-12" runat="server" id="lblListadoPersonasNoTrasladan">LISTADO DE PERSONAS QUE NO SE TRASLADAN</label>
@@ -4211,6 +4214,7 @@
                                                                                             <asp:BoundField DataField="HOGAR" HeaderText="HOGAR" Visible="true" />
                                                                                             <asp:BoundField DataField="PERSONA" HeaderText="PERSONA" Visible="true" />
                                                                                             <asp:BoundField DataField="DOCUMENTO" HeaderText="DOCUMENTO" Visible="true" />
+                                                                                            <asp:BoundField DataField="MOTIVO" HeaderText="MOTIVO" Visible="true" />
                                                                                             <asp:TemplateField HeaderText="Acciones">
                                                                                                 <ItemTemplate>
                                                                                                     <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
@@ -4230,6 +4234,9 @@
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
                                                                     <%--ENTIDADES QUE ACOMPAÑAN EL TRASLADO--%>
                                                                     <asp:Panel ID="Panel3" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
@@ -4278,11 +4285,15 @@
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                         </Columns>
+                                                                                         <PagerStyle CssClass="pgr" />
                                                                                     </asp:GridView>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
                                                                     <%--CATEGORIAS--%>
                                                                     <asp:Panel ID="Panel22" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
@@ -4346,6 +4357,9 @@
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
                                                                     <%--BALANCE DEL PROCESO DEL TRASLADO--%>
                                                                     <asp:Panel ID="Panel5" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
@@ -4473,6 +4487,9 @@
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
                                                                     <%--Alistamiento Logístico De Enseres De Las Personas Que Se Trasladarán--%>
                                                                     <asp:Panel ID="Panel24" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
@@ -4581,6 +4598,9 @@
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
                                                                     <%--Datos de los profesionales que realizan el Alistamiento Logístico De Enseres De Las Personas Que Se Trasladarán--%>
                                                                     <asp:Panel ID="Panel25" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
@@ -4687,6 +4707,9 @@
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
                                                                     <%--INVENTARIO DE ELEMENTOS DE TRASTEO DEL HOGAR --%>
                                                                     <asp:Panel ID="Panel26" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
@@ -5043,7 +5066,7 @@
                                 </asp:UpdatePanel>
 
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
                 </center>
