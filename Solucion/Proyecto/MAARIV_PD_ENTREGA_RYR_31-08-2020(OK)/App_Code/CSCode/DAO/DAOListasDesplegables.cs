@@ -4735,7 +4735,7 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return ds;
         }
-        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int totalHogares, int totalPersonas, int totalRUV, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada, int idUsuario)
+        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada, int idUsuario)
         {
             int idPlanTraslado = 0;
             try
@@ -4752,17 +4752,6 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam = new SqlParameter("@ID_COMUNIDAD", idComunidad);
                 oParam.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam);
-
-                SqlParameter oParam1 = new SqlParameter("@TOTAL_HOGARES_TRASLADAR", totalHogares);
-                oParam1.SqlDbType = SqlDbType.Int;
-                Command.Parameters.Add(oParam1);
-                SqlParameter oParam2 = new SqlParameter("@TOTAL_PERSONAS_TRASLADAR", totalPersonas);
-                oParam2.SqlDbType = SqlDbType.Int;
-                Command.Parameters.Add(oParam2);
-                SqlParameter oParam3 = new SqlParameter("@TOTAL_PERSONAS_TRASLADAR_RUV", totalRUV);
-                oParam3.SqlDbType = SqlDbType.Int;
-                Command.Parameters.Add(oParam3);
-
                 SqlParameter oParam4 = new SqlParameter("@ID_MUNICIPIO_SALIDA", id_MunSalida);
                 oParam4.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam4);

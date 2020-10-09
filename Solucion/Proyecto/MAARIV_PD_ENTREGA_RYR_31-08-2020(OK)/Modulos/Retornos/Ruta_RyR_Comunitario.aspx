@@ -4029,17 +4029,17 @@
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Total hogares a trasladar</label>
-                                                                                        <asp:TextBox ID="txTotalHogares" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <asp:TextBox ID="txTotalHogares"  runat="server" CssClass="form-control" ForeColor="Black" readonly = 'true'></asp:TextBox>
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Total personas a trasladar</label>
-                                                                                        <asp:TextBox ID="txTotalPersonas" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <asp:TextBox ID="txTotalPersonas" runat="server" CssClass="form-control" ForeColor="Black" readonly = 'true'></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Total personas a trasladar  incluidas en el RUV por desplazamiento forzado</label>
-                                                                                        <asp:TextBox ID="txTotalRUV" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <asp:TextBox ID="txTotalRUV" runat="server" CssClass="form-control" ForeColor="Black" readonly = 'true' ></asp:TextBox>
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Fecha de inicio del traslado</label>

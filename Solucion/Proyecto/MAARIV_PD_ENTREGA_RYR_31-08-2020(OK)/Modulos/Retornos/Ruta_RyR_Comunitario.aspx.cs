@@ -11598,9 +11598,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             //todos los datos son obligatorios de diligenciamiento pero se validan en el aspx
             int idComuniad = Convert.ToInt32(TB_Nit.Text);
-            int totalHogares = Convert.ToInt32(txTotalHogares.Text);
-            int totalPersonas = Convert.ToInt32(txTotalPersonas.Text);
-            int totalRUV = Convert.ToInt32(txTotalRUV.Text);
             int id_MunSalida = Convert.ToInt32(LD_Municipio_Salida.SelectedValue);
             int idMunLlegada = Convert.ToInt32(LD_Municipio_Llegada.SelectedValue);
             int idEntornoSalida = Convert.ToInt32(LD_Entorno_Salida.SelectedValue);
@@ -11608,9 +11605,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             string corregimmientoSalida = txCorregimiento_Salida.Text;
             string corregimientoLlegada = txCorregimiento_Llegada.Text;
             int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-            int idPlan = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComuniad, totalHogares, totalPersonas, totalRUV, id_MunSalida, idMunLlegada, idEntornoSalida, idEntornoLlegada, corregimmientoSalida, corregimientoLlegada, idUsuario);
+            int idPlan = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComuniad, id_MunSalida, idMunLlegada, idEntornoSalida, idEntornoLlegada, corregimmientoSalida, corregimientoLlegada, idUsuario);
             idPlanAccionTraslado.Value = idPlan.ToString();
             ViewState["idPlanAccionTraslado"] = idPlan.ToString();
+            GetPlanTraslado();
         }
         catch (System.Exception ex)
         {
