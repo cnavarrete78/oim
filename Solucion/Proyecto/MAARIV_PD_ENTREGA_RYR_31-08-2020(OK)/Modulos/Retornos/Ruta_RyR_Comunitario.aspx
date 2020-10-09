@@ -4023,7 +4023,7 @@
                                                                     <asp:Panel ID="PanelPT" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
                                                                             <div class="panel-heading">
-                                                                                 <asp:Label ID="tituloComunidad" runat="server" Visible="true" CssClass="text-warning"></asp:Label>
+                                                                                <asp:Label ID="tituloComunidad" runat="server" Visible="true" CssClass="text-warning"></asp:Label>
                                                                             </div>
                                                                             <div class="panel-body">
                                                                                 <div class="row">
@@ -4285,7 +4285,7 @@
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                         </Columns>
-                                                                                         <PagerStyle CssClass="pgr" />
+                                                                                        <PagerStyle CssClass="pgr" />
                                                                                     </asp:GridView>
                                                                                 </div>
                                                                             </div>
@@ -4632,12 +4632,10 @@
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Teléfono:</label>
-                                                                                        <asp:TextBox ID="txTelefonoProfesionalRegistra" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
-                                                                                        <span style="font-weight: normal">
-                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator76" runat="server"
-                                                                                                ControlToValidate="txTelefonoProfesionalRegistra" CssClass="validador" Display="Dynamic"
-                                                                                                ValidationGroup="agregarProfesionalRegistroAlistamiento">* Campo obligatorio</asp:RequiredFieldValidator>
-                                                                                        </span>
+                                                                                        <asp:TextBox ID="txTelefonoProfesionalRegistra" runat="server" CssClass="form-control"></asp:TextBox>
+                                                                                        <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender22" runat="server" TargetControlID="txTelefonoProfesionalRegistra"
+                                                                                            ValidChars="0123456789" Enabled="True" />
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator34" runat="server" ControlToValidate="txTelefonoProfesionalRegistra" CssClass="validador" Display="Dynamic" ValidationGroup="agregarProfesionalRegistroAlistamiento">El campo es obligatorio</asp:RequiredFieldValidator>
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Correo electrónico</label>

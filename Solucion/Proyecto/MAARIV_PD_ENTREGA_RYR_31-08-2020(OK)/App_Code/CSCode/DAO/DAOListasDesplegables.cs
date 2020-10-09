@@ -4735,7 +4735,7 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return ds;
         }
-        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int totalHogares, int totalPersonas, int totalRUV, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada)
+        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int totalHogares, int totalPersonas, int totalRUV, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada, int idUsuario)
         {
             int idPlanTraslado = 0;
             try
@@ -4781,6 +4781,9 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam9 = new SqlParameter("@CORREGIMIENTO_LLEGADA", corregimientoLlegada);
                 oParam9.SqlDbType = SqlDbType.Text;
                 Command.Parameters.Add(oParam9);
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
 
                 SqlParameter OutputParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", SqlDbType.Int);
                 OutputParam.Direction = ParameterDirection.Output;
@@ -4799,7 +4802,7 @@ namespace com.GACV.lgb.persistencia.dao
             return idPlanTraslado;
         }
 
-        public bool LD_Insertar_plan_acción_traslado_entidad_ruta_comunitaria(int idPlan, int idEntidad)
+        public bool LD_Insertar_plan_acción_traslado_entidad_ruta_comunitaria(int idPlan, int idEntidad, int idUsuario)
         {
             try
             {
@@ -4819,6 +4822,11 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam1 = new SqlParameter("@ID_ENTIDAD", idEntidad);
                 oParam1.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam1);
+
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
+
                 Command.ExecuteNonQuery();
                 con.Close();
             }
@@ -4861,7 +4869,7 @@ namespace com.GACV.lgb.persistencia.dao
             return true;
         }
 
-        public bool LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(int idCategoria, int idPlan, int idComuidad, string resultado, string acciones, string observaciones)
+        public bool LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(int idCategoria, int idPlan, int idComuidad, string resultado, string acciones, string observaciones, int idUsuario)
         {
             try
             {
@@ -4898,6 +4906,10 @@ namespace com.GACV.lgb.persistencia.dao
                 oParam4.SqlDbType = SqlDbType.Text;
                 Command.Parameters.Add(oParam4);
 
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
+
                 Command.ExecuteNonQuery();
                 con.Close();
             }
@@ -4909,7 +4921,7 @@ namespace com.GACV.lgb.persistencia.dao
             return true;
         }
 
-        public bool LD_Insertar_plan_acción_traslado_Categorizacion_entidad_ruta_comunitaria(int idPlan, int idEntidad, int idCategoria)
+        public bool LD_Insertar_plan_acción_traslado_Categorizacion_entidad_ruta_comunitaria(int idPlan, int idEntidad, int idCategoria, int idUsuario)
         {
             try
             {
@@ -4933,6 +4945,11 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam2 = new SqlParameter("@ID_CATEGORIA", idCategoria);
                 oParam2.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam2);
+
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
+
 
                 Command.ExecuteNonQuery();
                 con.Close();
@@ -5016,7 +5033,7 @@ namespace com.GACV.lgb.persistencia.dao
 
 
 
-        public bool LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string actividad, string responsable, bool cumplida, string observaciones)
+        public bool LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string actividad, string responsable, bool cumplida, string observaciones, int idUsuario)
         {
             try
             {
@@ -5052,6 +5069,10 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam5 = new SqlParameter("@OBSERVACIONES", observaciones);
                 oParam5.SqlDbType = SqlDbType.Text;
                 Command.Parameters.Add(oParam5);
+
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
 
                 SqlParameter oParam6 = new SqlParameter("@ID", id);
                 oParam6.SqlDbType = SqlDbType.Int;
@@ -5124,7 +5145,7 @@ namespace com.GACV.lgb.persistencia.dao
             return true;
         }
 
-        public bool LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string profesional, int idEntidad, string telefono, string correo)
+        public bool LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string profesional, int idEntidad, string telefono, string correo, int idUsuario)
         {
             try
             {
@@ -5161,6 +5182,10 @@ namespace com.GACV.lgb.persistencia.dao
                 oParam5.SqlDbType = SqlDbType.Text;
                 Command.Parameters.Add(oParam5);
 
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
+
                 SqlParameter oParam6 = new SqlParameter("@ID", id);
                 oParam6.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam6);
@@ -5176,7 +5201,7 @@ namespace com.GACV.lgb.persistencia.dao
             return true;
         }
 
-        public bool LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria(int id, int idPlan, int idComunidad, DateTime fechaRegistro, int idMunicipio, string direccion, int idDt, int idEntidad, string profesional, string correo)
+        public bool LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria(int id, int idPlan, int idComunidad, DateTime fechaRegistro, int idMunicipio, string direccion, int idDt, int idEntidad, string profesional, string correo, int idUsuario)
         {
             try
             {
@@ -5229,6 +5254,10 @@ namespace com.GACV.lgb.persistencia.dao
                 oParam9.SqlDbType = SqlDbType.Text;
                 Command.Parameters.Add(oParam9);
 
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
+
                 Command.ExecuteNonQuery();
                 con.Close();
             }
@@ -5240,7 +5269,7 @@ namespace com.GACV.lgb.persistencia.dao
             return true;
         }
 
-        public bool LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria(int id, int idPlan, int idComunidad,int idHogar, int estufas, int neveras, int utenciliosCocina,int camas, int colchones,int cobijas,  int sofas, int sillas, int mesas, int equiposSonido, int juguetes, int bicicletas, int motos, int tulas, int peso,  bool rotulacion)
+        public bool LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria(int id, int idPlan, int idComunidad,int idHogar, int estufas, int neveras, int utenciliosCocina,int camas, int colchones,int cobijas,  int sofas, int sillas, int mesas, int equiposSonido, int juguetes, int bicicletas, int motos, int tulas, int peso,  bool rotulacion, int idUsuario)
         {
             try
             {
@@ -5332,7 +5361,11 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam19 = new SqlParameter("@COBIJAS", cobijas);
                 oParam19.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam19);
-                
+
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
+
 
                 Command.ExecuteNonQuery();
                 con.Close();
@@ -5628,7 +5661,7 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return ds;
         }
-        public bool LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(int idPlan,int idComunidad, int idPersona, bool seTraslada, string motivo)
+        public bool LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(int idPlan,int idComunidad, int idPersona, bool seTraslada, string motivo, int idUsuario)
         {
             try
             {
@@ -5660,6 +5693,10 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam4 = new SqlParameter("@SETRASLADA", seTraslada);
                 oParam4.SqlDbType = SqlDbType.Bit;
                 Command.Parameters.Add(oParam4);
+
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
 
                 Command.ExecuteNonQuery();
                 con.Close();
