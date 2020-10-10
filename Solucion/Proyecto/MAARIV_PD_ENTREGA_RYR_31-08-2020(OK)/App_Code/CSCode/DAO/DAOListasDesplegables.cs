@@ -5726,6 +5726,87 @@ namespace com.GACV.lgb.persistencia.dao
             return ds;
         }
 
+        public bool LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(int id, int idBalance, int idTipoEvidencia,string urlArchivo, string extension, int idUsuario, bool activo)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_PLAN_ACCION_TRASLADO_BALANCE_TRASLADO_EVIDENCIA", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID", id);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParam1 = new SqlParameter("@ID_BALANCE_TRASLADO", idBalance);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+
+                SqlParameter oParam2 = new SqlParameter("@ID_TIPO_EVIDENCIA", idTipoEvidencia);
+                oParam2.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam2);
+
+                SqlParameter oParam3 = new SqlParameter("@URL_ARCHIVO", urlArchivo);
+                oParam3.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam3);
+
+                SqlParameter oParam4 = new SqlParameter("@EXTENSION", extension);
+                oParam4.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam4);
+
+                SqlParameter oParam5 = new SqlParameter("@ACTIVO", activo);
+                oParam5.SqlDbType = SqlDbType.Bit;
+                Command.Parameters.Add(oParam5);
+
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);        
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        public DataSet Get_Persona_Plan_Accion_Traslado_balance_evidencia(int idBalance)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_PLAN_ACCION_TRASLADO_BALANCE_TRASLADO_EVIDENCIA", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_BALANCE_TRASLADO", idBalance);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
         #endregion
     }
 
