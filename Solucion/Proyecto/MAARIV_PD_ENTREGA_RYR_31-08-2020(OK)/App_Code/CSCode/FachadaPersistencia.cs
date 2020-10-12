@@ -1894,9 +1894,9 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(idPlan, idComunidad, idPersona,  seTraslada, motivo, idUsuario);
         }
-        public bool LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(int id, int idBalance, int idTipoEvidencia, string urlArchivo, string extension, int idUsuario, bool activo)
+        public bool LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(int id, int idBalance, int idTipoEvidencia, string urlArchivo, string nombreArchivo, string extension,  int idUsuario, bool activo)
         {
-            return L_D.LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria( id,  idBalance,  idTipoEvidencia,  urlArchivo,  extension,  idUsuario,  activo);
+            return L_D.LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria( id,  idBalance,  idTipoEvidencia,  urlArchivo, nombreArchivo,  extension,  idUsuario,  activo);
         }
 
         public DataSet Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(int idPlan)

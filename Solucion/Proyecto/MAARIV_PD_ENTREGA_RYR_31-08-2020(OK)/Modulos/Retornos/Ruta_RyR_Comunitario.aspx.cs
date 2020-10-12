@@ -11224,7 +11224,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 ViewState["idBalanceTraslado"] = ((Label)gvRow.FindControl("idbalance")).Text;
-                //Get_plan_acción_traslado_Inventario_hogar_enseres_ruta_comunitaria();
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEvidenciasBalance", "$('#myModalEvidenciasBalance').modal();", true);
                 Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria();
                 UpdatePanelEvidenciasBalance.Update();
@@ -11359,7 +11358,24 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         try
         {
+            GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+            int idBalance = Convert.ToInt32(((Label)gvRow.FindControl("ID_BALANCE_TRASLADO")).Text);
+            int idEvidencia = Convert.ToInt32(((Label)gvRow.FindControl("ID_EVIDENCIA")).Text);
+            Session["NOMBRE_ARCHIVO"] = ((Label)gvRow.FindControl("NOMBRE_ARCHIVO")).Text;
+            Session["URL_ARCHIVO"] = ((Label)gvRow.FindControl("URL_ARCHIVO")).Text;
+            Session["EXTENSION"] = ((Label)gvRow.FindControl("EXTENSION")).Text;
 
+            if (e.CommandName == "Descargar")
+            {
+                Mensajes("Descargar_evidencia.aspx?ID_BALANCE=" + idBalance.ToString() + "&ID_EVIDENCIA=" + idEvidencia.ToString(), 9);
+                UP_Archivos.Update();
+            }
+            else if (e.CommandName == "Eliminar")
+            {
+                Elimina_archivo_evidencia(idEvidencia, idBalance);
+                Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria();
+                UpdatePanelEvidenciasBalance.Update();
+            }
         }
         catch
         {
@@ -11644,7 +11660,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_evidencias_traslado.Visible = false;
         }
     }
-
 
     //METODOS QUE GUARDAN INFORMACION DEL PLAN DE TRASLADO
     protected void btn_guardar_plan_Accion_traslado_Click(object sender, EventArgs e)
@@ -12042,7 +12057,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Crear_evidencia(1);
         //StatusLabelEvidencia.Text = "";        
     }
-
     protected bool Crear_evidencia(int opcion)
     {
         bool exitoso = false;
@@ -12053,16 +12067,19 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             if (opcion == 1) //crear archivo
             {
                 string URL_ARCHIVO = validar_evidencia(opcion); // permite validar el archivo
+                string nombreArchivo = Session["nombreArchivo"].ToString(); // permite validar el archivo
                 string EXTENSION = Convert.ToString(Session["extension"]);
                 int idUsuario = Convert.ToInt32(Session["id_usuario"]);
                 int idBalance = Convert.ToInt32(ViewState["idBalanceTraslado"]);
+                int idTipoEvidencia = Convert.ToInt32(LD_TipoEvidencia.SelectedValue);
                 if (URL_ARCHIVO != "")
                 {
-                    int idTipoEvidencia = Convert.ToInt32(LD_TipoEvidencia.SelectedValue);
-                    exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(0, idBalance, idTipoEvidencia, URL_ARCHIVO, EXTENSION, idUsuario, true);
+                    exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(0, idBalance, idTipoEvidencia, URL_ARCHIVO, nombreArchivo, EXTENSION, idUsuario, true);
                 }
                 if (exitoso == true)
                 {
+                    Session["nombreArchivo"] = null;
+                    Session["extension"] = null;
                     texto("El registro se inserto correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
                     Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria();
                     validar = true;
@@ -12113,10 +12130,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                           || (extension == ".png") || (extension == ".PNG")
                         )
                     {
+                        Session["nombreArchivo"] = fileName;
                         Session["extension"] = extension;
                         string path = System.Configuration.ConfigurationManager.AppSettings["Archivos"] + this.archivo_filesystem.Value;
                         // TODO: MODIFICAR
-                        string FileName = Convert.ToString(Convert.ToInt32(LD_tipo_archivo.SelectedValue) + "_" + (DateTime.Now.ToString("dd-MM-yyyy hh-mm-ss").Replace(" ", "H")) + extension);
+                        string FileName = TB_Nit.Text + "_" + (DateTime.Now.ToString("dd-MM-yyyy hh-mm-ss").Replace(" ", "H")) + extension;
                         string NOMBRE_ARCHIVO = FileName.Substring(0, FileName.IndexOf("."));
 
                         //Si el directorio no existe, crearlo
@@ -12165,7 +12183,41 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         return result;
     }
+    private void Elimina_archivo_evidencia(int idEvidencia, int idBalance)
+    {
+        try
+        {
+            string url_archivo = Session["URL_ARCHIVO"].ToString();
+            string extension = Session["EXTENSION"].ToString();
+            string nombre_archivo = Session["NOMBRE_ARCHIVO"].ToString();
+            int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+            string rutaCompleta = System.Configuration.ConfigurationManager.AppSettings["Archivos"] + url_archivo;
+            if (File.Exists(rutaCompleta))
+            {                
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(idEvidencia, idBalance, 0, url_archivo, nombre_archivo, extension, idUsuario, false);
+                if (!exitoso)
+                {
+                    texto("El registro no se eliminó debido a una inconsistencia en el sistema!.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+                }
+                else
+                {
+                    File.Delete(System.Configuration.ConfigurationManager.AppSettings["Archivos"] + url_archivo);
+                    texto("El registro ha sido eliminado correctamente", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+                }
+            }
+            else
+            {
+                texto("El registro no se pudo eliminar, debido a una inconsistencia en el archivo adjunto!.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
 
+            }
+            Session["URL_ARCHIVO"] = null;
+            Session["EXTENSION"] = null;
+            Session["NOMBRE_ARCHIVO"] = null;
+        }
+        catch (System.Exception ex)
+        {
+        }
+    }
     #endregion
 
 }

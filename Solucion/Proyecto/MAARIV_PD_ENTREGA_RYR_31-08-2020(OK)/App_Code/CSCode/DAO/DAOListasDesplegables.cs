@@ -5726,7 +5726,7 @@ namespace com.GACV.lgb.persistencia.dao
             return ds;
         }
 
-        public bool LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(int id, int idBalance, int idTipoEvidencia,string urlArchivo, string extension, int idUsuario, bool activo)
+        public bool LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(int id, int idBalance, int idTipoEvidencia,string urlArchivo,string nombreArchivo, string extension, int idUsuario, bool activo)
         {
             try
             {
@@ -5762,6 +5762,10 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam5 = new SqlParameter("@ACTIVO", activo);
                 oParam5.SqlDbType = SqlDbType.Bit;
                 Command.Parameters.Add(oParam5);
+
+                SqlParameter oParam6 = new SqlParameter("@NOMBRE_ARCHIVO", nombreArchivo);
+                oParam6.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam6);
 
                 SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
                 oParamIdUsuario.SqlDbType = SqlDbType.Int;

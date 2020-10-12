@@ -5065,44 +5065,48 @@
 
                             </div>
                         </div>
-                        <%--modal para las evidencias del BALANCE DEL PROCESO DEL TRASLADO Y LLEGADA DE LAS PERSONAS AL LUGAR DE DESTINO --%>
+                        <%--modal para las evidencias del BALANCE DEL PROCESO DEL TRASLADO Y LLEGADA DE LAS PERSONAS AL LUGAR DE DESTINO --%>                     
                         <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalEvidenciasBalance" aria-hidden="true">
                             <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>
                             <div class="modal-dialog modal-lg" role="document">
-                                <asp:UpdatePanel ID="UpdatePanelEvidenciasBalance" UpdateMode="Conditional" runat="server">
+                                <asp:UpdatePanel runat="server" ID="UpdatePanelEvidenciasBalance" UpdateMode="Conditional">
                                     <ContentTemplate>
-                                        <div class="panel panel-danger">
-                                            <div class="panel-heading">
-                                                Documentos y evidencias 
-                                            </div>
-                                            <div class="panel-body">
-                                                <asp:Panel ID="Panel32" runat="server" Style="margin-left: 9%; margin-right: 9%;" CssClass="container-fluid">
-                                                    <div class="form-group  col-md-12">
-                                                        <label class="col-md-3 label1 ">Tipo de evidencia</label>
-                                                        <div class="col-md-12">
-                                                            <asp:DropDownList ID="LD_TipoEvidencia" runat="server" AutoPostBack="false" CssClass="form-control">
-                                                            </asp:DropDownList>
-                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator95" runat="server" ControlToValidate="LD_TipoEvidencia" CssClass="validador" Display="Dynamic" InitialValue="0" ValidationGroup="v_guardar_archivo_evidencia">El tipo de archivo es obligatorio</asp:RequiredFieldValidator>
-                                                        </div>
+                                        <div class="modal-content">
+                                            <div class="">
+                                                <div class="panel panel-danger">
+                                                    <div class="panel-heading">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        Documentos y evidencias 
                                                     </div>
-                                                    <div class="form-group  col-md-12">
-                                                        <label class="col-md-3 label1 ">Adjuntar el documento</label>
-                                                        <div class="col-md-3">
-                                                            <div class="input-group">
-                                                                <asp:FileUpload runat="server" ID="FileUploadEvidencia" />
+                                                    <div class="panel-body">
+                                                        <asp:Panel ID="Panel32" runat="server" Style="margin-left: 9%; margin-right: 9%;" CssClass="container-fluid">
+                                                            <div class="form-group  col-md-12">
+                                                                <label class="col-md-3 label1 ">Tipo de evidencia</label>
+                                                                <div class="col-md-12">
+                                                                    <asp:DropDownList ID="LD_TipoEvidencia" runat="server" AutoPostBack="false" CssClass="form-control">
+                                                                    </asp:DropDownList>
+                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator95" runat="server" ControlToValidate="LD_TipoEvidencia" CssClass="validador" Display="Dynamic" InitialValue="0" ValidationGroup="v_guardar_archivo_evidencia">El tipo de archivo es obligatorio</asp:RequiredFieldValidator>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row form-group">
-                                                        <asp:Label ID="StatusLabelEvidencia" runat="server" />
-                                                        <div class="col-md-12">
-                                                            <asp:LinkButton ID="guardar_archivo_evidencia" runat="server" CssClass="btn btn-block btn-danger" OnClick="guardar_evidencia_Click" ValidationGroup="v_guardar_archivo_evidencia">
+                                                            <div class="form-group  col-md-12">
+                                                                <label class="col-md-3 label1 ">Adjuntar el documento</label>
+                                                                <div class="col-md-3">
+                                                                    <div class="input-group">
+                                                                        <asp:FileUpload runat="server" ID="FileUploadEvidencia" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row form-group">
+                                                                <asp:Label ID="StatusLabelEvidencia" runat="server" />
+                                                                <div class="col-md-12">
+                                                                    <asp:LinkButton ID="guardar_archivo_evidencia" runat="server" CssClass="btn btn-block btn-danger" OnClick="guardar_evidencia_Click" ValidationGroup="v_guardar_archivo_evidencia">
                                                             <span class="glyphicon  glyphicon-plus" aria-hidden="true"></span> Agregar archivo de evidencia
-                                                            </asp:LinkButton>
-                                                        </div>
-                                                    </div>
-                                                </asp:Panel>
-                                                <%--tabla de las evidencias cargadas--%>
+                                                                    </asp:LinkButton>
+                                                                </div>
+                                                            </div>
+                                                        </asp:Panel>
+
+                                                        <%--tabla de las evidencias cargadas--%>
                                                 <div class="row">
                                                     <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_evidencias_traslado"
                                                         runat="server" AutoGenerateColumns="false " OnRowCommand="gv_evidencias_traslado_RowCommand" OnRowDataBound="gv_evidencias_traslado_RowDataBound">
@@ -5111,12 +5115,15 @@
                                                             <asp:BoundField DataField="ID" HeaderText="ID" Visible="false" />
                                                             <asp:BoundField DataField="ID_BALANCE_TRASLADO" HeaderText="ID" Visible="false" />
                                                             <asp:BoundField DataField="ID_TIPO_EVIDENCIA" HeaderText="ID_TIPO_EVIDENCIA" Visible="false" />
-                                                            <asp:BoundField DataField="TIPO_EVIDENCIA" HeaderText="TIPO_EVIDENCIA"  />
+                                                            <asp:BoundField DataField="TIPO_EVIDENCIA" HeaderText="TIPO_EVIDENCIA" />
                                                             <asp:BoundField DataField="URL_ARCHIVO" HeaderText="URL_ARCHIVO" />
                                                             <asp:BoundField DataField="EXTENSION" HeaderText="EXTENSION" />
                                                             <asp:TemplateField HeaderText="Acciones">
                                                                 <ItemTemplate>
                                                                     <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                        <asp:LinkButton ID="descarga_archivo_evidencia" runat="server" CssClass="btn btn-default btn-sm" ToolTip="DESCARGAR" CommandName="Descargar">                                                                                                    
+                                                                                                        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+                                                                        </asp:LinkButton>
                                                                         <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
                                                                                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                                         </asp:LinkButton>
@@ -5126,67 +5133,45 @@
                                                             </asp:TemplateField>
                                                             <asp:TemplateField HeaderText="ID" Visible="false">
                                                                 <ItemTemplate>
-                                                                    <asp:Label ID="ID" runat="server" Text='<%# Eval("ID") %>'> </asp:Label>
+                                                                    <asp:Label ID="ID_EVIDENCIA" runat="server" Text='<%# Eval("ID") %>'> </asp:Label>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
+                                                              <asp:TemplateField HeaderText="ID_BALANCE_TRASLADO" Visible="false">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="ID_BALANCE_TRASLADO" runat="server" Text='<%# Eval("ID_BALANCE_TRASLADO") %>'> </asp:Label>
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>
+                                                             <asp:TemplateField HeaderText="URL_ARCHIVO" Visible="false">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="URL_ARCHIVO" runat="server" Text='<%# Eval("URL_ARCHIVO") %>'> </asp:Label>
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>
+                                                             <asp:TemplateField HeaderText="EXTENSION" Visible="false">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="EXTENSION" runat="server" Text='<%# Eval("EXTENSION") %>'> </asp:Label>
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>     
+                                                              <asp:TemplateField HeaderText="NOMBRE_ARCHIVO" Visible="false">
+                                                                <ItemTemplate>
+                                                                    <asp:Label ID="NOMBRE_ARCHIVO" runat="server" Text='<%# Eval("NOMBRE_ARCHIVO") %>'> </asp:Label>
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>     
                                                         </Columns>
                                                     </asp:GridView>
                                                 </div>
-                                                <%--  <asp:Panel ID="Panel34" runat="server" CssClass="container-fluid">
-                                                    <div class="row">
-                                                        <div runat="server" style="overflow-x: scroll">
-                                                            <asp:GridView AlternatingRowStyle-CssClass="alt"
-                                                                CssClass="table mGrid " ID="gv_evidencias_Balance" runat="server" AutoGenerateColumns="False"
-                                                                OnRowCommand="gv_evidencias_Balance_RowCommand"
-                                                                OnRowDataBound="gv_evidencias_Balance_RowDataBound"
-                                                                OnPreRender="gv_evidencias_Balance_PreRender">
-                                                                <AlternatingRowStyle BackColor="White" />
-                                                                <Columns>
-                                                                    <asp:TemplateField HeaderText="Fase">
-                                                                        <ItemTemplate>
-                                                                            <asp:Label ID="nombre_archivo" runat="server" CssClass="textoIzq" Text='<%# Eval("NOMBRE_ARCHIVO") %>'></asp:Label>
-                                                                        </ItemTemplate>
-                                                                    </asp:TemplateField>
-                                                                    <asp:TemplateField HeaderText="Usuario">
-                                                                        <ItemTemplate>
-                                                                            <asp:Label ID="Usuario" runat="server" CssClass="textoIzq" Text='<%# Eval("USUARIO") %>'></asp:Label>
-                                                                        </ItemTemplate>
-                                                                    </asp:TemplateField>
-                                                                    <asp:TemplateField HeaderText="Tipo archivo">
-                                                                        <ItemTemplate>
-                                                                            <asp:Label ID="tipo_actividad_archivo" runat="server" CssClass="textoIzq" Text='<%# Eval("TIPO_ACTIVIDAD_ARCHIVO") %>'></asp:Label>
-                                                                        </ItemTemplate>
-                                                                    </asp:TemplateField>
-                                                                    <asp:TemplateField HeaderText="Acciones">
-                                                                        <ItemTemplate>
-                                                                            <asp:LinkButton ID="descarga_archivo" runat="server" CssClass="btn btn-default btn-sm" ToolTip="DESCARGAR" CommandName="Descargar">                                                                                                    
-                                                                                                        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-                                                                            </asp:LinkButton>
-
-                                                                            <asp:LinkButton ID="ibtnGEliminar_archivo" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
-                                                                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                                                            </asp:LinkButton>
-
-                                                                            <asp:LinkButton ID="btn_actualizar_archivo" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ACTUALIZAR" CommandName="Actualizar" Visible="true">
-                                                                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                                                            </asp:LinkButton>
-
-                                                                        </ItemTemplate>
-                                                                        <ItemStyle HorizontalAlign="Center" Width="120px" />
-                                                                    </asp:TemplateField>
-                                                                </Columns>
-                                                            </asp:GridView>
-                                                        </div>
                                                     </div>
-                                                </asp:Panel>--%>
+                                                </div>
                                             </div>
                                         </div>
                                     </ContentTemplate>
                                     <Triggers>
+                                        <%--<asp:AsyncPostBackTrigger ControlID="btn_GuardarEnseres" />--%>
                                     </Triggers>
                                 </asp:UpdatePanel>
+
                             </div>
                         </div>
+
                     </div>
                 </div>
                 </center>
