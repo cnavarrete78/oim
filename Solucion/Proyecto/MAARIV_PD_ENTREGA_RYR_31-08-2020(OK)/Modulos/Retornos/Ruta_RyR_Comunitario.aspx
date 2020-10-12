@@ -447,7 +447,9 @@
         .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
             vertical-align: middle;
         }
-
+        .label-informacion {
+            color: black;           
+        }
         #Tabs > ul > li > a {
             padding-top: 0 !important;
             margin: 0 !important;
@@ -4762,6 +4764,118 @@
                                                                 </Triggers>
                                                             </asp:UpdatePanel>
                                                         </div>
+
+                                                        <%--tab de balance--%>
+                                                        <div role="tabpanel" class="tab-pane active" id="balance_ryr" runat="server">
+                                                            <asp:UpdatePanel runat="server" ID="Up_balance" UpdateMode="Conditional">
+                                                                <ContentTemplate>
+                                                                    <%--informacion del balance no editable--%>
+                                                                    <asp:Panel ID="Panel30" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                <asp:Label ID="lbl_nombre_comuniad_balance" runat="server" Visible="true" CssClass="text-warning"></asp:Label>                                                                                
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9 ">Total hogares a trasladar</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_TotalHogares"></label>
+                                                                                    </div>
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9">Total personas a trasladar</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_TotalPersonas"></label>
+                                                                                    </div>                                                                               
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9">Total personas a trasladar  incluidas en el RUV por desplazamiento forzado</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_TotalRUV"></label>
+                                                                                    </div>                                                                              
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9">Departamento</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Departamento_Llegada"></label>                                                                                        
+                                                                                    </div>
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9">Municipio</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Municipio_Llegada"></label>                                                                                                                                                                                
+                                                                                    </div>                                                                               
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9">Entorno urbano/rural</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Entorno_Llegada"></label>                                                                                                                                                                                                                                                                        
+                                                                                    </div>
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9">Corregimiento/vereda/barrio</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Corregimiento_Llegada"></label>                                                                                        
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
+                                                                    <%--1.Identificacion Poblacional RR--%>
+                                                                    <asp:Panel ID="Panel31" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                1.Identificacion Poblacional RR  
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_listado_personas_que_se_acompanan"
+                                                                                        runat="server" AutoGenerateColumns="false" OnRowCommand="gv_listado_personas_que_se_acompanan_RowCommand" OnRowDataBound="gv_listado_personas_que_se_acompanan_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                        <Columns>
+                                                                                            <asp:BoundField DataField="HOGAR" HeaderText="HOGAR" Visible="true" />
+                                                                                            <asp:BoundField DataField="PERSONA" HeaderText="PERSONA" Visible="true" />
+                                                                                            <asp:BoundField DataField="DOCUMENTO" HeaderText="DOCUMENTO" Visible="true" />
+                                                                                            <asp:BoundField DataField="MOTIVO" HeaderText="MOTIVO" Visible="true" />
+                                                                                            <asp:TemplateField HeaderText="Acciones">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                                                    </asp:LinkButton>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" Width="80px" />
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="ID_PERSONA" Visible="false">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="ID_PERSONASI" runat="server" Text='<%# Eval("ID_PERSONA") %>'> </asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
+                                                                    <%--2. BALANCE DE LA SUPERACIÓN DE LA SITUACIÓN DE VULNERABILIDAD (SIN GENERACIÓN DE INGRESOS)--%>
+                                                                    <asp:Panel ID="Panel34" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                2. BALANCE DE LA SUPERACIÓN DE LA SITUACIÓN DE VULNERABILIDAD (SIN GENERACIÓN DE INGRESOS)  
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_balance_ssv"
+                                                                                        runat="server" AutoGenerateColumns="true" OnRowCommand="gv_balance_ssv_RowCommand" OnRowDataBound="gv_balance_ssv_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                        <Columns>
+                                                                                        </Columns>
+                                                                                    </asp:GridView>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+                                                                </ContentTemplate>
+                                                                <Triggers>
+                                                                    <asp:AsyncPostBackTrigger ControlID="guardar_dias" />
+                                                                    <asp:AsyncPostBackTrigger ControlID="gv5" />
+                                                                    <asp:AsyncPostBackTrigger ControlID="TB_HoraInicio" />
+                                                                </Triggers>
+                                                            </asp:UpdatePanel>
+                                                        </div>
                                                     </div>
 
                                                 </div>
@@ -5065,7 +5179,7 @@
 
                             </div>
                         </div>
-                        <%--modal para las evidencias del BALANCE DEL PROCESO DEL TRASLADO Y LLEGADA DE LAS PERSONAS AL LUGAR DE DESTINO --%>                     
+                        <%--modal para las evidencias del BALANCE DEL PROCESO DEL TRASLADO Y LLEGADA DE LAS PERSONAS AL LUGAR DE DESTINO --%>
                         <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalEvidenciasBalance" aria-hidden="true">
                             <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>
                             <div class="modal-dialog modal-lg" role="document">
@@ -5107,58 +5221,58 @@
                                                         </asp:Panel>
 
                                                         <%--tabla de las evidencias cargadas--%>
-                                                <div class="row">
-                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_evidencias_traslado"
-                                                        runat="server" AutoGenerateColumns="false " OnRowCommand="gv_evidencias_traslado_RowCommand" OnRowDataBound="gv_evidencias_traslado_RowDataBound">
-                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
-                                                        <Columns>
-                                                            <asp:BoundField DataField="ID" HeaderText="ID" Visible="false" />
-                                                            <asp:BoundField DataField="ID_BALANCE_TRASLADO" HeaderText="ID" Visible="false" />
-                                                            <asp:BoundField DataField="ID_TIPO_EVIDENCIA" HeaderText="ID_TIPO_EVIDENCIA" Visible="false" />
-                                                            <asp:BoundField DataField="TIPO_EVIDENCIA" HeaderText="TIPO_EVIDENCIA" />
-                                                            <asp:BoundField DataField="URL_ARCHIVO" HeaderText="URL_ARCHIVO" />
-                                                            <asp:BoundField DataField="EXTENSION" HeaderText="EXTENSION" />
-                                                            <asp:TemplateField HeaderText="Acciones">
-                                                                <ItemTemplate>
-                                                                    <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
-                                                                        <asp:LinkButton ID="descarga_archivo_evidencia" runat="server" CssClass="btn btn-default btn-sm" ToolTip="DESCARGAR" CommandName="Descargar">                                                                                                    
+                                                        <div class="row">
+                                                            <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_evidencias_traslado"
+                                                                runat="server" AutoGenerateColumns="false " OnRowCommand="gv_evidencias_traslado_RowCommand" OnRowDataBound="gv_evidencias_traslado_RowDataBound">
+                                                                <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                <Columns>
+                                                                    <asp:BoundField DataField="ID" HeaderText="ID" Visible="false" />
+                                                                    <asp:BoundField DataField="ID_BALANCE_TRASLADO" HeaderText="ID" Visible="false" />
+                                                                    <asp:BoundField DataField="ID_TIPO_EVIDENCIA" HeaderText="ID_TIPO_EVIDENCIA" Visible="false" />
+                                                                    <asp:BoundField DataField="TIPO_EVIDENCIA" HeaderText="TIPO_EVIDENCIA" />
+                                                                    <asp:BoundField DataField="URL_ARCHIVO" HeaderText="URL_ARCHIVO" />
+                                                                    <asp:BoundField DataField="EXTENSION" HeaderText="EXTENSION" />
+                                                                    <asp:TemplateField HeaderText="Acciones">
+                                                                        <ItemTemplate>
+                                                                            <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                <asp:LinkButton ID="descarga_archivo_evidencia" runat="server" CssClass="btn btn-default btn-sm" ToolTip="DESCARGAR" CommandName="Descargar">                                                                                                    
                                                                                                         <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
-                                                                        </asp:LinkButton>
-                                                                        <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
+                                                                                </asp:LinkButton>
+                                                                                <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
                                                                                                         <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                                                        </asp:LinkButton>
-                                                                    </div>
-                                                                </ItemTemplate>
-                                                                <ItemStyle HorizontalAlign="Center" Width="80px" />
-                                                            </asp:TemplateField>
-                                                            <asp:TemplateField HeaderText="ID" Visible="false">
-                                                                <ItemTemplate>
-                                                                    <asp:Label ID="ID_EVIDENCIA" runat="server" Text='<%# Eval("ID") %>'> </asp:Label>
-                                                                </ItemTemplate>
-                                                            </asp:TemplateField>
-                                                              <asp:TemplateField HeaderText="ID_BALANCE_TRASLADO" Visible="false">
-                                                                <ItemTemplate>
-                                                                    <asp:Label ID="ID_BALANCE_TRASLADO" runat="server" Text='<%# Eval("ID_BALANCE_TRASLADO") %>'> </asp:Label>
-                                                                </ItemTemplate>
-                                                            </asp:TemplateField>
-                                                             <asp:TemplateField HeaderText="URL_ARCHIVO" Visible="false">
-                                                                <ItemTemplate>
-                                                                    <asp:Label ID="URL_ARCHIVO" runat="server" Text='<%# Eval("URL_ARCHIVO") %>'> </asp:Label>
-                                                                </ItemTemplate>
-                                                            </asp:TemplateField>
-                                                             <asp:TemplateField HeaderText="EXTENSION" Visible="false">
-                                                                <ItemTemplate>
-                                                                    <asp:Label ID="EXTENSION" runat="server" Text='<%# Eval("EXTENSION") %>'> </asp:Label>
-                                                                </ItemTemplate>
-                                                            </asp:TemplateField>     
-                                                              <asp:TemplateField HeaderText="NOMBRE_ARCHIVO" Visible="false">
-                                                                <ItemTemplate>
-                                                                    <asp:Label ID="NOMBRE_ARCHIVO" runat="server" Text='<%# Eval("NOMBRE_ARCHIVO") %>'> </asp:Label>
-                                                                </ItemTemplate>
-                                                            </asp:TemplateField>     
-                                                        </Columns>
-                                                    </asp:GridView>
-                                                </div>
+                                                                                </asp:LinkButton>
+                                                                            </div>
+                                                                        </ItemTemplate>
+                                                                        <ItemStyle HorizontalAlign="Center" Width="80px" />
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="ID" Visible="false">
+                                                                        <ItemTemplate>
+                                                                            <asp:Label ID="ID_EVIDENCIA" runat="server" Text='<%# Eval("ID") %>'> </asp:Label>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="ID_BALANCE_TRASLADO" Visible="false">
+                                                                        <ItemTemplate>
+                                                                            <asp:Label ID="ID_BALANCE_TRASLADO" runat="server" Text='<%# Eval("ID_BALANCE_TRASLADO") %>'> </asp:Label>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="URL_ARCHIVO" Visible="false">
+                                                                        <ItemTemplate>
+                                                                            <asp:Label ID="URL_ARCHIVO" runat="server" Text='<%# Eval("URL_ARCHIVO") %>'> </asp:Label>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="EXTENSION" Visible="false">
+                                                                        <ItemTemplate>
+                                                                            <asp:Label ID="EXTENSION" runat="server" Text='<%# Eval("EXTENSION") %>'> </asp:Label>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="NOMBRE_ARCHIVO" Visible="false">
+                                                                        <ItemTemplate>
+                                                                            <asp:Label ID="NOMBRE_ARCHIVO" runat="server" Text='<%# Eval("NOMBRE_ARCHIVO") %>'> </asp:Label>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                </Columns>
+                                                            </asp:GridView>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
