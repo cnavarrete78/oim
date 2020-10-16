@@ -1792,25 +1792,25 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Entidades_Ruta_Comunitaria();
         }
-        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int totalHogares, int totalPersonas, int totalRUV, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada)
+        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada, DateTime fechaInicio, DateTime fechaLlegada, int idUsuario)
         {
-            return L_D.LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComunidad,totalHogares,totalPersonas, totalRUV, id_MunSalida, idMunLlegada, idEntornoSalida, idEntornoLlegada, corregimmientoSalida, corregimientoLlegada);
+            return L_D.LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComunidad,id_MunSalida, idMunLlegada, idEntornoSalida, idEntornoLlegada, corregimmientoSalida, corregimientoLlegada,  fechaInicio,  fechaLlegada, idUsuario);
         }
-        public bool LD_Insertar_plan_acción_traslado_entidad_Ruta_Comunitaria(int idPlan, int idEntidad)
+        public bool LD_Insertar_plan_acción_traslado_entidad_Ruta_Comunitaria(int idPlan, int idEntidad, int idUsuario)
         {
-            return L_D.LD_Insertar_plan_acción_traslado_entidad_ruta_comunitaria(idPlan, idEntidad);
+            return L_D.LD_Insertar_plan_acción_traslado_entidad_ruta_comunitaria(idPlan, idEntidad , idUsuario);
         }
         public bool LD_Eliminar_plan_acción_traslado_entidad_Ruta_Comunitaria(int idPlan, int idEntidad)
         {
             return L_D.LD_Eliminar_plan_acción_traslado_entidad_ruta_comunitaria(idPlan, idEntidad);
         }
-        public bool LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(int idCategoria, int idPlan, int idComuidad, string resultado, string acciones, string observaciones)
+        public bool LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(int idCategoria, int idPlan, int idComuidad, string resultado, string acciones, string observaciones, int idUsuario)
         {
-            return L_D.LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(idCategoria, idPlan,  idComuidad,  resultado,  acciones,  observaciones);
+            return L_D.LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(idCategoria, idPlan,  idComuidad,  resultado,  acciones,  observaciones, idUsuario);
         }
-        public bool LD_Insertar_plan_acción_traslado_categoria_entidad_Ruta_Comunitaria(int idPlan, int idEntidad, int idCategoria)
+        public bool LD_Insertar_plan_acción_traslado_categoria_entidad_Ruta_Comunitaria(int idPlan, int idEntidad, int idCategoria, int idUsuario)
         {
-            return L_D.LD_Insertar_plan_acción_traslado_Categorizacion_entidad_ruta_comunitaria(idPlan, idEntidad, idCategoria);
+            return L_D.LD_Insertar_plan_acción_traslado_Categorizacion_entidad_ruta_comunitaria(idPlan, idEntidad, idCategoria, idUsuario);
         }
         public bool LD_Eliminar_plan_acción_traslado_categoria_entidad_Ruta_Comunitaria(int idPlan, int idEntidad, int idCategoria)
         {
@@ -1824,23 +1824,23 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Eliminar_plan_acción_traslado_profesionales_traslado_Ruta_Comunitaria(id);
         }
-        public bool LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string actividad, string responsable, bool cumplida, string observaciones)
+        public bool LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string actividad, string responsable, bool cumplida, string observaciones, int idUsuario)
         {
-            return L_D.LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(id, idPlan, idComuidad, actividad, responsable, cumplida, observaciones);
+            return L_D.LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(id, idPlan, idComuidad, actividad, responsable, cumplida, observaciones, idUsuario);
         }
-        public bool LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string profesional, int idEntidad, string telefono, string correo)
+        public bool LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(int id, int idPlan, int idComuidad, string profesional, int idEntidad, string telefono, string correo, int idUsuario)
         {
-            return L_D.LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(id, idPlan, idComuidad, profesional, idEntidad, telefono, correo);
-        }
-
-        public bool LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria(int id, int idPlan, int idComunidad, DateTime fechaRegistro, int idMunicipio, string direccion, int idDt, int idEntidad, string profesional, string correo)
-        {
-            return L_D.LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria( id,  idPlan, idComunidad,  fechaRegistro,  idMunicipio,  direccion,  idDt,  idEntidad,  profesional,  correo);
+            return L_D.LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(id, idPlan, idComuidad, profesional, idEntidad, telefono, correo, idUsuario);
         }
 
-        public bool LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria(int id, int idPlan, int idComunidad, int idHogar, int estufas, int neveras, int utenciliosCocina, int camas, int colchones,int cobijas, int sofas, int sillas, int mesas, int equiposSonido, int juguetes, int bicicletas, int motos, int tulas, int peso, bool rotulacion)
+        public bool LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria(int id, int idPlan, int idComunidad, DateTime fechaRegistro, int idMunicipio, string direccion, int idDt, int idEntidad, string profesional, string correo, int idUsuario)
         {
-            return L_D.LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria( id,  idPlan,  idComunidad,  idHogar,  estufas,  neveras,  utenciliosCocina,  camas,  colchones, cobijas,  sofas,  sillas,  mesas,  equiposSonido,  juguetes,  bicicletas,  motos,  tulas,  peso,  rotulacion);
+            return L_D.LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria( id,  idPlan, idComunidad,  fechaRegistro,  idMunicipio,  direccion,  idDt,  idEntidad,  profesional,  correo, idUsuario);
+        }
+
+        public bool LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria(int id, int idPlan, int idComunidad, int idHogar, int estufas, int neveras, int utenciliosCocina, int camas, int colchones,int cobijas, int sofas, int sillas, int mesas, int equiposSonido, int juguetes, int bicicletas, int motos, int tulas, int peso, bool rotulacion, int idUsuario)
+        {
+            return L_D.LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria( id,  idPlan,  idComunidad,  idHogar,  estufas,  neveras,  utenciliosCocina,  camas,  colchones, cobijas,  sofas,  sillas,  mesas,  equiposSonido,  juguetes,  bicicletas,  motos,  tulas,  peso,  rotulacion, idUsuario);
         }
 
         public DataSet Get_Entidades_Plan_Accion_Traslado_Ruta_Comunitaria(int idPlan)
@@ -1890,9 +1890,13 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.Get_Persona_Plan_Accion_Traslado_por_numero_documento(numDocumento);
         }
-        public bool LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(int idPlan, int idComunidad, int idPersona, bool seTraslada, string motivo)
+        public bool LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(int idPlan, int idComunidad, int idPersona, bool seTraslada, string motivo, int idUsuario)
         {
-            return L_D.LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(idPlan, idComunidad, idPersona,  seTraslada, motivo);
+            return L_D.LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(idPlan, idComunidad, idPersona,  seTraslada, motivo, idUsuario);
+        }
+        public bool LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(int id, int idBalance, int idTipoEvidencia, string urlArchivo, string nombreArchivo, string extension,  int idUsuario, bool activo)
+        {
+            return L_D.LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria( id,  idBalance,  idTipoEvidencia,  urlArchivo, nombreArchivo,  extension,  idUsuario,  activo);
         }
 
         public DataSet Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(int idPlan)
@@ -1900,6 +1904,10 @@ namespace com.GACV.lgb.persistencia.fachada
             return L_D.LD_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(idPlan);
         }
 
+        public DataSet Get_Persona_Plan_Accion_Traslado_balance_evidencia(int idBalance)
+        {
+            return L_D.Get_Persona_Plan_Accion_Traslado_balance_evidencia(idBalance);
+        }
         #endregion
 
     }
