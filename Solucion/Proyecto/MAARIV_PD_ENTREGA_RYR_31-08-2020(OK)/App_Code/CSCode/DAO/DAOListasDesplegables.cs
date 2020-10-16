@@ -4735,7 +4735,7 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return ds;
         }
-        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada, int idUsuario)
+        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada, DateTime fechaInicio ,DateTime fechaLlegada, int idUsuario)
         {
             int idPlanTraslado = 0;
             try
@@ -4770,6 +4770,15 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam9 = new SqlParameter("@CORREGIMIENTO_LLEGADA", corregimientoLlegada);
                 oParam9.SqlDbType = SqlDbType.Text;
                 Command.Parameters.Add(oParam9);
+                SqlParameter oParam10 = new SqlParameter("@FECHA_INICIO_TRASLADO", fechaInicio);
+                oParam10.SqlDbType = SqlDbType.Date;
+                Command.Parameters.Add(oParam10);
+                SqlParameter oParam11 = new SqlParameter("@FECHA_LLEGADA", fechaLlegada);
+                oParam11.SqlDbType = SqlDbType.Date;
+                Command.Parameters.Add(oParam11);
+
+
+
                 SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
                 oParamIdUsuario.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParamIdUsuario);

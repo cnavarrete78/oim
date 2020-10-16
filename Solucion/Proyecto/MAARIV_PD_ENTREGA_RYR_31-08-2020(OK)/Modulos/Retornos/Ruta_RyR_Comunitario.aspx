@@ -47,7 +47,6 @@
             $(function Show() {
                 $('.footable').footable();
             });
-
         } TB_Nit
         function openModalEID() {
             $('#modalAddEID').modal('show');
@@ -447,9 +446,11 @@
         .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
             vertical-align: middle;
         }
+
         .label-informacion {
-            color: black;           
+            color: black;
         }
+
         #Tabs > ul > li > a {
             padding-top: 0 !important;
             margin: 0 !important;
@@ -4043,8 +4044,27 @@
                                                                                         <label class="label1 col-sm-12">Total personas a trasladar  incluidas en el RUV por desplazamiento forzado</label>
                                                                                         <asp:TextBox ID="txTotalRUV" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
                                                                                     </div>
+                                                                                </div>
+                                                                                <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Fecha de inicio del traslado</label>
+                                                                                        <div class="input-group " id="calendarFechaInicioTraslado" style="padding-right: 40px;">
+                                                                                            <asp:TextBox ID="txFechaInicioTraslado" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
+                                                                                            <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                                        </div>
+                                                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender2" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="calendarFechaInicioTraslado" TargetControlID="txFechaInicioTraslado"></ajaxToolkit:CalendarExtender>
+                                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator7" runat="server" ControlToValidate="txFechaInicioTraslado" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardar_dias">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator76" runat="server" ControlToValidate="txFechaInicioTraslado" CssClass="validador" Display="Dynamic" ValidationGroup="guardarPlanTraslado">*</asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Fecha de Llegada</label>
+                                                                                        <div class="input-group " id="calendarFechaLlefada" style="padding-right: 40px;">
+                                                                                            <asp:TextBox ID="txFechaLlegada" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
+                                                                                            <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                                        </div>
+                                                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender4" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="calendarFechaLlefada" TargetControlID="txFechaLlegada"></ajaxToolkit:CalendarExtender>
+                                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator8" runat="server" ControlToValidate="txFechaLlegada" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardar_dias">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator94" runat="server" ControlToValidate="txFechaLlegada" CssClass="validador" Display="Dynamic" ValidationGroup="guardarPlanTraslado">*</asp:RequiredFieldValidator>
                                                                                     </div>
                                                                                 </div>
                                                                                 <%--DATOS DE SALIDA--%>
@@ -4507,12 +4527,13 @@
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Fecha del Registro</label>
-                                                                                        <asp:TextBox ID="txtFechaRegistro" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
-                                                                                        <span style="font-weight: normal">
-                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator36" runat="server"
-                                                                                                ControlToValidate="txtFechaRegistro" CssClass="validador" Display="Dynamic"
-                                                                                                ValidationGroup="agregarRegistroAlistamiento">* Campo obligatorio</asp:RequiredFieldValidator>
-                                                                                        </span>
+                                                                                        <div class="input-group " id="calendarFechaRegistroTraslado" style="padding-right: 40px;">
+                                                                                            <asp:TextBox ID="txtFechaRegistro" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
+                                                                                            <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                                        </div>
+                                                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender5" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="calendarFechaRegistroTraslado" TargetControlID="txtFechaRegistro"></ajaxToolkit:CalendarExtender>
+                                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator9" runat="server" ControlToValidate="txtFechaRegistro" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardar_dias">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator36" runat="server" ControlToValidate="txtFechaRegistro" CssClass="validador" Display="Dynamic" ValidationGroup="agregarRegistroAlistamiento">*</asp:RequiredFieldValidator>
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Departamento</label>
@@ -4773,7 +4794,7 @@
                                                                     <asp:Panel ID="Panel30" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
                                                                             <div class="panel-heading">
-                                                                                <asp:Label ID="lbl_nombre_comuniad_balance" runat="server" Visible="true" CssClass="text-warning"></asp:Label>                                                                                
+                                                                                <asp:Label ID="lbl_nombre_comuniad_balance" runat="server" Visible="true" CssClass="text-warning"></asp:Label>
                                                                             </div>
                                                                             <div class="panel-body">
                                                                                 <div class="row">
@@ -4784,26 +4805,26 @@
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-9">Total personas a trasladar</label>
                                                                                         <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_TotalPersonas"></label>
-                                                                                    </div>                                                                               
+                                                                                    </div>
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-9">Total personas a trasladar  incluidas en el RUV por desplazamiento forzado</label>
                                                                                         <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_TotalRUV"></label>
-                                                                                    </div>                                                                              
+                                                                                    </div>
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-9">Departamento</label>
-                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Departamento_Llegada"></label>                                                                                        
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Departamento_Llegada"></label>
                                                                                     </div>
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-9">Municipio</label>
-                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Municipio_Llegada"></label>                                                                                                                                                                                
-                                                                                    </div>                                                                               
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Municipio_Llegada"></label>
+                                                                                    </div>
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-9">Entorno urbano/rural</label>
-                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Entorno_Llegada"></label>                                                                                                                                                                                                                                                                        
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Entorno_Llegada"></label>
                                                                                     </div>
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-9">Corregimiento/vereda/barrio</label>
-                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Corregimiento_Llegada"></label>                                                                                        
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Corregimiento_Llegada"></label>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

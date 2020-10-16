@@ -11418,11 +11418,14 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             LD_Departamento_Llegada.SelectedValue = dsPT.Tables[0].Rows[0]["ID_DEPARTAMENTO_LLEGADA"].ToString();
             LlenarComboMunicipioLlegada(Convert.ToInt32(dsPT.Tables[0].Rows[0]["ID_DEPARTAMENTO_LLEGADA"]));
             LD_Municipio_Llegada.SelectedValue = dsPT.Tables[0].Rows[0]["ID_MUNICIPIO_LLEGADA"].ToString();
-
             LD_Entorno_Salida.SelectedValue = dsPT.Tables[0].Rows[0]["ID_ENTORNO_SALIDA"].ToString();
             LD_Entorno_Llegada.SelectedValue = dsPT.Tables[0].Rows[0]["ID_ENTORNO_LLEGADA"].ToString();
+            DateTime fechaInicio = Convert.ToDateTime ( dsPT.Tables[0].Rows[0]["FECHA_INICIO_TRASLADO"]);
+            txFechaInicioTraslado.Text = fechaInicio.ToShortDateString();
+            DateTime fechaLlegada = Convert.ToDateTime(dsPT.Tables[0].Rows[0]["FECHA_LLEGADA"]);
+            txFechaLlegada.Text = fechaLlegada.ToShortDateString();
 
-            idPlanAccionTraslado.Value = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"].ToString();
+            idPlanAccionTraslado.Value = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"].ToString();                       
             ViewState["idPlanAccionTraslado"] = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"];
         }
     }
@@ -11518,7 +11521,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         dsPT = FachadaPersistencia.getInstancia().Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria(idPlan);
         if (!dsPT.Tables[0].Rows.Count.Equals(0))
         {
-            txtFechaRegistro.Text = dsPT.Tables[0].Rows[0]["FECHA_REGISTRO"].ToString();
+            DateTime fechaRegistro = Convert.ToDateTime(dsPT.Tables[0].Rows[0]["FECHA_REGISTRO"]);
+            txtFechaRegistro.Text = fechaRegistro.ToShortDateString();
             txtDireccionRegistro.Text = dsPT.Tables[0].Rows[0]["DIRECCION"].ToString();
             txtProfesionalEncargado.Text = dsPT.Tables[0].Rows[0]["PROFESIONAL_REGISTRO"].ToString();
             txCorreoProfesionalEncargado.Text = dsPT.Tables[0].Rows[0]["CORREO_ELECTRONICO"].ToString();
@@ -11683,7 +11687,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             string corregimmientoSalida = txCorregimiento_Salida.Text;
             string corregimientoLlegada = txCorregimiento_Llegada.Text;
             int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-            int idPlan = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComuniad, id_MunSalida, idMunLlegada, idEntornoSalida, idEntornoLlegada, corregimmientoSalida, corregimientoLlegada, idUsuario);
+            DateTime fechaInicioTraslado = Convert.ToDateTime(Convert.ToString(txFechaInicioTraslado.Text));
+            DateTime fechaLlegada = Convert.ToDateTime(Convert.ToString(txFechaLlegada.Text));
+            int idPlan = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComuniad, id_MunSalida, idMunLlegada, idEntornoSalida, idEntornoLlegada, corregimmientoSalida, corregimientoLlegada, fechaInicioTraslado, fechaLlegada, idUsuario);
             idPlanAccionTraslado.Value = idPlan.ToString();
             ViewState["idPlanAccionTraslado"] = idPlan.ToString();
             GetPlanTraslado();
@@ -11832,8 +11838,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             int idComunidad = Convert.ToInt32(TB_Nit.Text);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             int id = 0;
-            //DateTime fechaRegistro = txtFechaRegistro.Text;
-            DateTime fechaRegistro = DateTime.Today;
+            DateTime fechaRegistro = Convert.ToDateTime(Convert.ToString(txtFechaRegistro.Text));
             int idMunicipio = Convert.ToInt32(LD_MunicipioAlistamiento.SelectedValue);
             string direccion = txtDireccionRegistro.Text;
             int idDt = Convert.ToInt32(LD_DireccionTerritorialProfesionalEncargado.SelectedValue);

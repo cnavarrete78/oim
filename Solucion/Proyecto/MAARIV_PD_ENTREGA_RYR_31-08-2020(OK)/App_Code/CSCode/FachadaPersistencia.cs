@@ -1792,9 +1792,9 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Entidades_Ruta_Comunitaria();
         }
-        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada, int idUsuario)
+        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada, DateTime fechaInicio, DateTime fechaLlegada, int idUsuario)
         {
-            return L_D.LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComunidad,id_MunSalida, idMunLlegada, idEntornoSalida, idEntornoLlegada, corregimmientoSalida, corregimientoLlegada, idUsuario);
+            return L_D.LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(idComunidad,id_MunSalida, idMunLlegada, idEntornoSalida, idEntornoLlegada, corregimmientoSalida, corregimientoLlegada,  fechaInicio,  fechaLlegada, idUsuario);
         }
         public bool LD_Insertar_plan_acción_traslado_entidad_Ruta_Comunitaria(int idPlan, int idEntidad, int idUsuario)
         {
