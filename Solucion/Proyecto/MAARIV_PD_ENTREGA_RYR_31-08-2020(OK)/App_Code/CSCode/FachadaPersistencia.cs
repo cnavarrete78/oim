@@ -1808,6 +1808,10 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(idCategoria, idPlan,  idComuidad,  resultado,  acciones,  observaciones, idUsuario);
         }
+        public bool LD_Actualizar_plan_acción_traslado_para_balance_Ruta_Comunitaria(int idComunidad, int idPlan, int idDt, string profesional, string correo, DateTime fechaSSV, int idUsuario)
+        {
+            return L_D.LD_Actualizar_plan_acción_traslado_para_balance_Ruta_Comunitaria( idComunidad,  idPlan,  idDt,  profesional,  correo,  fechaSSV,  idUsuario);
+        }
         public bool LD_Insertar_plan_acción_traslado_categoria_entidad_Ruta_Comunitaria(int idPlan, int idEntidad, int idCategoria, int idUsuario)
         {
             return L_D.LD_Insertar_plan_acción_traslado_Categorizacion_entidad_ruta_comunitaria(idPlan, idEntidad, idCategoria, idUsuario);
@@ -1902,6 +1906,10 @@ namespace com.GACV.lgb.persistencia.fachada
         public DataSet Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(int idPlan)
         {
             return L_D.LD_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(idPlan);
+        }
+        public DataSet Get_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria(int idComunidad)
+        {
+            return L_D.LD_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria(idComunidad);
         }
 
         public DataSet Get_Persona_Plan_Accion_Traslado_balance_evidencia(int idBalance)

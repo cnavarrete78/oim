@@ -158,7 +158,12 @@
                     //details: false
                 }
             });
-
+            $('[id$="gv_listado_personas_que_se_acompanan"]').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                }
+            });
             $('[id$="LD_Territorial"]').change(function () {
                 var id_territorial = $('[id$="LD_Territorial"]').val();
                 if (L_D_Territorial != '') {
@@ -2620,8 +2625,6 @@
                             <Triggers>
                             </Triggers>
                         </asp:UpdatePanel>
-
-
                         <%--modulo administrar actividades--%>
                         <asp:UpdatePanel ID="UP_ResultadoBusqueda" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
@@ -2751,8 +2754,6 @@
                                                 <asp:Literal runat="server" ID="L_titulo"> </asp:Literal>
                                             </div>
                                             <div class="panel-body">
-
-
                                                 <div id="Tabs" role="tabpanel">
                                                     <!-- Nav tabs -->
                                                     <%--------------------------------------------------------%>
@@ -4826,6 +4827,47 @@
                                                                                         <label class="label1 col-sm-9">Corregimiento/vereda/barrio</label>
                                                                                         <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Corregimiento_Llegada"></label>
                                                                                     </div>
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9">Fecha de la medición de SSV de balance</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lblMedicionSSV"></label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Dirección territorial</label>
+                                                                                        <asp:DropDownList ID="LD_DireccionTerritorialProfesionalListadoBalance" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator96" runat="server"
+                                                                                                ControlToValidate="LD_DireccionTerritorialProfesionalListadoBalance" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarDatosListadoBalance">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Profesional encargado de elaborar el listado</label>
+                                                                                        <asp:TextBox ID="txProfesionalListadoBalance" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator97" runat="server"
+                                                                                                ControlToValidate="txProfesionalListadoBalance" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarDatosListadoBalance">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Correo electrónico</label>
+                                                                                        <asp:TextBox ID="txcorreoProcesionalListadoBalance" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator98" runat="server"
+                                                                                                ControlToValidate="txcorreoProcesionalListadoBalance" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="agregarDatosListadoBalance">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <asp:LinkButton ID="LinkButton14" runat="server" CssClass="btn btn-danger btn-block" ValidationGroup="agregarDatosListadoBalance" OnClick="btn_guardar_datosProfesionalListado_balance_Click" Text="Guardar">
+                                                                                             Guardar
+                                                                                    </asp:LinkButton>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -4841,29 +4883,29 @@
                                                                             </div>
                                                                             <div class="panel-body">
                                                                                 <div class="row">
-                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_listado_personas_que_se_acompanan"
-                                                                                        runat="server" AutoGenerateColumns="false" OnRowCommand="gv_listado_personas_que_se_acompanan_RowCommand" OnRowDataBound="gv_listado_personas_que_se_acompanan_RowDataBound">
-                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
-                                                                                        <Columns>
-                                                                                            <asp:BoundField DataField="HOGAR" HeaderText="HOGAR" Visible="true" />
-                                                                                            <asp:BoundField DataField="PERSONA" HeaderText="PERSONA" Visible="true" />
-                                                                                            <asp:BoundField DataField="DOCUMENTO" HeaderText="DOCUMENTO" Visible="true" />
-                                                                                            <asp:BoundField DataField="MOTIVO" HeaderText="MOTIVO" Visible="true" />
-                                                                                            <asp:TemplateField HeaderText="Acciones">
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:LinkButton ID="ibtnGEliminar_documento" runat="server" CssClass="btn btn-default btn-sm" ToolTip="ELIMINAR" CommandName="Eliminar" Visible="true">
-                                                                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                                                                                    </asp:LinkButton>
-                                                                                                </ItemTemplate>
-                                                                                                <ItemStyle HorizontalAlign="Center" Width="80px" />
-                                                                                            </asp:TemplateField>
-                                                                                            <asp:TemplateField HeaderText="ID_PERSONA" Visible="false">
-                                                                                                <ItemTemplate>
-                                                                                                    <asp:Label ID="ID_PERSONASI" runat="server" Text='<%# Eval("ID_PERSONA") %>'> </asp:Label>
-                                                                                                </ItemTemplate>
-                                                                                            </asp:TemplateField>
-                                                                                        </Columns>
-                                                                                    </asp:GridView>
+                                                                                    <asp:UpdatePanel ID="UP_DatosSujetos2" runat="server" UpdateMode="Conditional">
+                                                                                        <ContentTemplate>
+                                                                                            <div class="row">
+                                                                                                <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_listado_personas_que_se_acompanan"
+                                                                                                    runat="server" AutoGenerateColumns="false" OnRowCommand="gv_listado_personas_que_se_acompanan_RowCommand" OnRowDataBound="gv_listado_personas_que_se_acompanan_RowDataBound" OnPreRender="gv_listado_personas_que_se_acompanan_PreRender">
+                                                                                                    <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                                    <Columns>
+                                                                                                        <asp:BoundField DataField="ID_PERSONA" HeaderText="ID_PERSONA" Visible="false" />
+                                                                                                        <asp:BoundField DataField="ID_PERSONA_RUV" HeaderText="ID_PERSONA_RUV" Visible="false" />
+                                                                                                        <asp:BoundField DataField="HOGAR" HeaderText="HOGAR" Visible="true" />
+                                                                                                        <asp:BoundField DataField="PERSONA" HeaderText="PERSONA" Visible="true" />
+                                                                                                        <asp:BoundField DataField="FECHA_NACIMIENTO" HeaderText="FECHA DE NACIMIENTO" Visible="true" />
+                                                                                                        <asp:BoundField DataField="SEXO" HeaderText="SEXO" Visible="true" />
+                                                                                                        <asp:BoundField DataField="PARENTESCO" HeaderText="PARENTESCO" Visible="true" />
+                                                                                                        <asp:BoundField DataField="UBICACION" HeaderText="UBICACION" Visible="true" />
+                                                                                                    </Columns>
+                                                                                                    <PagerStyle CssClass="pgr" />
+                                                                                                </asp:GridView>
+                                                                                            </div>
+                                                                                        </ContentTemplate>
+                                                                                        <Triggers>
+                                                                                        </Triggers>
+                                                                                    </asp:UpdatePanel>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

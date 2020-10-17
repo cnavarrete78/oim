@@ -4799,6 +4799,49 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return idPlanTraslado;
         }
+        public bool LD_Actualizar_plan_acción_traslado_para_balance_Ruta_Comunitaria(int idComunidad,int idPlan, int idDt, string profesional, string correo, DateTime fechaSSV, int idUsuario)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_PLAN_ACCION_TRASLADO_PARA_EL_BALANCE", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_COMUNIDAD", idComunidad);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+                SqlParameter oParam4 = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam4.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam4);
+                SqlParameter oParam5 = new SqlParameter("@ID_DT_BALANCE", idDt);
+                oParam5.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam5);
+                SqlParameter oParam6 = new SqlParameter("@PROFESIONAL_ELABORA_LISTADO_BALANCE", profesional);
+                oParam6.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam6);
+                SqlParameter oParam7 = new SqlParameter("@CORREO_PROFESIONAL_ELABORA_LISTADO_BALANCE", correo);
+                oParam7.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam7);
+                SqlParameter oParam8 = new SqlParameter("@FECHA_MEDICION_SSV", fechaSSV);
+                oParam8.SqlDbType = SqlDbType.Date;
+                Command.Parameters.Add(oParam8);
+                SqlParameter oParamIdUsuario = new SqlParameter("ID_USUARIO_BALANCE", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
+                Command.ExecuteNonQuery();
+                con.Close();
+                return true;
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                return false;
+            }            
+        }
 
         public bool LD_Insertar_plan_acción_traslado_entidad_ruta_comunitaria(int idPlan, int idEntidad, int idUsuario)
         {
@@ -5734,6 +5777,36 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return ds;
         }
+
+        public DataSet LD_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria(int idComunidad)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_PERSONAS_SI_SE_TRASLADAN", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_COMUNIDAD", idComunidad);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
 
         public bool LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(int id, int idBalance, int idTipoEvidencia,string urlArchivo,string nombreArchivo, string extension, int idUsuario, bool activo)
         {
