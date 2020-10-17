@@ -145,6 +145,47 @@ namespace com.logica.correo
             this.mail.F_MENSAJE = Cuerpo_Correo_Generar(datos, opcion);
         }
 
+        public static int Crear_correo(DataSet correos_enviar, string asunto, string[] datos, int opcion, int responsables)
+        {
+            Correos correo = new Correos();
+
+            //creacion del correo
+            correo.CrearCorreo(asunto, datos, opcion); //opcion 2 envio de actualizaciones en jornadas/actividades
+                                                       //envio a los diferentes correos del dataset
+            int valor_mail = 0;
+            List<string> send_to = new List<string>();
+            string cor = "";
+            if (correos_enviar != null)
+            {
+                if (responsables == 0) // a todos
+                {
+                    for (int i = 0; i < correos_enviar.Tables[0].Rows.Count; i++)
+                    {
+                        cor = correos_enviar.Tables[0].Rows[i]["EMAIL"].ToString();
+                        if (Convert.ToString(HttpContext.Current.Session["email"]) != cor)
+                        {
+                            send_to.Add(cor);
+                        }
+
+                    }
+                    if (opcion == 5)
+                    {
+                        send_to.Add("angela.rojas@unidadvictimas.gov.co");
+                        send_to.Add("erika.rueda@unidadvictimas.gov.co");
+                    }
+
+                }
+                else if (responsables > 0)
+                {
+                    cor = correos_enviar.Tables[0].Rows[responsables]["EMAIL"].ToString();
+                    send_to.Add(cor);
+                }
+
+            }
+            valor_mail = correo.EnviarCorreo(send_to);
+            return valor_mail;
+        }
+
         public int EnviarCorreo(List<string> email)
         {
             //NOTIFICACION CREAR PROCEDIMIENTO
