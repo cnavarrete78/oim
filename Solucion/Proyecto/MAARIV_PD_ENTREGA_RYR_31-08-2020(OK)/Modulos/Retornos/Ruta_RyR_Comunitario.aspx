@@ -2240,13 +2240,13 @@
                                 <%--<asp:PostBackTrigger ControlID="gv" />--%>
                             </Triggers>
                         </asp:UpdatePanel>
-                        
+
                         <div class="row">
                             <div class="col-md-12">
                                 <asp:HiddenField ID="hf_id_nombre_actividad" runat="server" />
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <asp:UpdatePanel ID="UP_DatosEvento" runat="server" UpdateMode="Conditional">
                                 <ContentTemplate>
@@ -2266,6 +2266,7 @@
                                                     <ul class="nav2 nav2-tabs pestana" role="tablist">
                                                         <li id="m_2" runat="server"><a href="#ContentPlaceHolder1_Responsables" aria-controls="Responsables" role="tab" data-toggle="tab">Responsables</a></li>
                                                         <li id="m_4" runat="server"><a href="#ContentPlaceHolder1_Dias" aria-controls="Dias" role="tab" data-toggle="tab">Acciones </a></li>
+                                                        <li id="m_Ficha" runat="server" class="active"><a href="#ContentPlaceHolder1_ficha" aria-controls="ficha" role="tab" data-toggle="tab">Ficha de Caracterización</a></li>
                                                         <li id="m_PlanTraslado" runat="server" class="active"><a href="#ContentPlaceHolder1_plan_traslado" aria-controls="plan_traslado" role="tab" data-toggle="tab">Plan de acción del traslado </a></li>
                                                         <li id="m_Balance" runat="server"><a href="#ContentPlaceHolder1_balance" aria-controls="balance" role="tab" data-toggle="tab">Balance </a></li>
                                                     </ul>
@@ -3523,6 +3524,154 @@
                                                                 </Triggers>
                                                             </asp:UpdatePanel>
                                                         </div>
+                                                        <%-- tab de FichaCaracterizacion --%>
+                                                        <div role="tabpanel" class="tab-pane active" id="ficha" runat="server">
+                                                            <asp:UpdatePanel runat="server" ID="Up_ficha" UpdateMode="Conditional">
+                                                                <ContentTemplate>
+                                                                    <%--PANEL IDENTIFICACION POBLACIONAL RR--%>
+                                                                    <asp:Panel ID="pFicha" runat="server" CssClass="container-fluid">
+                                                                        <%--Fecha y Lugar de la Caracterización--%>
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Fecha y Lugar de la Caracterización
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-4">
+                                                                                        <label class="label1 col-sm-12">Fecha de la Caracterización</label>
+                                                                                        <div class="input-group " id="calendarFechaCaracterizacion" style="padding-right: 40px;">
+                                                                                            <asp:TextBox ID="txFechaCaracterizacion" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
+                                                                                            <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                                        </div>
+                                                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender6" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="calendarFechaCaracterizacion" TargetControlID="txFechaCaracterizacion"></ajaxToolkit:CalendarExtender>
+                                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator10" runat="server" ControlToValidate="txFechaCaracterizacion" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardarFicha">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator99" runat="server" ControlToValidate="txFechaCaracterizacion" CssClass="validador" Display="Dynamic" ValidationGroup="guardarFicha">*</asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                    <div class="col-md-4">
+                                                                                        <label class="label1 col-sm-12">Departamento</label>
+                                                                                        <asp:DropDownList ID="LD_Departamento_Ficha" runat="server" AutoPostBack="True" OnSelectedIndexChanged="LlenarMunicipiosFicha_SelectedIndexChanged"
+                                                                                            CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator100" runat="server"
+                                                                                            ControlToValidate="LD_Departamento_Ficha" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"
+                                                                                            ValidationGroup="guardarFicha"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                    <div class="col-md-4">
+                                                                                        <label class="label1 col-sm-12">Municipio</label>
+                                                                                        <asp:DropDownList ID="LD_Municipio_Ficha" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator101" runat="server"
+                                                                                            ControlToValidate="LD_Municipio_Ficha" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"
+                                                                                            ValidationGroup="guardarFicha"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <%--Datos de la Entidad que realiza la Caracterización--%>
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Datos de la Entidad que realiza la Caracterización
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-2">
+                                                                                        <label class="label1 col-sm-12">Entidad</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <asp:DropDownList ID="LD_Entidad_Ficha" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator102" runat="server"
+                                                                                            ControlToValidate="LD_Entidad_Ficha" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="Seleccione la Entidad" InitialValue="0"
+                                                                                            ValidationGroup="guardarFicha"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                    <div class="col-md-2">
+                                                                                        <label class="label1 col-sm-12">Hogares</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-2">
+                                                                                        <asp:TextBox ID="txtTotalHogaresFicha" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-2">
+                                                                                        <label class="label1 col-sm-12">Profesional</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <asp:TextBox ID="txtProfesionalFicha" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator103" runat="server"
+                                                                                                ControlToValidate="txtProfesionalFicha" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="guardarFicha">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="col-md-2">
+                                                                                        <label class="label1 col-sm-12">Personas</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-2">
+                                                                                        <asp:TextBox ID="txtTotalPersonasFicha" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-2">
+                                                                                        <label class="label1 col-sm-12">Correo</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <asp:TextBox ID="txtCorreoProfesionalFicha" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                                        <span style="font-weight: normal">
+                                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator104" runat="server"
+                                                                                                ControlToValidate="txtCorreoProfesionalFicha" CssClass="validador" Display="Dynamic"
+                                                                                                ValidationGroup="guardarFicha">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                    <div class="col-md-2">
+                                                                                        <label class="label1 col-sm-12">Personas RUV</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-2">
+                                                                                        <asp:TextBox ID="txtTotalPersonasRUV" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <%--Datos de la Comunidad--%>
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Comunidad
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <asp:UpdatePanel ID="Up_ficha_personas" runat="server" UpdateMode="Conditional">
+                                                                                        <ContentTemplate>
+                                                                                            <div class="row">
+                                                                                                <asp:GridView CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_PersonasFicha"
+                                                                                                    runat="server" AutoGenerateColumns="False">
+                                                                                                    <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                                    <Columns>
+                                                                                                        <asp:BoundField DataField="ID_PERSONA" HeaderText="ID_PERSONA" Visible="false" />
+                                                                                                        <asp:BoundField DataField="ID_PERSONA_RUV" HeaderText="ID_PERSONA_RUV" Visible="false" />
+                                                                                                        <asp:BoundField DataField="HOGAR" HeaderText="HOGAR" Visible="true" />
+                                                                                                        <asp:BoundField DataField="PERSONA" HeaderText="PERSONA" Visible="true" />
+                                                                                                        <asp:BoundField DataField="FECHA_NACIMIENTO" HeaderText="FECHA DE NACIMIENTO" Visible="true" />
+                                                                                                        <asp:BoundField DataField="SEXO" HeaderText="SEXO" Visible="true" />
+                                                                                                        <asp:BoundField DataField="PARENTESCO" HeaderText="PARENTESCO" Visible="true" />
+                                                                                                        <asp:BoundField DataField="UBICACION" HeaderText="UBICACION" Visible="true" />
+                                                                                                    </Columns>
+                                                                                                    <PagerStyle CssClass="pgr" />
+                                                                                                </asp:GridView>
+                                                                                            </div>
+                                                                                        </ContentTemplate>
+                                                                                        <Triggers>
+                                                                                        </Triggers>
+                                                                                    </asp:UpdatePanel>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+                                                                </ContentTemplate>
+                                                            </asp:UpdatePanel>
+                                                        </div>
+
                                                         <%--tab de PlanTraslado--%>
                                                         <div role="tabpanel" class="tab-pane active" id="plan_traslado" runat="server">
                                                             <asp:UpdatePanel runat="server" ID="Up_plan_traslado" UpdateMode="Conditional">
@@ -4865,6 +5014,6 @@
             </ProgressTemplate>
         </asp:UpdateProgress>
     </asp:Panel>
-    
+
 </asp:Content>
 

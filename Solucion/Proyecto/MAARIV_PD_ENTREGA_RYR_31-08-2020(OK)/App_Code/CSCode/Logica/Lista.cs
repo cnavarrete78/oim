@@ -10,9 +10,9 @@ using System.Web.UI.WebControls;
 /// <summary>
 /// Descripción breve de Listas
 /// </summary>
-public class Listas
+public class Lista
 {
-    public Listas()
+    public Lista()
     {
     }
 
@@ -56,6 +56,27 @@ public class Listas
         else
         {
             control.Items.Insert(0, new ListItem("Seleccionar el municipio", "0"));
+        }
+    }
+
+    public static void L_D_Entidad(ref DropDownList control)
+    {
+        DataSet ds = new DataSet();
+        ds = FachadaPersistencia.getInstancia().GetTodasEntidadesRutaComunitaria();
+
+        control.Items.Clear();
+
+        if (!ds.Tables[0].Rows.Count.Equals(0))
+        {
+            control.DataValueField = "ID_ENTIDAD";
+            control.DataTextField = "NOMBRE_ENTIDAD";
+            control.DataSource = ds;
+            control.DataBind();
+            control.Items.Insert(0, new ListItem("Seleccione la entidad", "0"));
+        }
+        else
+        {
+            control.Items.Insert(0, new ListItem("Seleccione la entidad", "0"));
         }
     }
     public static void LD_Departamento_Dia(ref DropDownList control)

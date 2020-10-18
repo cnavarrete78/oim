@@ -125,7 +125,15 @@
 }
 
 /*Cambio alejandro*/
-#ContentPlaceHolder1_m_2 > a, #ContentPlaceHolder1_m_4 > a, #ContentPlaceHolder1_m_5 > a, #ContentPlaceHolder1_m_6 > a, #ContentPlaceHolder1_m_7 > a, #ContentPlaceHolder1_m_8 > a, #ContentPlaceHolder1_plan_traslado > a, #ContentPlaceHolder1_balance > a {
+#ContentPlaceHolder1_m_2 > a,
+#ContentPlaceHolder1_m_4 > a,
+#ContentPlaceHolder1_m_5 > a,
+#ContentPlaceHolder1_m_6 > a,
+#ContentPlaceHolder1_m_7 > a,
+#ContentPlaceHolder1_m_8 > a,
+#ContentPlaceHolder1_ficha > a,
+#ContentPlaceHolder1_plan_traslado > a,
+#ContentPlaceHolder1_balance > a {
     background: none;
 }
 

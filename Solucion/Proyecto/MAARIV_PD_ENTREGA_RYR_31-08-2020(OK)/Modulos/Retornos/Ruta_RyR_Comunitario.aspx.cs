@@ -55,6 +55,7 @@ using System.IO.Compression;
 using com.GACV.lgb.modelo.usuario;
 using com.GACV.lgb.modelo.ADEP;
 using com.GACV.lgb.modelo.ADES;
+using ASP;
 
 public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 {
@@ -106,19 +107,19 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             this.opcion_tipo_detalle_costos.Value = "50"; //variable que carga los tipos de costos de un producto o actividad ---""··para colectiva ---""--
 
 
-            Listas.L_D_Zona(ref L_D_zona);
-            Listas.L_D_tipo_sujeto(ref LD_Tipo_sujeto);
-            Listas.L_D_alcance(ref L_D_Alcance, Convert.ToInt32(Session["rol"]));
+            Lista.L_D_Zona(ref L_D_zona);
+            Lista.L_D_tipo_sujeto(ref LD_Tipo_sujeto);
+            Lista.L_D_alcance(ref L_D_Alcance, Convert.ToInt32(Session["rol"]));
             actualizar.Visible = false;
             Session["ID_RYR_COMUNIDAD"] = "";
             ViewState["ID_RYR_COMUNIDAD"] = "0";
-            Listas.LD_Actividad_nombre(ref LD_actividad_nombre, 14, 1);
-            Listas.LD_Tipo_archivo(ref LD_tipo_archivo,1, 3);
-            Listas.L_D_Departamentos(ref LD_DepartamentoDia);
-            Listas.L_D_Territorial(ref LD_Territorial);
-            Listas.L_D_Usuario(ref LD_usuario, Convert.ToInt32(this.id_dependencia.Value), Convert.ToInt32(this.opcion_lista_usuarios.Value));
+            Lista.LD_Actividad_nombre(ref LD_actividad_nombre, 14, 1);
+            Lista.LD_Tipo_archivo(ref LD_tipo_archivo,1, 3);
+            Lista.L_D_Departamentos(ref LD_DepartamentoDia);
+            Lista.L_D_Territorial(ref LD_Territorial);
+            Lista.L_D_Usuario(ref LD_usuario, Convert.ToInt32(this.id_dependencia.Value), Convert.ToInt32(this.opcion_lista_usuarios.Value));
             LD_Rol_responsable();
-            Listas.L_D_Departamentos(ref LD_DepArchivo);
+            Lista.L_D_Departamentos(ref LD_DepArchivo);
 
             valida_permisos_rol();
 
@@ -1119,7 +1120,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 }
 
 
-                Listas.L_D_Departamentos(ref LD_Departamento,Convert.ToInt32(LD_Territorial.SelectedValue));
+                Lista.L_D_Departamentos(ref LD_Departamento,Convert.ToInt32(LD_Territorial.SelectedValue));
 
                 if (Convert.ToString(ds.Tables[0].Rows[0]["ID_DEPARTAMENTO"]) != "")
                 {
@@ -1132,7 +1133,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 }
 
                 // municipio por territorial
-                Listas.L_D_Municipios(ref LD_Municipio, Convert.ToInt32(LD_Departamento.SelectedValue));
+                Lista.L_D_Municipios(ref LD_Municipio, Convert.ToInt32(LD_Departamento.SelectedValue));
 
                 if (Convert.ToString(ds.Tables[0].Rows[0]["ID_MUNICIPIO"]) != "")
                 {
@@ -1143,7 +1144,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     LD_Municipio.SelectedValue = "0";
                 }
                 LD_Tipo_sujeto.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["ID_TIPO_SUJETO_COLECTIVA"]);
-                Listas.L_D_subCategoria(ref LD_subCategoria, LD_Tipo_sujeto.SelectedValue, this.opcion_Subcategoria.Value);
+                Lista.L_D_subCategoria(ref LD_subCategoria, LD_Tipo_sujeto.SelectedValue, this.opcion_Subcategoria.Value);
                 if (Convert.ToString(ds.Tables[0].Rows[0]["ID_TIPO_SUJETO_COLECTIVA_DET"]) != "")
                 {
                     LD_subCategoria.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["ID_TIPO_SUJETO_COLECTIVA_DET"]);
@@ -1309,7 +1310,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             //CargaGrid_archivo();
 
             Consulta_actividad_responsable(2);
-            Listas.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
+            Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
             consulta_dias_actividad(1);
             actividad_dia.P_ID_ACTIVIDAD = Convert.ToInt32(ViewState["id_actividad"]);
         }
@@ -1335,7 +1336,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             ViewState["estado"] = "2";
 
             Consulta_actividad_responsable(1);
-            Listas.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
+            Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
             consulta_dias_actividad(1);
             actividad_dia.P_ID_ACTIVIDAD = Convert.ToInt32(ViewState["id_actividad"]);
 
@@ -1730,9 +1731,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         B_ActualizarDia.Visible = false;
                         B_CancelarDia.Visible = false;
                         LD_DepartamentoDia.SelectedValue = "0";
-                        Listas.LD_Departamento_Dia(ref LD_DepartamentoDia);
+                        Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
                         consulta_dias_actividad(1);
-                        Listas.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
+                        Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
                     }
                     else
                     {
@@ -1886,7 +1887,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
             }
 
-            Listas.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
+            Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
             Actualizar_actividad(Convert.ToInt32(ViewState["id_actividad"]));
 
             //valor = FachadaPersistencia.getInstancia().Administrar_actividad_dia(actividad_dia, 1);        
@@ -1942,7 +1943,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         B_ActualizarDia.Visible = false;
                         B_CancelarDia.Visible = false;
                         LD_DepartamentoDia.SelectedValue = "0";
-                        Listas.LD_Departamento_Dia(ref LD_DepartamentoDia);
+                        Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
                         consulta_dias_actividad(1);
                     }
                     else
@@ -2541,7 +2542,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
                     //Consulta_actividad_detalle(Convert.ToInt32(Session["estado"]));
                     texto("El registro se actualizó correctamente", 1); Mensajes_2("", this.L_mensaje.Text, 1);
-                    Listas.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
+                    Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
                     Actualizar_actividad(Convert.ToInt32(ViewState["id_actividad"]));
                 }
                 else
@@ -2575,7 +2576,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
 
                     texto("la Bitacora se elimino correctamente", 1); Mensajes_2("", this.L_mensaje.Text, 1);
-                    Listas.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
+                    Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
                     Actualizar_actividad(Convert.ToInt32(ViewState["id_actividad"]));
 
 
@@ -2625,7 +2626,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
                     //Consulta_actividad_detalle(Convert.ToInt32(Session["estado"]));
                     texto("El registro se elimino correctamente", 1); Mensajes_2("", this.L_mensaje.Text, 1);
-                    Listas.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
+                    Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
                     Actualizar_actividad(Convert.ToInt32(ViewState["id_actividad"]));
 
                 }
@@ -2642,7 +2643,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     //B_guardar_detalle.Visible = true;
 
                     texto("El registro se elimino correctamente", 1); Mensajes_2("", this.L_mensaje.Text, 1);
-                    Listas.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
+                    Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
                     Actualizar_actividad(Convert.ToInt32(ViewState["id_actividad"]));
                 }
             }
@@ -3493,7 +3494,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     protected void LD_Tipo_sujeto_SelectedIndexChanged(object sender, EventArgs e)
     {
-        Listas.L_D_subCategoria(ref LD_subCategoria, LD_Tipo_sujeto.SelectedValue, this.opcion_Subcategoria.Value);
+        Lista.L_D_subCategoria(ref LD_subCategoria, LD_Tipo_sujeto.SelectedValue, this.opcion_Subcategoria.Value);
     }
 
     protected void buscar_Click(object sender, EventArgs e)
@@ -3531,14 +3532,14 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         else
         {
             LD_Departamento.Enabled = true;
-            Listas.L_D_Departamentos(ref LD_Departamento,Convert.ToInt32(LD_Territorial.SelectedValue));
+            Lista.L_D_Departamentos(ref LD_Departamento,Convert.ToInt32(LD_Territorial.SelectedValue));
             LD_Municipio.Items.Clear();
         }
     }
 
     protected void LD_Departamento_SelectedIndexChanged(object sender, EventArgs e)
     {
-        Listas.L_D_Municipios(ref LD_Municipio, Convert.ToInt32(LD_Departamento.SelectedValue));
+        Lista.L_D_Municipios(ref LD_Municipio, Convert.ToInt32(LD_Departamento.SelectedValue));
     }
 
     protected void gv_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -3760,7 +3761,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 L_titulo.Text = Convert.ToString(((Label)gvRow.FindControl("fase_actividad")).Text);
 
-                Listas.LD_Dia_actividad(id_actividad, ref L_D_dia_actividad_documentos);
+                Lista.LD_Dia_actividad(id_actividad, ref L_D_dia_actividad_documentos);
 
                 int id_nombre_actividad = Convert.ToInt32(((Label)gvRow.FindControl("id_nombre_actividad")).Text);
 
@@ -3777,6 +3778,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 Panel10.Visible = true;
                 Panel6.Visible = true;
 
+                m_Ficha.Visible = false;
+                ficha.Visible = false;
+
                 m_PlanTraslado.Visible = false;
                 m_Balance.Visible = false;
                 plan_traslado.Visible = false;
@@ -3784,6 +3788,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
                 switch (Convert.ToInt32(ViewState["id_nombre_actividad"]))
                 {
+                    case 298://Fase 2  - Ficha de Caracterización
+                        ProcesarFicha();
+                        break;
                     case 301://si es Fase 5 - desarrollo del traslado muestra los desarrollos de Liliana rodriguez
                         m_PlanTraslado.Visible = true;
                         plan_traslado.Visible = true;
@@ -3829,7 +3836,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 L_titulo.Text = Convert.ToString(((Label)gvRow.FindControl("fase_actividad")).Text);
 
-                Listas.LD_Dia_actividad(id_actividad,ref L_D_dia_actividad_documentos);
+                Lista.LD_Dia_actividad(id_actividad,ref L_D_dia_actividad_documentos);
 
                 int id_nombre_actividad = Convert.ToInt32(((Label)gvRow.FindControl("id_nombre_actividad")).Text);
 
@@ -4154,7 +4161,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     //TB_Proyeccion.Text = Convert.ToString(ds.Tables[0].Rows[0]["PROYECCION"]);
                     //TB_Gestion.Text = Convert.ToString(ds.Tables[0].Rows[0]["GESTION"]);
                     LD_DepartamentoDia.SelectedValue = ds.Tables[0].Rows[0]["ID_DEPARTAMENTO"].ToString();
-                    Listas.LD_Departamento_Dia(ref LD_DepartamentoDia);
+                    Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
                     LD_MunicipioDia.SelectedValue = ds.Tables[0].Rows[0]["ID_MUNICIPIO"].ToString();
 
                     guardar_dias.Visible = false;
@@ -4221,7 +4228,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 gv51 = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 ViewState["id_actividad_dia"] = Convert.ToInt32(((Label)gv51.FindControl("id_actividad_dia")).Text);
 
-                Listas.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value)); //aca
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value)); //aca
                 L_D_Tipo_archivo_obligatorio();
 
                 ViewState["Tipo_medida"] = ((Label)gv51.FindControl("TIPO_MEDIDA_2")).Text;
@@ -4841,7 +4848,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
     protected void LD_DepartamentoDia_SelectedIndexChanged(object sender, EventArgs e)
     {
-        Listas.LD_Departamento_Dia(ref LD_DepartamentoDia);
+        Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
     }
     protected void B_ActualizarDia_Click(object sender, EventArgs e)
     {
@@ -4869,7 +4876,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Crear_actividad_detalle(1);
         Crear_dias_actividad();
         consulta_dias_actividad(1);
-        Listas.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]),ref L_D_dia_actividad_documentos);
+        Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]),ref L_D_dia_actividad_documentos);
     }
     protected void B_GCostos_Click(object sender, EventArgs e)
     {
@@ -4936,7 +4943,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             //TB_DescripcionArchivo.Enabled = false;
             //TB_Personas.Enabled = false;
             LD_DepArchivo.SelectedValue = Convert.ToString(((Label)gvRow2.FindControl("ID_DEPARTAMENTO")).Text);
-            Listas.L_D_MunArchivo(LD_DepArchivo.SelectedValue,ref LD_MunArchivo);
+            Lista.L_D_MunArchivo(LD_DepArchivo.SelectedValue,ref LD_MunArchivo);
             // municipio por territorial
             LD_MunArchivo.SelectedValue = Convert.ToString(((Label)gvRow2.FindControl("ID_MUNICIPIO")).Text);
             TB_DescripcionArchivo.Text = ((Label)gvRow2.FindControl("DESCRIPCION")).Text;
@@ -5504,7 +5511,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                             else
                             {
                                 Actualiza_dias_actividad(4);
-                                Listas.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]),ref L_D_dia_actividad_documentos);
+                                Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]),ref L_D_dia_actividad_documentos);
                                 UP_Archivos.Update();
                             }
                         }
@@ -5578,10 +5585,12 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 ViewState["id_responsable"] = Convert.ToInt32(Session["id_usuario"]);
                 m_2.Visible = false;
+                m_Ficha.Visible = false;
                 m_PlanTraslado.Visible = false;
                 m_Balance.Visible = false;
 
                 Responsables.Visible = false;
+                ficha.Visible = false;
                 plan_traslado.Visible = false;
                 //Responsables.CssClass = "tab-pane";
                 //Dias.CssClass = "tab-pane active";
@@ -5603,9 +5612,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 ViewState["id_responsable"] = Convert.ToInt32(Session["id_usuario"]);
                 m_2.Visible = false;
+                m_Ficha.Visible = false;
                 m_PlanTraslado.Visible = false;
                 m_Balance.Visible = false;
                 Responsables.Visible = false;
+                ficha.Visible = false;
                 plan_traslado.Visible = false;
                 //Responsables.CssClass = "tab-pane";
                 //Dias.CssClass = "tab-pane active";
@@ -5737,6 +5748,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         gv16_visual();
         UP_DatosEvento.Update();
         UP_Responsable.Update();
+        Up_ficha.Update();
         Up_plan_traslado.Update();
         UP_Dias.Update();
         UP_Archivos.Update();
@@ -5775,7 +5787,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         TB_Proyeccion.Text = "";
         TB_Gestion.Text = "";
         LD_DepartamentoDia.SelectedValue = "0";
-        Listas.LD_Departamento_Dia(ref LD_DepartamentoDia);
+        Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
         guardar_dias.Visible = true;
         B_ActualizarDia.Visible = false;
         B_CancelarDia.Visible = false;
@@ -5885,7 +5897,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     protected void LD_DepArchivo_SelectedIndexChanged(object sender, EventArgs e)
     {
 
-        Listas.L_D_MunArchivo(LD_DepArchivo.SelectedValue, ref LD_MunArchivo);
+        Lista.L_D_MunArchivo(LD_DepArchivo.SelectedValue, ref LD_MunArchivo);
 
     }
     protected void LD_subCategoria_SelectedIndexChanged(object sender, EventArgs e)
@@ -7806,7 +7818,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     //TB_Proyeccion.Text = Convert.ToString(ds.Tables[0].Rows[0]["PROYECCION"]);
                     //TB_Gestion.Text = Convert.ToString(ds.Tables[0].Rows[0]["GESTION"]);
                     LD_DepartamentoDia.SelectedValue = ds.Tables[0].Rows[0]["ID_DEPARTAMENTO"].ToString();
-                    Listas.LD_Departamento_Dia(ref LD_DepartamentoDia);
+                    Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
                     LD_MunicipioDia.SelectedValue = ds.Tables[0].Rows[0]["ID_MUNICIPIO"].ToString();
 
                     guardar_dias.Visible = false;
@@ -7874,7 +7886,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 gv51 = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 ViewState["id_actividad_dia"] = Convert.ToInt32(((Label)gv51.FindControl("id_actividad_dia")).Text);
 
-                Listas.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
 
                 ViewState["Tipo_medida"] = ((Label)gv51.FindControl("TIPO_MEDIDA_2")).Text;
 
@@ -8153,7 +8165,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     //TB_Proyeccion.Text = Convert.ToString(ds.Tables[0].Rows[0]["PROYECCION"]);
                     //TB_Gestion.Text = Convert.ToString(ds.Tables[0].Rows[0]["GESTION"]);
                     LD_DepartamentoDia.SelectedValue = ds.Tables[0].Rows[0]["ID_DEPARTAMENTO"].ToString();
-                    Listas.LD_Departamento_Dia(ref LD_DepartamentoDia);
+                    Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
                     LD_MunicipioDia.SelectedValue = ds.Tables[0].Rows[0]["ID_MUNICIPIO"].ToString();
 
                     guardar_dias.Visible = false;
@@ -8221,7 +8233,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 gv51 = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 ViewState["id_actividad_dia"] = Convert.ToInt32(((Label)gv51.FindControl("id_actividad_dia")).Text);
 
-                Listas.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
 
                 ViewState["Tipo_medida"] = ((Label)gv51.FindControl("TIPO_MEDIDA_2")).Text;
 
@@ -8881,7 +8893,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 ds = FachadaPersistencia.getInstancia().consultar_actividad_archivos_obligatorios(adjuntar_archivos, 4);
 
-                Listas.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
                 L_D_Tipo_archivo_obligatorio();
                 CargaGrid_documentos_obligatorios();
             }
@@ -8912,7 +8924,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 adjuntar_archivos.P_ID_TIPO_ACTIVIDAD_ARCHIVO = Convert.ToInt32(((Label)gv51.FindControl("ID_ACTIVIDAD_DIA_TIPO_ARCHIVO")).Text);
 
                 ds = FachadaPersistencia.getInstancia().consultar_actividad_archivos_obligatorios(adjuntar_archivos, 3);
-                Listas.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
                 L_D_Tipo_archivo_obligatorio();
                 CargaGrid_documentos_obligatorios();
 
@@ -9584,7 +9596,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             TB_DescripcionArchivo.Enabled = true;
             TB_Personas.Enabled = true;
 
-            Listas.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
+            Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
             L_D_Tipo_archivo_obligatorio();
 
             CargaGrid_archivo(0);
@@ -9721,7 +9733,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 div_medida.Visible = false;
                 Descripcion_archivo_div.Visible = true;
-                Listas.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value)); //aca
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value)); //aca
 
             }
             else if (RB_Tipo_actividad.SelectedValue == "Entrelazando")
@@ -10144,7 +10156,26 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     #endregion
 
     #region DESARROLLO FICHA DE CARACTERIZACION DE LA COMUNIDAD
+    private void ProcesarFicha()
+    {
+        Ficha.FormularioActivo = true;
+        Ficha.Comunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]); 
+        m_Ficha.Visible = Ficha.FormularioActivo;
+        ficha.Visible = Ficha.FormularioActivo;
 
+        Lista.L_D_Departamentos(ref LD_Departamento_Ficha);
+        Lista.L_D_Entidad(ref LD_Entidad_Ficha);
+        Consulta.GV_PersonasFicha(gv_PersonasFicha, Ficha.Comunidad);
+    }
+
+    protected void LlenarMunicipiosFicha_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (LD_Departamento_Ficha.SelectedValue != "")
+        {
+            int idDepartamento = Convert.ToInt32(LD_Departamento_Ficha.SelectedValue);
+            Lista.L_D_Municipios(ref LD_Municipio_Ficha, idDepartamento);
+        }
+    }
 
     #endregion
 
