@@ -55,6 +55,7 @@ using System.IO.Compression;
 using com.GACV.lgb.modelo.usuario;
 using com.GACV.lgb.modelo.ADEP;
 using com.GACV.lgb.modelo.ADES;
+using ASP;
 
 public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 {
@@ -106,29 +107,22 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             this.opcion_tipo_detalle_costos.Value = "50"; //variable que carga los tipos de costos de un producto o actividad ---""··para colectiva ---""--
 
 
-
-            L_D_Zona();
-            L_D_tipo_sujeto();
-            L_D_alcance(Convert.ToInt32(Session["rol"]));
-            //guardar.Visible = true;
+            Lista.L_D_Zona(ref L_D_zona);
+            Lista.L_D_tipo_sujeto(ref LD_Tipo_sujeto);
+            Lista.L_D_alcance(ref L_D_Alcance, Convert.ToInt32(Session["rol"]));
             actualizar.Visible = false;
             Session["ID_RYR_COMUNIDAD"] = "";
             ViewState["ID_RYR_COMUNIDAD"] = "0";
-            LD_Actividad_nombre(14, 1);
-            LD_Tipo_archivo(1, 3);
-            LD_departamento();
-            L_D_Territorial();
-            L_D_Usuario(Convert.ToInt32(this.id_dependencia.Value), Convert.ToInt32(this.opcion_lista_usuarios.Value));
+            Lista.LD_Actividad_nombre(ref LD_actividad_nombre, 14, 1);
+            Lista.LD_Tipo_archivo(ref LD_tipo_archivo,1, 3);
+            Lista.L_D_Departamentos(ref LD_DepartamentoDia);
+            Lista.L_D_Territorial(ref LD_Territorial);
+            Lista.L_D_Usuario(ref LD_usuario, Convert.ToInt32(this.id_dependencia.Value), Convert.ToInt32(this.opcion_lista_usuarios.Value));
             LD_Rol_responsable();
-            L_D_DepArchivo();
+            Lista.L_D_Departamentos(ref LD_DepArchivo);
 
             valida_permisos_rol();
 
-            //carga departamentos 
-            //LD_Departamento.Enabled = true;
-            L_D_Departamentos_2();
-            //LD_Municipio.Items.Clear();
-            //carga departamentos
             if (Convert.ToString(Session["rol"]) != "1" && Convert.ToString(Session["rol"]) != "37" && Convert.ToString(Session["rol"]) != "145")
             {
                 LD_estado_sujeto_colectivodiv.Visible = false;
@@ -137,240 +131,18 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 LD_estado_sujeto_colectivodiv.Visible = true;
             }
-
-
-
-
         }
 
         ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(EXCEL);
-        //ScriptManager.GetCurrent(this.Page).RegisterPostBackControl(descargar_todo);
     }
-
-    //CLASE PÚBLICA PARA VALIDAR LOS ROLES QUE TENDRÁN ACCESO A LA CREACIÓN DE PERSONAS.
-    public class GlobalVariables
-    {
-        public static int[] id_rol_permiso_creacion_persona = { 0, 0, 0, 0, 0 }; //agregar los ID rol (usuarios) que pueden crear personas en asistencia, NO SE DEBE INCLUIR EL ROL ADMIN(1)
-        public static int[] id_rol_territorio_colectiva = { 133, 136, 139, 142, 151, 152, 153 };
-        public static int[] id_rol_2da_instancia_colectiva = { 132, 138, 146, 144, 152 };
-
-
-        public static int[] id_roles_permiso
-        {
-            get { return id_rol_permiso_creacion_persona; }
-            set { id_rol_permiso_creacion_persona = value; }
-        }
-
-
-        public static int[] id_usuario_territorioA
-        {
-            get { return id_rol_territorio_colectiva; }
-            set { id_rol_territorio_colectiva = value; }
-        }
-
-
-
-        public static int[] id_usuario_2da_instanciaA
-        {
-            get { return id_rol_2da_instancia_colectiva; }
-            set { id_rol_2da_instancia_colectiva = value; }
-        }
-    }
-
-
-    #region correo
-    // PERMITE ENVIAR UN CORREO 
-    public int Crear_correo(DataSet correos_enviar, string asunto, string[] datos, int opcion, int responsables)
-    {
-        Correos correo = new Correos();
-
-        //creacion del correo
-        correo.CrearCorreo(asunto, datos, opcion); //opcion 2 envio de actualizaciones en jornadas/actividades
-        //envio a los diferentes correos del dataset
-        int valor_mail = 0;
-        List<string> send_to = new List<string>();
-        string cor = "";
-        if (correos_enviar != null)
-        {
-            if (responsables == 0) // a todos
-            {
-                for (int i = 0; i < correos_enviar.Tables[0].Rows.Count; i++)
-                {
-                    cor = correos_enviar.Tables[0].Rows[i]["EMAIL"].ToString();
-                    if (Convert.ToString(HttpContext.Current.Session["email"]) != cor)
-                    {
-                        send_to.Add(cor);
-                    }
-
-                }
-                if (opcion == 5)
-                {
-                    send_to.Add("angela.rojas@unidadvictimas.gov.co");
-                    send_to.Add("erika.rueda@unidadvictimas.gov.co");
-                }
-
-            }
-            else if (responsables > 0)
-            {
-                cor = correos_enviar.Tables[0].Rows[responsables]["EMAIL"].ToString();
-                send_to.Add(cor);
-            }
-
-        }
-        valor_mail = correo.EnviarCorreo(send_to);
-        return valor_mail;
-    }
-    #endregion
-
 
     #region LISTAS DESPLEGABLES
-
-
-    // lista de los dias de la actividad
-    public void LD_Dia_actividad(int id_actividad)
-    {
-        DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().LD_Dia_actividad(id_actividad, 1);
-
-        L_D_dia_actividad_documentos.Items.Clear();
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            L_D_dia_actividad_documentos.DataValueField = "id_actividad_dia";
-            L_D_dia_actividad_documentos.DataTextField = "dia_actividad";
-            L_D_dia_actividad_documentos.DataSource = ds;
-            L_D_dia_actividad_documentos.DataBind();
-            L_D_dia_actividad_documentos.Items.Insert(0, new ListItem("Seleccione el día", "0"));
-
-
-        }
-        else
-        {
-            L_D_dia_actividad_documentos.Items.Insert(0, new ListItem("Seleccione el día", "0"));
-        }
-    }
-
-    public void LD_Departamento_Dia()
-    {
-        DataSet ds_m = new DataSet();
-
-        //ds_m = FachadaPersistencia.getInstancia().L_D_Municipio(Convert.ToInt32(LD_DepartamentoDia.SelectedValue));
-        ds_m = FachadaPersistencia.getInstancia().L_D_Municipio(Convert.ToInt32(LD_DepartamentoDia.SelectedValue), 0, 0);
-
-        LD_MunicipioDia.Items.Clear();
-
-        if (!ds_m.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_MunicipioDia.DataValueField = "id_municipio";
-            LD_MunicipioDia.DataTextField = "municipio";
-            LD_MunicipioDia.DataSource = ds_m;
-            LD_MunicipioDia.DataBind();
-            LD_MunicipioDia.Items.Insert(0, new ListItem("Seleccionar el municipio", "0"));
-        }
-        else
-        {
-            LD_MunicipioDia.Items.Insert(0, new ListItem("Seleccionar el municipio", "0"));
-        }
-    }
-
-
-    public void L_D_DepArchivo()
-    {
-        //Tierras tierras = new Tierras();
-        DataSet ds = new DataSet();
-
-        ds = FachadaPersistencia.getInstancia().L_D_Departamentos(0);
-        LD_DepArchivo.Items.Clear();
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_DepArchivo.DataValueField = "id_departamento";
-            LD_DepArchivo.DataTextField = "departamento";
-            LD_DepArchivo.DataSource = ds;
-            LD_DepArchivo.DataBind();
-            LD_DepArchivo.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-        }
-        else
-        {
-            LD_DepArchivo.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-        }
-    }
-
-    public void L_D_MunArchivo()
-    {
-        DataSet ds_m = new DataSet();
-
-        //ds_m = FachadaPersistencia.getInstancia().L_D_Municipio(Convert.ToInt32(LD_DepartamentoDia.SelectedValue));
-        ds_m = FachadaPersistencia.getInstancia().L_D_Municipio(Convert.ToInt32(LD_DepArchivo.SelectedValue), 0, 0);
-
-        LD_MunArchivo.Items.Clear();
-
-        if (!ds_m.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_MunArchivo.DataValueField = "id_municipio";
-            LD_MunArchivo.DataTextField = "municipio";
-            LD_MunArchivo.DataSource = ds_m;
-            LD_MunArchivo.DataBind();
-            LD_MunArchivo.Items.Insert(0, new ListItem("Seleccionar el municipio", "0"));
-        }
-        else
-        {
-            LD_MunArchivo.Items.Insert(0, new ListItem("Seleccionar el municipio", "0"));
-        }
-    }
-
-    // lista deplegable de las zonas
-    public void L_D_Zona()
-    {
-        DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().L_D_Zona();
-        L_D_zona.Items.Clear();
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            L_D_zona.DataValueField = "id_zona";
-            L_D_zona.DataTextField = "zona";
-            L_D_zona.DataSource = ds;
-            L_D_zona.DataBind();
-            L_D_zona.Items.Insert(0, new ListItem("Seleccionar la zona", "0"));
-        }
-        else
-        {
-            L_D_zona.Items.Insert(0, new ListItem("Seleccionar la zona", "0"));
-        }
-    }
 
     public void L_D_Encuentro(int fase)
     {
 
         DataSet ds = new DataSet();
         ViewState["fase"] = "";
-
-        try
-        {
-            //ds = FachadaPersistencia.getInstancia().LD_Tipo_actividad2(fase, Convert.ToInt32(this.opcion_tipo_detalle.Value));
-
-            //LD_tipo_actividad.Items.Clear();
-
-            //if (!ds.Tables[0].Rows.Count.Equals(0))
-            //{
-            //    LD_tipo_actividad.DataValueField = "id_tipo_actividad";
-            //    LD_tipo_actividad.DataTextField = "tipo_actividad";
-            //    LD_tipo_actividad.DataSource = ds;
-            //    LD_tipo_actividad.DataBind();
-            //    LD_tipo_actividad.Items.Insert(0, new ListItem("Seleccione el tipo de actividad", "0"));
-            //}
-            //else
-            //{
-            //    LD_tipo_actividad.Items.Insert(0, new ListItem("Seleccione el tipo de actividad", "0"));
-            //}
-
-
-        }
-        catch
-        {
-            texto("Error al realizar la consulta de tipo de actividad", 3); Mensajes_2("", this.L_mensaje.Text, 3);
-        }
 
         LD_Encuentro.Items.Clear();
 
@@ -487,7 +259,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
 
     }
-
     public void L_D_TipoCostos(int fase)
     {
 
@@ -517,7 +288,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("Error al realizar la consulta de tipoS de costos", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
     public void L_D_tipo_medida()
     {
 
@@ -547,8 +317,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("Error al realizar la consulta de tipos de medida", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
-
     public void L_D_productos()
     {
 
@@ -581,7 +349,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("Error al realizar la consulta de productos", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
     public void L_D_Estado_dia()
     {
         try
@@ -633,208 +400,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes("Error al realizar la consulta", 0);
         }
     }
-
-
-
-    // lista desplegable de las territoriales
-    public void L_D_Territorial()
-    {
-        DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().L_D_Territorial();
-        LD_Territorial.Items.Clear();
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_Territorial.DataValueField = "id_territorio";
-            LD_Territorial.DataTextField = "territorio";
-            LD_Territorial.DataSource = ds;
-            LD_Territorial.DataBind();
-            LD_Territorial.Items.Insert(0, new ListItem("Seleccionar la territorial", "0"));
-        }
-        else
-        {
-            LD_Territorial.Items.Insert(0, new ListItem("Seleccionar la territorial", "0"));
-        }
-    }
-
-    // lista deplegable de los municipios por territorial y departamento
-    public void L_D_Departamentos(int id_territorial)
-    {
-        //Tierras tierras = new Tierras();
-        DataSet ds = new DataSet();
-
-        ds = FachadaPersistencia.getInstancia().L_D_Departamentos(id_territorial);
-        LD_Departamento.Items.Clear();
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_Departamento.DataValueField = "id_departamento";
-            LD_Departamento.DataTextField = "departamento";
-            LD_Departamento.DataSource = ds;
-            LD_Departamento.DataBind();
-            LD_Departamento.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-        }
-        else
-        {
-            LD_Departamento.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-        }
-    }
-
-    // lista deplegable de los municipios por territorial y departamento
-    public void L_D_Departamentos_2()
-    {
-        //Tierras tierras = new Tierras();
-        DataSet ds = new DataSet();
-
-        ds = FachadaPersistencia.getInstancia().L_D_Departamentos(0);
-        LD_Departamento.Items.Clear();
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_Departamento.DataValueField = "id_departamento";
-            LD_Departamento.DataTextField = "departamento";
-            LD_Departamento.DataSource = ds;
-            LD_Departamento.DataBind();
-            LD_Departamento.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-        }
-        else
-        {
-            LD_Departamento.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-        }
-    }
-
-    // lista desplegable de los municipios segun territorial y departamento
-    public void L_D_Municipio_Dep_territorial(int id_territorial, int id_departamento)
-    {
-        DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().L_D_Municipio(id_departamento, 0, 0);
-
-        LD_Municipio.Items.Clear();
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_Municipio.DataValueField = "id_municipio";
-            LD_Municipio.DataTextField = "municipio";
-            LD_Municipio.DataSource = ds;
-            LD_Municipio.DataBind();
-            LD_Municipio.Items.Insert(0, new ListItem("Seleccionar el municipio", "0"));
-        }
-        else
-        {
-            LD_Municipio.Items.Insert(0, new ListItem("Seleccionar el municipio", "0"));
-        }
-    }
-
-    // lista deplegable de las entidades por oferta
-    public void L_D_alcance(int rol)
-    {
-        DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().L_D_alcance(rol);
-
-        L_D_Alcance.Items.Clear();
-
-        if (ds != null && ds.Tables.Count > 0)
-        {
-            if (!ds.Tables[0].Rows.Count.Equals(0))
-            {
-                L_D_Alcance.DataValueField = "id_alcance";
-                L_D_Alcance.DataTextField = "alcance";
-                L_D_Alcance.DataSource = ds;
-                L_D_Alcance.DataBind();
-                L_D_Alcance.Items.Insert(0, new ListItem("Seleccionar alcance", "0"));
-            }
-            else
-            {
-                L_D_Alcance.Items.Insert(0, new ListItem("Seleccionar alcance", "0"));
-            }
-        }
-        else
-        {
-            /*Controlar el tipo nulo !!!*/
-        }
-    }
-
-    // Lista desplegable del tipo de sujeto colectivo
-    public void L_D_tipo_sujeto()
-    {
-        DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().L_D_tipo_sujeto();
-        LD_Tipo_sujeto.Items.Clear();
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_Tipo_sujeto.DataValueField = "ID_TIPO_SUJETO_COLECTIVA";//revisar datos de la b.d ak y en el .aspx
-            LD_Tipo_sujeto.DataTextField = "TIPO_SUJETO_COLECTIVA";
-            LD_Tipo_sujeto.DataSource = ds;
-            LD_Tipo_sujeto.DataBind();
-            LD_Tipo_sujeto.Items.Insert(0, new ListItem("Seleccionar el tipo de sujeto", "0"));
-        }
-        else
-        {
-            LD_Tipo_sujeto.Items.Insert(0, new ListItem("Seleccionar el tipo de sujeto", "0"));
-        }
-    }
-
-
-    // Lista desplegable del tipo de sujeto colectivo
-    public void L_D_subCategoria()
-    {
-        try
-        {
-            DataSet ds = new DataSet();
-
-            Actividad_detalle actividad_detalle = new Actividad_detalle();
-
-            actividad_detalle.P_ID_ACTIVIDAD = Convert.ToInt32(LD_Tipo_sujeto.SelectedValue);
-            ds = FachadaPersistencia.getInstancia().Consulta_actividad_detalle(actividad_detalle, Convert.ToInt32(this.opcion_Subcategoria.Value));
-            LD_subCategoria.Items.Clear();
-
-            if (!ds.Tables[0].Rows.Count.Equals(0) && Convert.ToInt32(LD_Tipo_sujeto.SelectedValue) != 0)
-            {
-                LD_subCategoria.DataValueField = "ID_TIPO_SUJETO_COLECTIVA_DET";//revisar datos de la b.d ak y en el .aspx
-                LD_subCategoria.DataTextField = "TIPO_SUJETO_COLECTIVA_DET";
-                LD_subCategoria.DataSource = ds;
-                LD_subCategoria.DataBind();
-                LD_subCategoria.Items.Insert(0, new ListItem("Seleccione", "0"));
-            }
-            else
-            {
-                LD_subCategoria.Items.Insert(0, new ListItem("Seleccione", "0"));
-            }
-        }
-        catch (Exception e)
-        {
-
-        }
-
-    }
-
-
-
-    #region LISTAS DESPLEGABLES - ADMIN ACTIVIDADES
-
-    // lista de los tipos de identificacion de los responsables
-    public void L_D_Usuario(int id_dependecia, int opcion)
-    {
-        DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().L_D_Usuario(id_dependecia, opcion);
-        LD_usuario.Items.Clear();
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_usuario.DataValueField = "id_usuario";
-            LD_usuario.DataTextField = "usuario";
-            LD_usuario.DataSource = ds;
-            LD_usuario.DataBind();
-            LD_usuario.Items.Insert(0, new ListItem("Seleccione el usuario", "0"));
-        }
-        else
-        {
-            LD_usuario.Items.Insert(0, new ListItem("Seleccione el usuario", "0"));
-        }
-    }
-
-    // Permite consultar el tipo de rol de los responsables
     public void LD_Rol_responsable()
     {
         DataSet ds = new DataSet();
@@ -865,82 +430,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes("Error al realizar la consulta de rol de responsables", 0);
         }
     }
-
-    // lista deplegable de los departamentos para la cobertura
-    public void LD_departamento()
-    {
-        DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().L_D_Departamento();
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-
-            LD_DepartamentoDia.DataValueField = "id_departamento";
-            LD_DepartamentoDia.DataTextField = "departamento";
-            LD_DepartamentoDia.DataSource = ds;
-            LD_DepartamentoDia.DataBind();
-            LD_DepartamentoDia.Items.Insert(0, new ListItem("Seleccionar el departamento", "0"));
-
-        }
-        else
-        {
-            LD_DepartamentoDia.Items.Insert(0, new ListItem("Seleccionar el departamento", "0"));
-        }
-    }
-
-
-    // Lista desplegable del tipo de archivo
-    public void LD_Tipo_archivo(int id_proceso, int opcion)
-    {
-        DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().LD_Tipo_archivo(id_proceso, opcion);
-        LD_tipo_archivo.Items.Clear();
-
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_tipo_archivo.DataValueField = "ID_TIPO_ACTIVIDAD_ARCHIVO";
-            LD_tipo_archivo.DataTextField = "TIPO_ACTIVIDAD_ARCHIVO";
-            LD_tipo_archivo.DataSource = ds;
-            LD_tipo_archivo.DataBind();
-            LD_tipo_archivo.Items.Insert(0, new ListItem("Seleccionar el tipo de archivo", "0"));
-        }
-        else
-        {
-            LD_tipo_archivo.Items.Insert(0, new ListItem("Seleccionar el tipo de archivo", "0"));
-        }
-    }
-
-    // Lista desplegable del nombre de la actividad
-    public void LD_Actividad_nombre(int id_dependencia, int opcion)
-    {
-        DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().LD_Actividad_nombre(id_dependencia, opcion);
-        LD_actividad_nombre.Items.Clear();
-
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_actividad_nombre.DataValueField = "ID_NOMBRE_ACTIVIDAD";
-            LD_actividad_nombre.DataTextField = "NOMBRE_ACTIVIDAD";
-            LD_actividad_nombre.DataSource = ds;
-            LD_actividad_nombre.DataBind();
-            LD_actividad_nombre.Items.Insert(0, new ListItem("Seleccionar la actividad", "0"));
-        }
-        else
-        {
-            LD_actividad_nombre.Items.Insert(0, new ListItem("Seleccionar la actividad", "0"));
-        }
-
-        LD_actividad_nombre.SelectedValue = "204";
-    }
-
-
     #endregion
-    #endregion
-
 
     #region MENSAJES
-
     private void Mensajes(string mensaje, int opc)
     {
         string script = "";
@@ -982,7 +474,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 break;
         }
     }
-
     private void Mensajes_2(string titulo, string mensaje, int opc)
     {
         switch (opc)
@@ -1058,7 +549,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModal", "$('#myModal').modal();", true);
         upModal.Update();
     }
-
     private void texto(string mensaje, int opc)
     {
         switch (opc)
@@ -1078,12 +568,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
 
     }
-
     #endregion
 
-
     #region METODOS
-
     // permite cargar los sujetos
     private void CargaGrid(int opcion)
     {
@@ -1252,7 +739,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
     }
 
-
     private void AdministraFases(int opcion)
     {
         try
@@ -1339,7 +825,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         }
     }
-
 
     private void ConsultaFases()
     {
@@ -1635,7 +1120,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 }
 
 
-                L_D_Departamentos(Convert.ToInt32(LD_Territorial.SelectedValue));
+                Lista.L_D_Departamentos(ref LD_Departamento,Convert.ToInt32(LD_Territorial.SelectedValue));
 
                 if (Convert.ToString(ds.Tables[0].Rows[0]["ID_DEPARTAMENTO"]) != "")
                 {
@@ -1648,7 +1133,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 }
 
                 // municipio por territorial
-                L_D_Municipio_Dep_territorial(0, Convert.ToInt32(LD_Departamento.SelectedValue));
+                Lista.L_D_Municipios(ref LD_Municipio, Convert.ToInt32(LD_Departamento.SelectedValue));
 
                 if (Convert.ToString(ds.Tables[0].Rows[0]["ID_MUNICIPIO"]) != "")
                 {
@@ -1659,7 +1144,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     LD_Municipio.SelectedValue = "0";
                 }
                 LD_Tipo_sujeto.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["ID_TIPO_SUJETO_COLECTIVA"]);
-                L_D_subCategoria();
+                Lista.L_D_subCategoria(ref LD_subCategoria, LD_Tipo_sujeto.SelectedValue, this.opcion_Subcategoria.Value);
                 if (Convert.ToString(ds.Tables[0].Rows[0]["ID_TIPO_SUJETO_COLECTIVA_DET"]) != "")
                 {
                     LD_subCategoria.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["ID_TIPO_SUJETO_COLECTIVA_DET"]);
@@ -1757,9 +1242,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
     }
 
-
-
-
     #region Administar actividades
 
     // permite limpiar el formulario
@@ -1805,8 +1287,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     }
 
-
-
     // permite ver los datos de la actividad
     private void Ver(GridViewCommandEventArgs e)
     {
@@ -1830,7 +1310,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             //CargaGrid_archivo();
 
             Consulta_actividad_responsable(2);
-            LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]));
+            Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
             consulta_dias_actividad(1);
             actividad_dia.P_ID_ACTIVIDAD = Convert.ToInt32(ViewState["id_actividad"]);
         }
@@ -1856,7 +1336,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             ViewState["estado"] = "2";
 
             Consulta_actividad_responsable(1);
-            LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]));
+            Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
             consulta_dias_actividad(1);
             actividad_dia.P_ID_ACTIVIDAD = Convert.ToInt32(ViewState["id_actividad"]);
 
@@ -1876,8 +1356,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
         }
     }
-
-
 
     #region ACTIVIDAD RESPONSABLE (Pestaña 1 o 2)
 
@@ -1968,7 +1446,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
     }
 
-
     // permite consultar roles de las responsables
     public void Consulta_actividad_responsable(int opcion)
     {
@@ -2057,7 +1534,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
 
     #endregion
-
 
     #region ACTIVIDAD DIA-ACCIONES (Pestaña 4 - OCULTA)
 
@@ -2214,7 +1690,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
     }
 
-
     // permite crear los dias de la actividad
     private void Crear_dias_actividad()
     {
@@ -2256,9 +1731,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         B_ActualizarDia.Visible = false;
                         B_CancelarDia.Visible = false;
                         LD_DepartamentoDia.SelectedValue = "0";
-                        LD_Departamento_Dia();
+                        Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
                         consulta_dias_actividad(1);
-                        LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]));
+                        Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
                     }
                     else
                     {
@@ -2412,7 +1887,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
             }
 
-            LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]));
+            Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
             Actualizar_actividad(Convert.ToInt32(ViewState["id_actividad"]));
 
             //valor = FachadaPersistencia.getInstancia().Administrar_actividad_dia(actividad_dia, 1);        
@@ -2468,7 +1943,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         B_ActualizarDia.Visible = false;
                         B_CancelarDia.Visible = false;
                         LD_DepartamentoDia.SelectedValue = "0";
-                        LD_Departamento_Dia();
+                        Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
                         consulta_dias_actividad(1);
                     }
                     else
@@ -2575,7 +2050,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                                          Convert.ToString(ViewState["dia_actividad_estado"]),
                                          Convert.ToString(LD_Estado_dia.SelectedItem)
                                      };
-                    Crear_correo(
+                    Correos.Crear_correo(
                         ((DataSet)ViewState["actividad_responsable"]),          //correos-send
                         "Maariv - Colectiva - Cambio Estado",                   //asunto
                         datos,                                                   //datos
@@ -2598,7 +2073,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("Error, no se han guardado los datos, por favor vuelva a intentar. ", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
 
     private Boolean BalidaCambioEstadoDoc(int opcion)
     {
@@ -2687,10 +2161,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         return result;
     }
 
-
-
-
-
     // permite administrar los detalles de las actividades
     private void Crear_actividad_detalle(int opcion)
     {
@@ -2771,7 +2241,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                                          Convert.ToString(actividad_detalle.P_ID_ACTIVIDAD),
                                          Convert.ToString(ViewState["fase"])
                                      };
-                    Crear_correo(
+                    Correos.Crear_correo(
                         ((DataSet)ViewState["actividad_responsable"]),          //correos-send
                         "Maariv - Colectiva - bitácora",                        //asunto
                         datos,                                                   //datos
@@ -2856,7 +2326,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                                          Convert.ToString(actividad_detalle.P_ID_ACTIVIDAD),
                                          Convert.ToString(ViewState["fase"])
                                      };
-                    Crear_correo(
+                    Correos.Crear_correo(
                         ((DataSet)ViewState["actividad_responsable"]),          //correos-send
                         "Maariv - Colectiva - bitácora",                        //asunto
                         datos,                                                   //datos
@@ -3072,7 +2542,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
                     //Consulta_actividad_detalle(Convert.ToInt32(Session["estado"]));
                     texto("El registro se actualizó correctamente", 1); Mensajes_2("", this.L_mensaje.Text, 1);
-                    LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]));
+                    Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
                     Actualizar_actividad(Convert.ToInt32(ViewState["id_actividad"]));
                 }
                 else
@@ -3106,7 +2576,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
 
                     texto("la Bitacora se elimino correctamente", 1); Mensajes_2("", this.L_mensaje.Text, 1);
-                    LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]));
+                    Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
                     Actualizar_actividad(Convert.ToInt32(ViewState["id_actividad"]));
 
 
@@ -3156,7 +2626,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
                     //Consulta_actividad_detalle(Convert.ToInt32(Session["estado"]));
                     texto("El registro se elimino correctamente", 1); Mensajes_2("", this.L_mensaje.Text, 1);
-                    LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]));
+                    Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
                     Actualizar_actividad(Convert.ToInt32(ViewState["id_actividad"]));
 
                 }
@@ -3173,7 +2643,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     //B_guardar_detalle.Visible = true;
 
                     texto("El registro se elimino correctamente", 1); Mensajes_2("", this.L_mensaje.Text, 1);
-                    LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]));
+                    Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
                     Actualizar_actividad(Convert.ToInt32(ViewState["id_actividad"]));
                 }
             }
@@ -3335,8 +2805,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
     }
 
-
-
     public Boolean Consulta_archivos_obligatorio()
     {
         Boolean valida = false;
@@ -3382,7 +2850,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         return valida;
 
     }
-
 
     #endregion
 
@@ -3546,7 +3013,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
     }
 
-
     // Permite eliminar un registro de los datos adjuntos
     private void EliminaGrid_archivo(GridViewCommandEventArgs e)
     {
@@ -3706,7 +3172,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         return result;
     }
 
-
     //decodificar y visualizar el archivo adjunto 
     protected bool Crear_archivo(int opcion)
     {
@@ -3814,7 +3279,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                                         Convert.ToString(ViewState["fase"]),
                                         Convert.ToString(Session["usuario"])
                                      };
-                        Crear_correo(
+                        Correos.Crear_correo(
                             ((DataSet)ViewState["actividad_responsable"]),          //correos-send
                             "Maariv - Colectiva - Creacion de Documento",           //asunto
                             datos,                                                  //datos
@@ -3916,7 +3381,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         return validar;
     }
 
-
     // Permite eliminar un registro de los datos adjuntos
     private void EliminaGrid_archivo(string id_actividad_archivo)
     {
@@ -3960,7 +3424,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
     }
 
-
     protected void gv16_visual()
     {
 
@@ -3991,8 +3454,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         //TabContainer1.ActiveTabIndex = 3;
     }
-
-
     protected void gv_visual()
     {
 
@@ -4029,23 +3490,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     #endregion
 
-
     #region EVENTOS
 
     protected void LD_Tipo_sujeto_SelectedIndexChanged(object sender, EventArgs e)
     {
-        //if (LD_Tipo_sujeto.SelectedValue == "3")
-        //{
-        //    LB_detalle.Visible = true;
-        //    LD_Tipo_sujeto_detalle.Visible = true;
-        //    LD_tipo_sujeto_detalle(Convert.ToInt32(LD_Tipo_sujeto.SelectedValue));
-        //}
-        //else
-        //{
-        //    LB_detalle.Visible = false;
-        //    LD_Tipo_sujeto_detalle.Visible = false;
-        //}
-        L_D_subCategoria();
+        Lista.L_D_subCategoria(ref LD_subCategoria, LD_Tipo_sujeto.SelectedValue, this.opcion_Subcategoria.Value);
     }
 
     protected void buscar_Click(object sender, EventArgs e)
@@ -4083,14 +3532,14 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         else
         {
             LD_Departamento.Enabled = true;
-            L_D_Departamentos(Convert.ToInt32(LD_Territorial.SelectedValue));
+            Lista.L_D_Departamentos(ref LD_Departamento,Convert.ToInt32(LD_Territorial.SelectedValue));
             LD_Municipio.Items.Clear();
         }
     }
 
     protected void LD_Departamento_SelectedIndexChanged(object sender, EventArgs e)
     {
-        L_D_Municipio_Dep_territorial(0, Convert.ToInt32(LD_Departamento.SelectedValue));
+        Lista.L_D_Municipios(ref LD_Municipio, Convert.ToInt32(LD_Departamento.SelectedValue));
     }
 
     protected void gv_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -4178,7 +3627,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
 
     }
-
     protected void gv_SelectedIndexChanged(object sender, EventArgs e)
     {
     }
@@ -4201,7 +3649,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             }
         }
     }
-
     protected void gv_actividad_RowDataBound(object sender, GridViewRowEventArgs e)
     {
 
@@ -4299,9 +3746,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
 
     }
-
-
-
     protected void gv_actividad_RowComman(object sender, GridViewCommandEventArgs e)
     {
         try
@@ -4317,7 +3761,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 L_titulo.Text = Convert.ToString(((Label)gvRow.FindControl("fase_actividad")).Text);
 
-                LD_Dia_actividad(id_actividad);
+                Lista.LD_Dia_actividad(id_actividad, ref L_D_dia_actividad_documentos);
 
                 int id_nombre_actividad = Convert.ToInt32(((Label)gvRow.FindControl("id_nombre_actividad")).Text);
 
@@ -4334,6 +3778,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 Panel10.Visible = true;
                 Panel6.Visible = true;
 
+                m_Ficha.Visible = false;
+                ficha.Visible = false;
+
                 m_PlanTraslado.Visible = false;
                 m_Balance.Visible = false;
                 plan_traslado.Visible = false;
@@ -4341,6 +3788,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
                 switch (Convert.ToInt32(ViewState["id_nombre_actividad"]))
                 {
+                    case 298://Fase 2  - Ficha de Caracterización
+                        ProcesarFicha();
+                        break;
                     case 301://si es Fase 5 - desarrollo del traslado muestra los desarrollos de Liliana rodriguez
                         m_PlanTraslado.Visible = true;
                         plan_traslado.Visible = true;
@@ -4386,7 +3836,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 L_titulo.Text = Convert.ToString(((Label)gvRow.FindControl("fase_actividad")).Text);
 
-                LD_Dia_actividad(id_actividad);
+                Lista.LD_Dia_actividad(id_actividad,ref L_D_dia_actividad_documentos);
 
                 int id_nombre_actividad = Convert.ToInt32(((Label)gvRow.FindControl("id_nombre_actividad")).Text);
 
@@ -4575,8 +4025,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
 
     }
-
-
     private void act_desACt_pestañas(object sender, GridViewCommandEventArgs e)
     {
         //if (Convert.ToString(Session[]) == 1)
@@ -4584,8 +4032,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         //}
     }
-
-
 
     // paginado de la grilla gv
     protected void gv_actividad_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -4597,12 +4043,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     #region Administar actividades
 
-
-
-
     #region ACTIVIDAD RESPONSABLE (Pestaña 1 o 2)
-
-
     // permite guardar el responsable
     protected void B_guardar_responsable_Click(object sender, EventArgs e)
     {
@@ -4610,7 +4051,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         TabName.Value = "Responsables";
         UP_Responsable.Update();
     }
-
     // permite actualizar el responsable
     protected void B_actualizar_responsable_Click(object sender, EventArgs e)
     {
@@ -4618,14 +4058,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         LD_usuario.SelectedValue = "0";
         LD_rol_responsable.SelectedValue = "0";
     }
-
-
     // permite guardar el responsable
     protected void B_per_guardar_responsable_Click(object sender, EventArgs e)
     {
         Crear_responsable(1);
     }
-
     // permite actualizar el responsable
     protected void B_per_actualizar_responsable_Click(object sender, EventArgs e)
     {
@@ -4634,7 +4071,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         LD_usuario.SelectedValue = "0";
         LD_rol_responsable.SelectedValue = "0";
     }
-
     // permite eliminar el detalle
     protected void gv12_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -4643,7 +4079,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Eliminar_actividad_responsable(e);
         }
     }
-
     protected void gv12_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.Header || e.Row.RowType == DataControlRowType.DataRow)
@@ -4658,19 +4093,16 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             }
         }
     }
-
     protected void gv12_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         gv12.PageIndex = e.NewPageIndex;
         gv12.DataSource = ViewState["actividad_responsable"];
         gv12.DataBind();
-
     }
 
     #endregion
 
     #region ACTIVIDAD DIA-ACCIONES (Pestaña 4 - OCULTA)
-
     protected void gv5_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         Actividad_dia actividad_dia = new Actividad_dia();
@@ -4729,7 +4161,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     //TB_Proyeccion.Text = Convert.ToString(ds.Tables[0].Rows[0]["PROYECCION"]);
                     //TB_Gestion.Text = Convert.ToString(ds.Tables[0].Rows[0]["GESTION"]);
                     LD_DepartamentoDia.SelectedValue = ds.Tables[0].Rows[0]["ID_DEPARTAMENTO"].ToString();
-                    LD_Departamento_Dia();
+                    Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
                     LD_MunicipioDia.SelectedValue = ds.Tables[0].Rows[0]["ID_MUNICIPIO"].ToString();
 
                     guardar_dias.Visible = false;
@@ -4796,7 +4228,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 gv51 = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 ViewState["id_actividad_dia"] = Convert.ToInt32(((Label)gv51.FindControl("id_actividad_dia")).Text);
 
-                LD_Tipo_archivo(Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value)); //aca
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value)); //aca
                 L_D_Tipo_archivo_obligatorio();
 
                 ViewState["Tipo_medida"] = ((Label)gv51.FindControl("TIPO_MEDIDA_2")).Text;
@@ -5177,8 +4609,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
-
     protected void gv5_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         int cant = 0;
@@ -5409,8 +4839,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         }
     }
-
-
     protected void TB_HoraInicio_TextChanged(object sender, EventArgs e)
     {
         if (Convert.ToDateTime(TB_HoraInicio.Text).Hour + 4 >= 24)
@@ -5418,15 +4846,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             TB_HoraFin.Text = "23:59";
         }
     }
-
-
-
     protected void LD_DepartamentoDia_SelectedIndexChanged(object sender, EventArgs e)
     {
-        LD_Departamento_Dia();
+        Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
     }
-
-
     protected void B_ActualizarDia_Click(object sender, EventArgs e)
     {
         Actividad_dia actividad_dia = new Actividad_dia();
@@ -5444,8 +4867,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         UP_Archivos.Update();
     }
-
-
     // permite guardar los dias
     protected void guardar_dias_Click(object sender, EventArgs e)
     {
@@ -5455,24 +4876,20 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Crear_actividad_detalle(1);
         Crear_dias_actividad();
         consulta_dias_actividad(1);
-        LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]));
+        Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]),ref L_D_dia_actividad_documentos);
     }
-
     protected void B_GCostos_Click(object sender, EventArgs e)
     {
         Crear_actividad_detalle(4);
         Consulta_actividad_detalle(3);
     }
-
     #endregion
 
     #region ACTIVIDAD ARCHIVO (Pestaña 3 o 5)
-
     protected void buscar_archivo_Click(object sender, EventArgs e)
     {
         //CargaGrid_archivo();
     }
-
     protected void guardar_archivo_Click(object sender, EventArgs e)
     {
         Crear_archivo(1);
@@ -5481,7 +4898,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         CargaGrid_archivo(0);
         gv16_visual();
     }
-
     protected void actualizar_archivo_Click(object sender, EventArgs e)
     {
         Crear_archivo(2);
@@ -5489,8 +4905,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         StatusLabel.Text = "";
         CargaGrid_archivo(0);
     }
-
-
     protected void gv16_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         int cant = 0;
@@ -5529,7 +4943,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             //TB_DescripcionArchivo.Enabled = false;
             //TB_Personas.Enabled = false;
             LD_DepArchivo.SelectedValue = Convert.ToString(((Label)gvRow2.FindControl("ID_DEPARTAMENTO")).Text);
-            L_D_MunArchivo();
+            Lista.L_D_MunArchivo(LD_DepArchivo.SelectedValue,ref LD_MunArchivo);
             // municipio por territorial
             LD_MunArchivo.SelectedValue = Convert.ToString(((Label)gvRow2.FindControl("ID_MUNICIPIO")).Text);
             TB_DescripcionArchivo.Text = ((Label)gvRow2.FindControl("DESCRIPCION")).Text;
@@ -5667,14 +5081,12 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         TabName.Value = "Documentos";
     }
-
     //codifica strings
     public static string Base64Encode(string plainText)
     {
         var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
         return System.Convert.ToBase64String(plainTextBytes);
     }
-
     // permite manejar el index de la grilla de archivo
     protected void gv16_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
@@ -5684,7 +5096,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         valida_permisos_rol();
         gv16_visual();
     }
-
     // permite visualizar el archivo
     protected void gv16_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -5726,8 +5137,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes("Error al leer el archivo!.", 0);
         }
     }
-
-
     protected void gv16_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
@@ -5909,7 +5318,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         }
     }
-
     // permite limpiar los campos de captura de los archivos
     protected void limpiar_archivo_Click(object sender, EventArgs e)
     {
@@ -5919,32 +5327,25 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         gv16.DataSource = null;
         gv16.DataBind();
     }
-
-
     protected void LD_tipo_archivo_SelectedIndexChanged(object sender, EventArgs e)
     {
         TabName.Value = "Dias";
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModal2", "$('#myModal2').modal();", true);
     }
-
-
     #endregion
 
     #region Detalle
-
     protected void B_guardar_detalle_Click(object sender, EventArgs e)
     {
         Crear_actividad_detalle(1);
         UP_Detalle.Update();
     }
-
     protected void B_actualizar_detalle_Click(object sender, EventArgs e)
     {
         Crear_actividad_detalle(2);
         B_CancelaDetalle.Visible = false;
         UP_Detalle.Update();
     }
-
     protected void B_CancelaDetalle_Click(object sender, EventArgs e)
     {
 
@@ -5968,10 +5369,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     #endregion
 
-
-
     #region BOTONES
-
     //boton para validar eliminaciones y mensajes informativos
     protected void B_Confirmacion_accion_Click(object sender, EventArgs e)
     {
@@ -6113,7 +5511,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                             else
                             {
                                 Actualiza_dias_actividad(4);
-                                LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]));
+                                Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]),ref L_D_dia_actividad_documentos);
                                 UP_Archivos.Update();
                             }
                         }
@@ -6167,11 +5565,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
 
     }
-
-
-
     //----------------------------------------
-
     protected void valida_permisos_rol()
     {
 
@@ -6191,10 +5585,12 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 ViewState["id_responsable"] = Convert.ToInt32(Session["id_usuario"]);
                 m_2.Visible = false;
+                m_Ficha.Visible = false;
                 m_PlanTraslado.Visible = false;
                 m_Balance.Visible = false;
 
                 Responsables.Visible = false;
+                ficha.Visible = false;
                 plan_traslado.Visible = false;
                 //Responsables.CssClass = "tab-pane";
                 //Dias.CssClass = "tab-pane active";
@@ -6216,9 +5612,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 ViewState["id_responsable"] = Convert.ToInt32(Session["id_usuario"]);
                 m_2.Visible = false;
+                m_Ficha.Visible = false;
                 m_PlanTraslado.Visible = false;
                 m_Balance.Visible = false;
                 Responsables.Visible = false;
+                ficha.Visible = false;
                 plan_traslado.Visible = false;
                 //Responsables.CssClass = "tab-pane";
                 //Dias.CssClass = "tab-pane active";
@@ -6350,6 +5748,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         gv16_visual();
         UP_DatosEvento.Update();
         UP_Responsable.Update();
+        Up_ficha.Update();
         Up_plan_traslado.Update();
         UP_Dias.Update();
         UP_Archivos.Update();
@@ -6359,8 +5758,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         UP_ResultadoBusqueda.Update();
         UP_DatosEvento.Update();
     }
-
-
     protected void B_CancelarDia_Click(object sender, EventArgs e)
     {
         gv5.DataSource = ViewState["ds_dias_actividad"]; //setea el color de la grilla a defautl(sin selección)
@@ -6390,7 +5787,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         TB_Proyeccion.Text = "";
         TB_Gestion.Text = "";
         LD_DepartamentoDia.SelectedValue = "0";
-        LD_Departamento_Dia();
+        Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
         guardar_dias.Visible = true;
         B_ActualizarDia.Visible = false;
         B_CancelarDia.Visible = false;
@@ -6398,9 +5795,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         TB_Proyeccion.Text = "0";
         TB_Gestion.Text = "0";
     }
-
-
-
     // permite utilizar el evento de eliminar las acciones aplicadas a una persona
     protected void gv1_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -6414,9 +5808,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("Por favor confirme la eliminación de este registro", 2); Mensajes_2("", this.L_mensaje.Text, 4);
         }
     }
-
-
-
     protected void gv1_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
@@ -6439,9 +5830,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             }
         }
     }
-
-
-
     protected void B_CambiarEstado_Click(object sender, EventArgs e)
     {
         try
@@ -6506,21 +5894,16 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
 
     }
-
     protected void LD_DepArchivo_SelectedIndexChanged(object sender, EventArgs e)
     {
 
-        L_D_MunArchivo();
+        Lista.L_D_MunArchivo(LD_DepArchivo.SelectedValue, ref LD_MunArchivo);
 
     }
-
-
-
     protected void LD_subCategoria_SelectedIndexChanged(object sender, EventArgs e)
     {
 
     }
-
     protected void GV_Solicitudes_RowDataBound(object sender, GridViewRowEventArgs e)
     {
 
@@ -6533,7 +5916,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
 
     }
-
     protected void LD_medida_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (Convert.ToInt32(LD_medida.SelectedValue) == 0)
@@ -6591,7 +5973,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
 
     }
-
     protected void LD_medida_2_SelectedIndexChanged(object sender, EventArgs e)
     {
         //if ((Convert.ToInt32(LD_medida.SelectedValue) > 0 && Convert.ToInt32(LD_medida.SelectedValue) < 6))
@@ -6640,7 +6021,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
 
     }
-
     protected void repActividadesProd_ItemCreated(object sender, RepeaterItemEventArgs e)
     {
         if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -6656,7 +6036,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             scriptMan.RegisterAsyncPostBackControl(txtAnno3ActProd);
         }
     }
-
     protected void repProdsCV_ItemCreated(object sender, RepeaterItemEventArgs e)
     {
         if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -7847,7 +7226,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         //return serializer.Serialize(objeto);
         return objeto;
     }
-
     protected void ImageButton2_Click(object sender, ImageClickEventArgs e)
     {
         //string popupScript2 = "<script language='JavaScript'> Swal.fire(" +
@@ -7871,7 +7249,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         //        "}) </script> ";
         //ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info1_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7880,7 +7257,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info2_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7889,7 +7265,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info3_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7898,7 +7273,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info4_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7907,7 +7281,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info5_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7916,7 +7289,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info6_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7925,7 +7297,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void bt_info7_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7934,7 +7305,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info8_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7943,7 +7313,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info9_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7952,7 +7321,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info10_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7961,7 +7329,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info11_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7970,7 +7337,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info12_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7979,7 +7345,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info13_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7988,7 +7353,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info14_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -7997,7 +7361,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info15_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8006,7 +7369,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info16_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8015,7 +7377,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info17_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8024,7 +7385,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info18_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8033,7 +7393,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info19_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8050,7 +7409,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info21_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8059,7 +7417,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info22_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8068,7 +7425,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info23_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8077,7 +7433,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info24_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8086,7 +7441,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info25_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8095,7 +7449,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info26_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8104,7 +7457,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info27_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8113,7 +7465,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info28_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8122,7 +7473,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info29_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8131,7 +7481,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info30_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8188,7 +7537,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void btn_info37_Click(object sender, ImageClickEventArgs e)
     {
         string popupScript2 = "<script language='JavaScript'> Swal.fire({" +
@@ -8205,7 +7553,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         ScriptManager.RegisterStartupScript(this, this.GetType(), "", popupScript2, false);
     }
-
     protected void gv_dias_cancelados_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         int cant = 0;
@@ -8413,7 +7760,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
 
     }
-
     protected void gv_dias_cancelados_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         Actividad_dia actividad_dia = new Actividad_dia();
@@ -8472,7 +7818,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     //TB_Proyeccion.Text = Convert.ToString(ds.Tables[0].Rows[0]["PROYECCION"]);
                     //TB_Gestion.Text = Convert.ToString(ds.Tables[0].Rows[0]["GESTION"]);
                     LD_DepartamentoDia.SelectedValue = ds.Tables[0].Rows[0]["ID_DEPARTAMENTO"].ToString();
-                    LD_Departamento_Dia();
+                    Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
                     LD_MunicipioDia.SelectedValue = ds.Tables[0].Rows[0]["ID_MUNICIPIO"].ToString();
 
                     guardar_dias.Visible = false;
@@ -8540,7 +7886,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 gv51 = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 ViewState["id_actividad_dia"] = Convert.ToInt32(((Label)gv51.FindControl("id_actividad_dia")).Text);
 
-                LD_Tipo_archivo(Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
 
                 ViewState["Tipo_medida"] = ((Label)gv51.FindControl("TIPO_MEDIDA_2")).Text;
 
@@ -8761,7 +8107,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
     protected void gv_dias_implementados_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         Actividad_dia actividad_dia = new Actividad_dia();
@@ -8820,7 +8165,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     //TB_Proyeccion.Text = Convert.ToString(ds.Tables[0].Rows[0]["PROYECCION"]);
                     //TB_Gestion.Text = Convert.ToString(ds.Tables[0].Rows[0]["GESTION"]);
                     LD_DepartamentoDia.SelectedValue = ds.Tables[0].Rows[0]["ID_DEPARTAMENTO"].ToString();
-                    LD_Departamento_Dia();
+                    Lista.LD_Departamento_Dia(ref LD_DepartamentoDia);
                     LD_MunicipioDia.SelectedValue = ds.Tables[0].Rows[0]["ID_MUNICIPIO"].ToString();
 
                     guardar_dias.Visible = false;
@@ -8888,7 +8233,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 gv51 = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 ViewState["id_actividad_dia"] = Convert.ToInt32(((Label)gv51.FindControl("id_actividad_dia")).Text);
 
-                LD_Tipo_archivo(Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
 
                 ViewState["Tipo_medida"] = ((Label)gv51.FindControl("TIPO_MEDIDA_2")).Text;
 
@@ -9108,7 +8453,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
     protected void gv_dias_implementados_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         int cant = 0;
@@ -9316,7 +8660,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         }
     }
-
     protected void Btn_agregar_actividad_colectiva_Click(object sender, EventArgs e)
     {
         RB_Producto.SelectedValue = "si";
@@ -9353,22 +8696,16 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         UpdatePanel5.Update();
         UP_Detalle.Update();
     }
-
     protected void B_guardar_actividad_c_Click(object sender, EventArgs e)
     {
 
         Crear_dias_actividad_colectiva();
     }
-
     protected void B_actualizar_actividad_c_Click(object sender, EventArgs e)
     {
         Crear_actividad_detalle(7);
 
     }
-
-
-
-
     protected void search_gv5_Click(object sender, EventArgs e)
     {
         string searchTerm = text_search_gv5.Text.ToLower();
@@ -9393,10 +8730,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         gv5.DataBind();
 
     }
-
-
-
-
     protected void reset_gv5_Click(object sender, EventArgs e)
     {
         //always check if the viewstate exists before using it
@@ -9489,7 +8822,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         gv_dias_cancelados.DataBind();
 
     }
-
     protected void gv11_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         GridViewRow gv51;
@@ -9524,7 +8856,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("ERROR AL ELIMINAR BITACORA", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
     protected void gv11_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
@@ -9537,7 +8868,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             }
         }
     }
-
     protected void btn_agregar_documento_Click(object sender, EventArgs e)
     {
         DataSet ds = new DataSet();
@@ -9563,7 +8893,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 ds = FachadaPersistencia.getInstancia().consultar_actividad_archivos_obligatorios(adjuntar_archivos, 4);
 
-                LD_Tipo_archivo(Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
                 L_D_Tipo_archivo_obligatorio();
                 CargaGrid_documentos_obligatorios();
             }
@@ -9579,7 +8909,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
 
     }
-
     protected void gv_documentos_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         DataSet ds = new DataSet();
@@ -9595,7 +8924,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 adjuntar_archivos.P_ID_TIPO_ACTIVIDAD_ARCHIVO = Convert.ToInt32(((Label)gv51.FindControl("ID_ACTIVIDAD_DIA_TIPO_ARCHIVO")).Text);
 
                 ds = FachadaPersistencia.getInstancia().consultar_actividad_archivos_obligatorios(adjuntar_archivos, 3);
-                LD_Tipo_archivo(Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
                 L_D_Tipo_archivo_obligatorio();
                 CargaGrid_documentos_obligatorios();
 
@@ -9606,7 +8935,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
     protected void gv_documentos_RowDataBound(object sender, GridViewRowEventArgs e)
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
@@ -9674,12 +9002,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         }
     }
-
     protected void gv_documentos_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
 
     }
-
     protected void btn_guardar_documentos_Click(object sender, EventArgs e)
     {
         DataSet ds = new DataSet();
@@ -9734,7 +9060,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
 
     }
-
     public void CargaGrid_documentos_obligatorios()
     {
         DataSet ds = new DataSet();
@@ -9777,7 +9102,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes("Error al realizar la consulta de los archivos.", 0);
         }
     }
-
     // Lista desplegable del tipo de archivo
     public void L_D_Tipo_archivo_obligatorio()
     {
@@ -9802,9 +9126,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
     #endregion
 
-
     #region CONTACTOS
-
     protected void EXCEL_Click(object sender, EventArgs e)
     {
         ReporteDirectorioSujeto();
@@ -9897,7 +9219,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("Error al guardar los datos", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
     protected void B_Agregar_Agregar_contacto(object sender, EventArgs e)
     {
         Panel19.Visible = true;
@@ -9912,7 +9233,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         LD_Tipo_contacto.SelectedValue = "0";
         ViewState["ID_DIRECTORIO"] = "0";
     }
-
     protected void B_Guardar_contacto(object sender, EventArgs e)
     {
         Crear_Contactos(1);
@@ -9927,7 +9247,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         LD_Tipo_contacto.SelectedValue = "0";
         ViewState["ID_DIRECTORIO"] = "0";
     }
-
     protected void B_Actualizar_Contacto(object sender, EventArgs e)
     {
         Crear_Contactos(2);
@@ -9942,7 +9261,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         LD_Tipo_contacto.SelectedValue = "0";
         ViewState["ID_DIRECTORIO"] = "0";
     }
-
     protected void gv_directorio_sujeto_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         try
@@ -10007,7 +9325,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
 
     }
-
     protected void B_Limpiar_contactos(object sender, EventArgs e)
     {
         TB_Entidad.Text = "";
@@ -10017,7 +9334,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         TB_Mail.Text = "";
         LD_Tipo_contacto.SelectedValue = "0";
     }
-
     private void ConsultaDirectorioSujeto2()
     {
         try
@@ -10080,7 +9396,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         }
     }
-
     private void ReporteDirectorioSujeto()
     {
         try
@@ -10111,7 +9426,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         }
     }
-
     protected void Exportar_Excel2(string nombre)
     {
         DataSet ds = new DataSet();
@@ -10186,7 +9500,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             return;
         }
     }
-
     public void L_D_Tipo_contacto()
     {
         //Tierras tierras = new Tierras();
@@ -10283,7 +9596,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             TB_DescripcionArchivo.Enabled = true;
             TB_Personas.Enabled = true;
 
-            LD_Tipo_archivo(Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
+            Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value));
             L_D_Tipo_archivo_obligatorio();
 
             CargaGrid_archivo(0);
@@ -10389,7 +9702,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             //FIN CAMBIO ALEJANDRO
             UpdatePanel6.Update();
 
-            Crear_correo(
+            Correos.Crear_correo(
                 ((DataSet)ViewState["actividad_responsable"]),          //correos-send
                 "Maariv - Colectiva - Cambio Estado fase",                   //asunto
                 datos,                                                   //datos
@@ -10406,36 +9719,12 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
 
     }
-
     protected void B_actualizar_obserEstSuj_Click(object sender, EventArgs e)
     {
         Crear(2);
         CargaGrid(1);
         gv_visual();
     }
-
-    //protected void check_medida_CheckedChanged(object sender, EventArgs e)
-    //{
-    //    if (check_medida.Checked == true)
-    //    {
-    //        div_medida.Visible = true;
-    //        Descripcion_archivo_div.Visible = false;
-    //        LD_tipo_archivo.Items.Clear();
-    //        LD_tipo_archivo.Items.Insert(0, new ListItem("Seleccionar el tipo de archivo", "0"));
-    //        LD_tipo_archivo.Items.Insert(1, new ListItem("IM-INFORME DETALLADO", "523"));
-    //        LD_tipo_archivo.Items.Insert(2, new ListItem("IM-REGISTRO FOTOGRAFICO", "869"));
-    //        LD_tipo_archivo.Items.Insert(3, new ListItem("IM-LISTADOS DE ASISTENCIA", "591"));
-    //        //LD_medida_2.Visible = true;
-    //    }
-    //    else
-    //    {
-    //        div_medida.Visible = false;
-    //        Descripcion_archivo_div.Visible = true;
-    //        LD_Tipo_archivo(Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value)); //aca
-    //        //LD_medida_2.Visible = false;
-    //    }
-    //}
-
     protected void RB_Tipo_actividad_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (ViewState["TIPO_ACTIVIDAD_ENTRELAZANDO"].ToString().Equals("Rehabilitación"))
@@ -10444,7 +9733,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 div_medida.Visible = false;
                 Descripcion_archivo_div.Visible = true;
-                LD_Tipo_archivo(Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value)); //aca
+                Lista.LD_Tipo_archivo(ref LD_tipo_archivo, Convert.ToInt32(ViewState["id_actividad_dia"]), Convert.ToInt32(this.opcion_tipo_archivo.Value)); //aca
 
             }
             else if (RB_Tipo_actividad.SelectedValue == "Entrelazando")
@@ -10462,7 +9751,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         }
     }
-
     protected void gv_PreRender(object sender, EventArgs e)
     {
         if (gv.Rows.Count > 0)
@@ -10503,7 +9791,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
 
     }
-
     protected void gv16_PreRender(object sender, EventArgs e)
     {
         if (gv16.Rows.Count > 0)
@@ -10547,7 +9834,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
 
     }
-
     protected void RB_Producto_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (RB_Producto.SelectedValue == "si")
@@ -10570,7 +9856,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     #endregion
 
     #region ACTIVIDAD_DIA_ENCUESTA
-
 
     protected void LV_Informe_ItemDataBound(object sender, ListViewItemEventArgs e)
     {
@@ -10599,12 +9884,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             }
         }
     }
-
     protected void LB_GuardarInforme_Click(object sender, EventArgs e)
     {
         GuardarEncuestaDia();
     }
-
     public void ConsultaRespuesta(int id_pregunta, ListViewItemEventArgs e)
     {
 
@@ -10656,7 +9939,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto(string.Format("Error al realizar Error al cargar respuesta de la pregunta ({0})", id_pregunta), 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
     public void ConsultaActividadDiaEncuestaPreguntas(GridViewRow gv51)
     {
         try
@@ -10692,7 +9974,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-
     public void ConsultaSolucion(int id_pregunta, ListViewItemEventArgs e)
     {
         try
@@ -10756,7 +10037,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
 
     }
-
     public void GuardarEncuestaDia()
     {
         try
@@ -10847,8 +10127,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModal3", "$('#myModal3').modal('hide');", true);
         }
     }
-
-
     public void ConsultaProgreso()
     {
         int preguntas = 0;
@@ -10876,6 +10154,36 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     }
     #endregion
+
+    #region DESARROLLO FICHA DE CARACTERIZACION DE LA COMUNIDAD
+    private void ProcesarFicha()
+    {
+        Ficha.FormularioActivo = true;
+        Ficha.Comunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]); 
+        m_Ficha.Visible = Ficha.FormularioActivo;
+        ficha.Visible = Ficha.FormularioActivo;
+
+        Lista.L_D_Departamentos(ref LD_Departamento_Ficha);
+        Lista.L_D_Entidad(ref LD_Entidad_Ficha);
+        Consulta.GV_PersonasFicha(gv_PersonasFicha, Ficha.Comunidad);
+    }
+
+    protected void LlenarMunicipiosFicha_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (LD_Departamento_Ficha.SelectedValue != "")
+        {
+            int idDepartamento = Convert.ToInt32(LD_Departamento_Ficha.SelectedValue);
+            Lista.L_D_Municipios(ref LD_Municipio_Ficha, idDepartamento);
+        }
+    }
+
+    #endregion
+
+    #region DESARROLLO HERRAMIENTAS PARA LA FORMULACIÓN DEL PLAN DE RETORNO Y REUBICACIÓN
+
+
+    #endregion
+
 
 
     #region DESARROLLO LILIANA PARA EL TAB DE PLAN DE TRASLADO
