@@ -12274,7 +12274,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_listado_personas_que_se_acompanan.HeaderRow.Cells[4].Attributes["data-priority"] = "2";
             gv_listado_personas_que_se_acompanan.UseAccessibleHeader = true;
             gv_listado_personas_que_se_acompanan.HeaderRow.TableSection = TableRowSection.TableHeader;
-            gv_listado_personas_que_se_acompanan.FooterRow.TableSection = TableRowSection.TableFooter;
+  //          gv_listado_personas_que_se_acompanan.FooterRow.TableSection = TableRowSection.TableFooter;
         }
         if (gv.Rows.Count == 1)
         {
