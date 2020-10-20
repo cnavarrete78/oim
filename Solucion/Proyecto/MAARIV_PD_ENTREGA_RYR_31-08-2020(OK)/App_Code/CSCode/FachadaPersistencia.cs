@@ -1855,6 +1855,11 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Consultar_Categoria_plan_acción_traslado_Ruta_Comunitaria(idPlan);
         }
+
+        public DataSet Get_Consultar_Balance_traslado_derechos_Ruta_Comunitaria(int idPlan)
+        {
+            return L_D.LD_Consultar_Balance_traslado_derechos_Ruta_Comunitaria(idPlan);
+        }
         public DataSet Get_Entidades_Plan_Accion_Traslado_categorias_Entidad(int idPlan, int idCategoria)
         {
             return L_D.LD_Consultar_plan_acción_traslado_categorias_Entidad_Ruta_Comunitaria(idPlan, idCategoria);
