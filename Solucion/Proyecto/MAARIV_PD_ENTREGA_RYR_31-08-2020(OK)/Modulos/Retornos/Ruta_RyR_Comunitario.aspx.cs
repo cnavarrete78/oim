@@ -11583,7 +11583,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_listado_personas_que_se_acompanan.HeaderRow.Cells[4].Attributes["data-priority"] = "2";
             gv_listado_personas_que_se_acompanan.UseAccessibleHeader = true;
             gv_listado_personas_que_se_acompanan.HeaderRow.TableSection = TableRowSection.TableHeader;
-  //          gv_listado_personas_que_se_acompanan.FooterRow.TableSection = TableRowSection.TableFooter;
+            gv_listado_personas_que_se_acompanan.FooterRow.TableSection = TableRowSection.TableFooter;
         }
         if (gv.Rows.Count == 1)
         {
@@ -11642,6 +11642,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             DateTime fechaMedicionSSV = Convert.ToDateTime(dsPT.Tables[0].Rows[0]["FECHA_MEDICION"]);
             lblMedicionSSV.InnerText = fechaMedicionSSV.ToShortDateString();
             idPlanAccionTraslado.Value = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"].ToString();
+
+            //datos de ssv
+            lblTotalSuperacionGI.InnerText = dsPT.Tables[0].Rows[0]["TOTAL_SUPERACION_GI"].ToString();
+            lblTotalSuperacionGIBalance.InnerText = dsPT.Tables[0].Rows[0]["TOTAL_SUPERACION_GI_BALANCE"].ToString();
+
             ViewState["idPlanAccionTraslado"] = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"];
             return true;
         }
@@ -11680,13 +11685,18 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     public void Get_balance_SSV_Ruta_Comunitaria()
     {
         int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
+        lblFechaBalanceDerecho.InnerText = "LA SIGUIENTE INFORMACIÓN SE PRECARGA DE LA ÚLTIMA MEDICIÓN DE SSV, PERO NO SE HA GUARDADO EN EL REGISTRO.";
         DataSet dsPE = new DataSet();
-        dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Categoria_plan_acción_traslado_Ruta_Comunitaria(idPlan);
+        dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Balance_traslado_derechos_Ruta_Comunitaria(idPlan);
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
         {
             gv_balance_ssv.Visible = true;
             gv_balance_ssv.DataSource = dsPE;
             gv_balance_ssv.DataBind();
+            if (dsPE.Tables[0].Rows[0]["FECHA_SISTEMA"] != null && dsPE.Tables[0].Rows[0]["FECHA_SISTEMA"].ToString() != "") {
+                DateTime fechabalance = Convert.ToDateTime(dsPE.Tables[0].Rows[0]["FECHA_SISTEMA"]);
+                lblFechaBalanceDerecho.InnerText = "FECHA EN LA QUE SE GUARDÓ LA SIGUIENTE INFORMACIÓN: " + fechabalance.ToShortDateString();
+            }
         }
         else
         {
@@ -11714,6 +11724,18 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 Mensajes("No se realizo la operación.", 0);
             }
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error guardar a información. " + ex.Message, 0);
+        }
+    }
+
+    protected void btn_guardar_balance_ssv_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            
         }
         catch (System.Exception ex)
         {

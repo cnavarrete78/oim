@@ -24,6 +24,246 @@
     <link href="../../css/fa-all.css" rel="stylesheet" />
 
 
+
+
+    <script type="text/javascript">
+        function pageLoad() {
+            $(function () {
+                $('[id$="TB_HoraFin"]').timepicker();
+                $('[id$="TB_HoraInicio"]').timepicker();
+
+            });
+            $(function Show() {
+                var tabName = $("[id*=TabName]").val() != "" ? $("[id*=TabName]").val() : "Responsables";
+                $('#Tabs a[href="#' + tabName + '"]').tab('show');
+                $('[id$="Tabs"]  a[role$="tab"]').click(function () {
+                    $("[id*=TabName]").val($(this).attr("href").replace("#", ""));
+                });
+            });
+
+            $(function Show() {
+                $('.footable').footable();
+            });
+        } TB_Nit
+        function openModalEID() {
+            $('#modalAddEID').modal('show');
+        }
+
+        function openModalSCD() {
+            $('#modalAddSCD').modal('show');
+        }
+
+        function openModalProds() {
+            $('#modalAddProdCV').modal('show');
+        }
+
+        function openModalCID() {
+            $('#modalAddCID').modal('show');
+        }
+
+        function doCloseEdModal() {
+            $("#modalAddED").modal('hide');
+            $('.modal-backdrop')[0].remove();
+        }
+
+        function doPDFPIRCPrev() {
+            var idSujeto = $('#<%=hidIdSujetoCol.ClientID%>').val();
+
+            doPDFPIRC(idSujeto);
+        }
+
+        var rowsLoc1 = [];
+        var rowsLoc2 = [];
+
+        function doAddLoc(id) {
+            var tbod;
+            var trow = "";
+            var dt = "";
+            var dep = "";
+            var mun = "";
+            var count = 0;
+
+            switch (id) {
+                case 1:
+                    tbod = $("#tbodLoc1");
+                    dt = $("[id*='lstTerrAPob1'] :selected").text();
+                    dep = $("[id*='lstDepAPob1'] :selected").text();
+                    mun = $("[id*='lstMunAPob1'] :selected").text();
+                    count = $("#tbodLoc1 tr").length;
+
+                    trow = "<tr><td>" + dt + "</td><td>" + dep + "</td><td>" + mun + "</td><td><a class='btn btn-danger' onclick='doDeleteLoc(" + id + "," + count + ")'><i class='fa fa-times-circle'></i> Eliminar</a></td></tr>";
+
+                    rowsLoc1.push(trow);
+
+                    for (var i = 0; i < rowsLoc1.length; i++) {
+                        tbod.append(rowsLoc1[i]);
+                    }
+
+                    break;
+                case 2:
+                    tbod = $("#tbodLoc2");
+                    dt = $("[id*='lstTerrAPob2'] :selected").text();
+                    dep = $("[id*='lstDepAPob2'] :selected").text();
+                    mun = $("[id*='lstMunAPob2'] :selected").text();
+                    count = $("#tbodLoc2 tr").length;
+
+                    trow = "<tr><td>" + dt + "</td><td>" + dep + "</td><td>" + mun + "</td><td><a class='btn btn-danger' onclick='doDeleteLoc(" + id + "," + count + ")'><i class='fa fa-times-circle'></i> Eliminar</a></td></tr>";
+
+                    rowsLoc2.push(trow);
+
+                    for (var i = 0; i < rowsLoc2.length; i++) {
+                        tbod.append(rowsLoc2[i]);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function doDeleteLoc(id, pos) {
+            switch (id) {
+                case 1:
+                    $("#tbodLoc1 tr:eq(" + pos + ")").remove();
+                    rowsLoc1.splice(pos, 1);
+                    break;
+                case 2:
+                    $("#tbodLoc2 tr:eq(" + pos + ")").remove();
+                    rowsLoc2.splice(pos, 1);
+                    break;
+                default:
+                    break;
+            }
+        }
+        //${ '#ContentPlaceHolder1_Panel4 > div > div.panel-body > div > div.input-group' }.remove('style');
+
+
+    </script>
+
+    <script type="text/javascript">
+        function pageLoad() {
+
+            $('[id$="gv"]').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                }
+            });
+
+            $('[id$="gv16"]').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                }
+            });
+            $('[id$="gv_listado_personas_que_se_acompanan"]').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                }
+            });
+            $('[id$="LD_Territorial"]').change(function () {
+                var id_territorial = $('[id$="LD_Territorial"]').val();
+                if (L_D_Territorial != '') {
+                    L_D_Departamentos(id_territorial);
+                }
+                else {
+                    $('[id$="LD_Departamento"]').empty();
+                }
+            });
+
+            $('[id$="LD_Departamento"]').change(function () {
+                var id_territorial = $('[id$="LD_Territorial"]').val();
+                var id_departamento = $('[id$="LD_Departamento"]').val();
+                if (id_departamento != '0') {
+                    L_D_Municipios(id_territorial, id_departamento);
+                }
+                else {
+                    $('[id$="LD_Departamento"]').empty();
+                    $('[id$="LD_Municipio"]').empty();
+                }
+            });
+            /* *******************************************
+             * codigo de liliana rodriguez             
+             *  *****************************************/
+            //$('[id$="LD_Departamento_Salida"]').change(function () {
+            //    var id_territorial = 0;
+            //    var id_departamento = $('[id$="LD_Departamento_Salida"]').val();
+            //    if (id_departamento != '0') {
+            //        L_D_MunicipiosSalida(id_territorial, id_departamento);
+            //    }
+            //    else {
+            //        $('[id$="LD_Departamento_Salida"]').empty();
+            //        $('[id$="LD_Municipio_Salida"]').empty();
+            //    }
+            //});
+
+            //$('[id$="LD_Departamento_Llegada"]').change(function () {
+            //    var id_territorial = 0;
+            //    var id_departamento = $('[id$="LD_Departamento_Llegada"]').val();
+            //    if (id_departamento != '0') {
+            //        L_D_MunicipiosLlegada(id_territorial, id_departamento);
+            //    }
+            //    else {
+            //        $('[id$="LD_Departamento_Llegada"]').empty();
+            //        $('[id$="LD_Municipio_Llegada"]').empty();
+            //    }
+            //});
+            //function L_D_MunicipiosSalida(id_territorial, id_departamento) {
+            //    var dropdownlist = document.getElementById('ContentPlaceHolder1_LD_Municipio_Salida');
+            //    $.ajax({
+            //        type: "GET",
+            //        url: "/modulos/javascriptComun.aspx/L_D_Municipios?id_territorial=" + id_territorial + "&id_departamento=" + id_departamento,
+            //        contentType: "application/json; charset=utf-8",
+            //        dataType: "json",
+            //        success: function (response) {
+            //            var obj = JSON.parse(response.d.resultado);
+            //            $('#ContentPlaceHolder1_LD_Municipio_Salida').empty();
+            //            var option = document.createElement("option");
+            //            option.text = "seleccione Municipio"; option.value = "0"; dropdownlist.add(option);
+            //            for (var i = 0; i < obj.length; i++) {
+            //                var option = document.createElement("option");
+            //                option.text = obj[i].municipio;
+            //                option.value = obj[i].id_municipio;
+            //                dropdownlist.add(option);
+            //            }
+            //        },
+            //        error: function (xhr) {
+            //            console.log(xhr);
+            //            alert("Error", "No se cargaron los municipios");
+            //        }
+            //    });
+            //}
+
+            //function L_D_MunicipiosLlegada(id_territorial, id_departamento) {
+            //    var dropdownlist = document.getElementById('ContentPlaceHolder1_LD_Municipio_Llegada');
+            //    $.ajax({
+            //        type: "GET",
+            //        url: "/modulos/javascriptComun.aspx/L_D_Municipios?id_territorial=" + id_territorial + "&id_departamento=" + id_departamento,
+            //        contentType: "application/json; charset=utf-8",
+            //        dataType: "json",
+            //        success: function (response) {
+            //            var obj = JSON.parse(response.d.resultado);
+            //            $('#ContentPlaceHolder1_LD_Municipio_Llegada').empty();
+            //            var option = document.createElement("option");
+            //            option.text = "seleccione Municipio"; option.value = "0"; dropdownlist.add(option);
+            //            for (var i = 0; i < obj.length; i++) {
+            //                var option = document.createElement("option");
+            //                option.text = obj[i].municipio;
+            //                option.value = obj[i].id_municipio;
+            //                dropdownlist.add(option);
+            //            }
+            //        },
+            //        error: function (xhr) {
+            //            console.log(xhr);
+            //            alert("Error", "No se cargaron los municipios");
+            //        }
+            //    });
+            //}
+
+        }
+
+    </script>
+
     <%--campos ocultos--%>
     <div class="row">
         <asp:Label runat="server" ID="L_mensaje" Text="" Visible="false" />
@@ -4557,7 +4797,7 @@
                                                                             <div class="panel-heading">
                                                                                 1.Identificacion Poblacional RR  
                                                                             </div>
-                                                                            <div class="panel-body">
+                                                                            <div class="panel-body">                                                                               
                                                                                 <div class="row">
                                                                                     <asp:UpdatePanel ID="UP_DatosSujetos2" runat="server" UpdateMode="Conditional">
                                                                                         <ContentTemplate>
@@ -4595,7 +4835,7 @@
                                                                                         <Triggers>
                                                                                         </Triggers>
                                                                                     </asp:UpdatePanel>
-                                                                                </div>
+                                                                                </div>                                                                                 
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
@@ -4609,14 +4849,65 @@
                                                                                 2. BALANCE DE LA SUPERACIÓN DE LA SITUACIÓN DE VULNERABILIDAD (SIN GENERACIÓN DE INGRESOS)  
                                                                             </div>
                                                                             <div class="panel-body">
+                                                                                 <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-12" runat="server" id="lblFechaBalanceDerecho">f</label>
+                                                                                    </div>
+                                                                                </div>
                                                                                 <div class="row">
                                                                                     <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_balance_ssv"
-                                                                                        runat="server" AutoGenerateColumns="true" OnRowCommand="gv_balance_ssv_RowCommand" OnRowDataBound="gv_balance_ssv_RowDataBound">
+                                                                                        runat="server" AutoGenerateColumns="false" OnRowCommand="gv_balance_ssv_RowCommand" OnRowDataBound="gv_balance_ssv_RowDataBound">
                                                                                         <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                         <Columns>
+                                                                                            <asp:BoundField DataField="ID_NECESIDAD" HeaderText="ID_NECESIDAD" Visible="false" />
+                                                                                            <asp:BoundField DataField="DERECHO" HeaderText="DERECHO" Visible="true" />
+                                                                                            <asp:BoundField DataField="NECESIDAD" HeaderText="NECESIDAD" Visible="true" />
+                                                                                            <asp:BoundField DataField="NUM_PERSONAS_PENDIENTES_SUPERAR" HeaderText="NÚMERO DE PERSONAS PENDIENTES POR SUPERAR EL DERECHO" Visible="true" />
+                                                                                            <asp:BoundField DataField="NUM_PERSONAS_SUPERON" HeaderText="NÚMERO DE PERSONAS QUE SUPERARON EL DERECHO" Visible="true" />
+                                                                                            <asp:BoundField DataField="FECHA_SISTEMA" HeaderText="FECHA_SISTEMA" Visible="false" />
                                                                                         </Columns>
                                                                                     </asp:GridView>
                                                                                 </div>
+                                                                                <div class="row">
+                                                                                    <asp:LinkButton ID="LinkButton15" runat="server" CssClass="btn btn-danger btn-block" ValidationGroup="agregarDatosListadoBalance" OnClick="btn_guardar_balance_ssv_Click" Text="Guardar">
+                                                                                             Guardar Informacion de SSV
+                                                                                    </asp:LinkButton>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+                                                                    <%--3. BALANCE DERECHO A LA GENERACIÓN DE INGRESOS--%>
+                                                                    <asp:Panel ID="Panel33" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                3. BALANCE DERECHO A LA GENERACIÓN DE INGRESOS  
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                 <div class="row">
+                                                                                      <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9 ">TOTAL PERSONAS QUE NO SUPERABAN EL DERECHO A GENERACIÓN DE INGRESOS AL INICIO DEL PLAN:</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lblTotalSuperacionGI"></label>
+                                                                                    </div>
+                                                                                     <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9 ">TOTAL PERSONAS QUE SUPERARON EL DERECHO A GENERACIÓN DE INGRESOS AL BALANCE DEL PLAN:</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lblTotalSuperacionGIBalance"></label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    
+                                                                                </div>                                                                                
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+                                                                    <asp:Panel ID="Panel35" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                4. BALANCE DEL AVANCE EN EL PROCESO DE INTEGRACIÓN COMUNITARIA Y ARRAIGO TERRITORIAL  
+                                                                            </div>
+                                                                            <div class="panel-body">                                                                                
+                                                                                <div class="row">
+                                                                                    
+                                                                                </div>                                                                                
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>

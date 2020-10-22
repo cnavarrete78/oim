@@ -5892,7 +5892,34 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return ds;
         }
+        public DataSet LD_Consultar_Balance_traslado_derechos_Ruta_Comunitaria(int idPlan)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
 
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_RYR_GET_BALANCE_TRASLADO_TB_DERECHO_NECESIDAD", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
         #endregion
     }
 
