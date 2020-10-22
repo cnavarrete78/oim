@@ -3632,6 +3632,19 @@
                                                                                         <asp:TextBox ID="txtTotalPersonasRUV" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-2">
+                                                                                        <label class="label1 col-sm-12">Dirección Territorial</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-10">
+                                                                                         <asp:DropDownList ID="LD_Territorial_Ficha" runat="server" CssClass="form-control">
+                                                                                        </asp:DropDownList>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator105" runat="server"
+                                                                                            ControlToValidate="LD_Territorial_Ficha" CssClass="validador" Display="Dynamic"
+                                                                                            ErrorMessage="Seleccione la Territorial" InitialValue="0"
+                                                                                            ValidationGroup="guardarFicha"></asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         <%--Datos de la Comunidad--%>
@@ -3644,8 +3657,8 @@
                                                                                     <asp:UpdatePanel ID="Up_ficha_personas" runat="server" UpdateMode="Conditional">
                                                                                         <ContentTemplate>
                                                                                             <div class="row">
-                                                                                                <asp:GridView CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_PersonasFicha"
-                                                                                                    runat="server" AutoGenerateColumns="False">
+                                                                                                <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_PersonasFicha"
+                                                                                                    runat="server" AutoGenerateColumns="false" >
                                                                                                     <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                                     <Columns>
                                                                                                         <asp:BoundField DataField="ID_PERSONA" HeaderText="ID_PERSONA" Visible="false" />
@@ -3656,6 +3669,17 @@
                                                                                                         <asp:BoundField DataField="SEXO" HeaderText="SEXO" Visible="true" />
                                                                                                         <asp:BoundField DataField="PARENTESCO" HeaderText="PARENTESCO" Visible="true" />
                                                                                                         <asp:BoundField DataField="UBICACION" HeaderText="UBICACION" Visible="true" />
+                                                                                                        <asp:BoundField DataField="HECHO_VICTIMIZANTE" HeaderText="HECHO VICTIMIZANTE" Visible="true" />
+                                                                                                        <asp:BoundField DataField="DANE_MUNICIPIO_OCURRENCIA_HECHO" HeaderText="MUNICIPIO OCURRENCIA HECHO" Visible="true" />
+                                                                                                        <asp:BoundField DataField="IDENTIFICACION" HeaderText="IDENTIFICACION" Visible="true" />
+                                                                                                        <asp:BoundField DataField="SALUD" HeaderText="SALUD" Visible="true" />
+                                                                                                        <asp:BoundField DataField="ATENCION_PSICOSOCIAL" HeaderText="ATENCION PSICOSOCIAL" Visible="true" />
+                                                                                                        <asp:BoundField DataField="EDUCACION" HeaderText="EDUCACION" Visible="true" />
+                                                                                                        <asp:BoundField DataField="ALIMENTACION" HeaderText="ALIMENTACION" Visible="true" />
+                                                                                                        <asp:BoundField DataField="VIVIENDA" HeaderText="VIVIENDA" Visible="true" />
+                                                                                                        <asp:BoundField DataField="REUNIFICACION_FAMILIAR" HeaderText="REUNIFICACION FAMILIAR" Visible="true" />
+                                                                                                        <asp:BoundField DataField="GENERACION_INGRESOS" HeaderText="GENERACION INGRESOS" Visible="true" />
+                                                                                                        <asp:BoundField DataField="FECHA_MEDICION" HeaderText="FECHA_MEDICION" Visible="true" />
                                                                                                     </Columns>
                                                                                                     <PagerStyle CssClass="pgr" />
                                                                                                 </asp:GridView>

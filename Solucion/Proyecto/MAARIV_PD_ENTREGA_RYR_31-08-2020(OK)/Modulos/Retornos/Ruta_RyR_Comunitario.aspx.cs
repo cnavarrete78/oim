@@ -10165,6 +10165,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
         Lista.L_D_Departamentos(ref LD_Departamento_Ficha);
         Lista.L_D_Entidad(ref LD_Entidad_Ficha);
+        Lista.L_D_Territorial(ref LD_Territorial_Ficha);
         Consulta.GV_PersonasFicha(gv_PersonasFicha, Ficha.Comunidad);
     }
 
