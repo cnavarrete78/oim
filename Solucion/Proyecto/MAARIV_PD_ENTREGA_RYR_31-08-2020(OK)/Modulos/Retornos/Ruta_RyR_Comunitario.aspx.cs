@@ -37,6 +37,11 @@ using com.GACV.lgb.modelo.actividad_producto;
 using System.Text;
 using System.Web.UI.HtmlControls;
 
+using Microsoft.Office.Interop.Word;
+using Spire.Doc;
+using Spire.Doc.Documents;
+
+
 using System.Web.Security;
 
 using System.Threading;
@@ -56,6 +61,7 @@ using com.GACV.lgb.modelo.usuario;
 using com.GACV.lgb.modelo.ADEP;
 using com.GACV.lgb.modelo.ADES;
 using ASP;
+using System.Linq;
 
 public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 {
@@ -440,11 +446,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             case 0:
                 script = @"<script type='text/javascript'> alert('" + mensaje + "'); </script>";
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "alerta", script, false);
+                ScriptManager.RegisterStartupScript(this, typeof( System.Web.UI.Page), "alerta", script, false);
                 break;
             case 1:
                 script = @"<script type='text/javascript'> alert('" + mensaje + "'); window.close(); </script>";
-                ScriptManager.RegisterStartupScript(this, typeof(Page), "alerta", script, false);
+                ScriptManager.RegisterStartupScript(this, typeof(System.Web.UI.Page), "alerta", script, false);
                 break;
             case 2:
                 break;
@@ -1259,10 +1265,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 //dropdownlist 
                 ((DropDownList)ctrControl).SelectedIndex = -1;
             }
-            else if (object.ReferenceEquals(ctrControl.GetType(), typeof(CheckBox)))
+            else if (object.ReferenceEquals(ctrControl.GetType(), typeof(System.Web.UI.WebControls.CheckBox)))
             {
                 //checkboxes
-                ((CheckBox)ctrControl).Checked = false;
+                ((System.Web.UI.WebControls.CheckBox)ctrControl).Checked = false;
             }
             else if (object.ReferenceEquals(ctrControl.GetType(), typeof(RadioButton)))
             {
@@ -2475,7 +2481,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 int valida = 0;
                 foreach (GridViewRow fila in GV_Solicitudes.Rows)
                 {
-                    if (((CheckBox)fila.FindControl("C_Solicitud")).Checked)
+                    if (((System.Web.UI.WebControls.CheckBox)fila.FindControl("C_Solicitud")).Checked)
                     {
                         actividad_detalle.P_ID_ACTIVIDAD_DETALLE = Convert.ToInt32(((Label)fila.FindControl("L_IdActividadDetalle")).Text);
                         actividad_detalle.P_ESTADO_ACTIVIDAD = 2;
@@ -5842,7 +5848,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 {
                     foreach (GridViewRow fila in GV_Solicitudes.Rows)
                     {
-                        if (((CheckBox)fila.FindControl("C_Solicitud")).Checked)
+                        if (((System.Web.UI.WebControls.CheckBox)fila.FindControl("C_Solicitud")).Checked)
                         {
                             valida++;
                         }
@@ -8715,7 +8721,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Buscador bs = new Buscador();
         DataSet ds = new DataSet();
         //cast the viewstate as a datatable
-        DataTable dt = (DataTable)ViewState["gv5"];
+
+        System.Data.DataTable  dt = (System.Data.DataTable)ViewState["gv5"];
         //rebind the grid
         /***
          * Parametros
@@ -8737,7 +8744,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             return;
 
         //cast the viewstate as a datatable
-        DataTable dt = ViewState["gv5"] as DataTable;
+        System.Data.DataTable dt = ViewState["gv5"] as System.Data.DataTable;
 
         text_search_gv5.Text = "";
 
@@ -8754,7 +8761,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Buscador bs = new Buscador();
         DataSet ds = new DataSet();
         //cast the viewstate as a datatable
-        DataTable dt = (DataTable)ViewState["gv_dias_implementados"];
+        System.Data.DataTable dt = (System.Data.DataTable)ViewState["gv_dias_implementados"];
         //rebind the grid
         /***
          * Parametros
@@ -8775,7 +8782,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             return;
 
         //cast the viewstate as a datatable
-        DataTable dt = ViewState["gv_dias_implementados"] as DataTable;
+        System.Data.DataTable dt = ViewState["gv_dias_implementados"] as System.Data.DataTable;
 
         text_search_gv_dias_implementados.Text = "";
 
@@ -8792,7 +8799,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Buscador bs = new Buscador();
         DataSet ds = new DataSet();
         //cast the viewstate as a datatable
-        DataTable dt = (DataTable)ViewState["gv_dias_cancelados"];
+        System.Data.DataTable dt = (System.Data.DataTable)ViewState["gv_dias_cancelados"];
         //rebind the grid
         /***
          * Parametros
@@ -8813,7 +8820,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             return;
 
         //cast the viewstate as a datatable
-        DataTable dt = ViewState["gv_dias_cancelados"] as DataTable;
+        System.Data.DataTable dt = ViewState["gv_dias_cancelados"] as System.Data.DataTable;
 
         text_search_gv_dias_cancelados.Text = "";
 
@@ -9018,7 +9025,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         string str = "";
         for (int i = 0; i < gv16.Rows.Count; i++)
         {
-            if (((CheckBox)gv16.Rows[i].Cells[9].FindControl("check_box")).Checked == true)
+            if (((System.Web.UI.WebControls.CheckBox)gv16.Rows[i].Cells[9].FindControl("check_box")).Checked == true)
             {
                 Usuario usuario = new Usuario();
                 usuario.F_id_persona = Convert.ToInt32(((Label)gv16.Rows[i].FindControl("id_actividad_archivo")).Text);
@@ -9454,7 +9461,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         // gv1.RowCreated += new GridViewRowEventHandler(gv_reporte_RowCreated);
 
         ds = (DataSet)Session["dsReportes"];
-        DataTable myDataTable = ds.Tables[0];
+        System.Data.DataTable myDataTable = ds.Tables[0];
         gv1.DataSource = ds;
         gv1.DataBind();
 
@@ -9465,7 +9472,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             StringBuilder sb = new StringBuilder();
             StringWriter sw = new StringWriter(sb);
             HtmlTextWriter htw = new HtmlTextWriter(sw);
-            Page page = new Page();
+            System.Web.UI.Page page = new System.Web.UI.Page();
             HtmlForm form = new HtmlForm();
 
             gv1.EnableViewState = false;
@@ -9496,7 +9503,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             //en c# web lo mensajes en pantalla hay que realizarlos con javascript, en c# windform son por defecto asi            
             string script = @"<script language = ""JavaScript"">alert('Filtre más la información por que se sobrepaso de los 65.536 registros del excel');</script>";
-            ClientScript.RegisterStartupScript(typeof(Page), "Alerta", script);
+            ClientScript.RegisterStartupScript(typeof(System.Web.UI.Page), "Alerta", script);
             return;
         }
     }
@@ -11647,8 +11654,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             lblTotalSuperacionGIBalance.InnerText = dsPT.Tables[0].Rows[0]["TOTAL_SUPERACION_GI_BALANCE"].ToString();
 
             ViewState["idPlanAccionTraslado"] = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"];
-            return true;
-        }
+            return true;        }
         else
         {
             return false;            
@@ -11740,6 +11746,78 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             Mensajes("Error guardar a información. " + ex.Message, 0);
         }
+    }
+
+    protected void btn_generar_balance_Click(object sender, EventArgs e)
+    {
+        //Create word document
+        string rutaPlantillaRyR = System.Configuration.ConfigurationManager.AppSettings["PlantillasRyR"];
+        string rutaCompletaPlantillaRyR = rutaPlantillaRyR + "DOCUMENTO_BALANCE_DEL_ACOMPANAMIENTO_AL_RyR.docx";
+        Spire.Doc.Document document = new Spire.Doc.Document(rutaCompletaPlantillaRyR);
+
+        DataSet dsPT = new DataSet();
+        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        dsPT = FachadaPersistencia.getInstancia().GetPlanTrasladoPorComunidad(idComunidad);
+        if (!dsPT.Tables[0].Rows.Count.Equals(0))
+        {
+            //DATOS A REEMPLAZAR EN EL DOCUMENTO SEGUN LA INFORMACION QUE SE TIENE EN LA BD DEL TRASLADO
+            string NOMBREDELACOMUNIDAD = dsPT.Tables[0].Rows[0]["NOMBRE_RYR_COMUNIDAD"].ToString(); ;
+            string NOMBREDELDEPARTAMENTO = dsPT.Tables[0].Rows[0]["DEPARTAMENTO_LLEGADA"].ToString();
+            string NOMBREDELMUNICIPIO = dsPT.Tables[0].Rows[0]["MUNICIPIO_LLEGADA"].ToString();
+            string PROFESIONALESHICIERONBALANCE = dsPT.Tables[0].Rows[0]["PROFESIONAL_ELABORA_LISTADO_BALANCE"].ToString(); 
+            string DIRECCIONTERRITORIAL = dsPT.Tables[0].Rows[0]["PROFESIONAL_ELABORA_LISTADO_BALANCE"].ToString();
+            string BARRIO = dsPT.Tables[0].Rows[0]["CORREGIMIENTO_LLEGADA"].ToString();
+            string TOTALPERSONAS = dsPT.Tables[0].Rows[0]["TOTAL_PERSONAS_TRASLADAR"].ToString();
+            string TOTALPERSONASRUV = dsPT.Tables[0].Rows[0]["TOTAL_PERSONAS_TRASLADAR_RUV"].ToString();
+            string TOTALHOMBRES = dsPT.Tables[0].Rows[0]["TOTALHOMBRES"].ToString();
+            string TOTALMUJERES = dsPT.Tables[0].Rows[0]["TOTALMUJERES"].ToString();
+            string TOTALHOGARES = dsPT.Tables[0].Rows[0]["TOTALHOGARES"].ToString();
+            string TOTALNINOS = dsPT.Tables[0].Rows[0]["TOTALNINOS"].ToString();
+            string TOTALAMAYORES = dsPT.Tables[0].Rows[0]["TOTALAMAYORES"].ToString();
+            string TOTALLGBTI = dsPT.Tables[0].Rows[0]["TOTALLGBTI"].ToString();
+            string TOTALHOMBRESRUV = dsPT.Tables[0].Rows[0]["TOTALHOMBRESRUV"].ToString();
+            string TOTALMUJERESRUV = dsPT.Tables[0].Rows[0]["TOTALMUJERESRUV"].ToString();
+            string TOTALHOGARESRUV = dsPT.Tables[0].Rows[0]["TOTALHOGARESRUV"].ToString();
+            string TOTALNINOSRUV = dsPT.Tables[0].Rows[0]["TOTALNINOSRUV"].ToString();
+            string TOTALAMAYORESRUV = dsPT.Tables[0].Rows[0]["TOTALAMAYORESRUV"].ToString();
+            string TOTALLGBTIRUV = dsPT.Tables[0].Rows[0]["TOTALLGBTIRUV"].ToString();
+
+            document.Replace("NOMBREDELACOMUNIDAD", NOMBREDELACOMUNIDAD, true, true);
+            document.Replace("NOMBREDELDEPARTAMENTO", NOMBREDELDEPARTAMENTO, true, true);
+            document.Replace("NOMBREDELMUNICIPIO", NOMBREDELMUNICIPIO, true, true);
+            document.Replace("PROFESIONALESHICIERONBALANCE", PROFESIONALESHICIERONBALANCE, true, true);
+            document.Replace("DIRECCIONTERRITORIAL", DIRECCIONTERRITORIAL, true, true);
+            document.Replace("BARRIO", BARRIO, true, true);
+            document.Replace("TOTALPERSONAS", TOTALPERSONAS, true, true);
+            document.Replace("TOTALPERSONASRUV", TOTALPERSONASRUV, true, true);
+            document.Replace("TOTALHOMBRES", TOTALHOMBRES, true, true);
+            document.Replace("TOTALMUJERES", TOTALMUJERES, true, true);
+            document.Replace("TOTALHOGARES", TOTALHOGARES, true, true);
+            document.Replace("TOTALNINOS", TOTALNINOS, true, true);
+            document.Replace("TOTALAMAYORES", TOTALAMAYORES, true, true);
+            document.Replace("TOTALLGBTI", TOTALLGBTI, true, true);
+            document.Replace("TOTALHOMBRESRUV", TOTALHOMBRESRUV, true, true);
+            document.Replace("TOTALMUJERESRUV", TOTALMUJERESRUV, true, true);
+            document.Replace("TOTALHOGARESRUV", TOTALHOGARESRUV, true, true);
+            document.Replace("TOTALNINOSRUV", TOTALNINOSRUV, true, true);
+            document.Replace("TOTALAMAYORESRUV", TOTALAMAYORESRUV, true, true);
+            document.Replace("TOTALLGBTIRUV", TOTALLGBTIRUV, true, true);
+        }
+        //Create a new paragraph
+        //Spire.Doc.Documents.Paragraph paragraph = document.AddSection().AddParagraph();
+        //Append Text
+        //paragraph.AppendText("A partir de las acciones concertadas con la comunidad NOMBRE DE LA COMUNIDAD ubicada en el NOMBRE DEL MUNICIPIO del departamento de NOMBRE DEL DEPARTAMENTO, se relaciona a continuación el balance del acompañamiento brindado por la institucionalidad, a su decisión de retornar, reubicarse o integrarse localmente. Para ello se desarrollarán los siguientes elementos: i) comparación de las condiciones de vida de la comunidad cuando inició el acompañamiento y cuando éste cerró, en términos de los componentes del acompañamiento, es decir, cómo estaban en relación con la superación de su situación de vulnerabilidad y su proceso de integración comunitaria y arraigo territorial, y cómo se encuentran una vez se implementaron las acciones del plan; ii) la información de la implementación de las acciones contempladas en el plan, relacionadas con cada uno de los componentes del acompañamiento; iii) la información sobre la materialización del alcance de sostenibilidad de los principios del acompañamiento; y iv) las acciones que fueron implementadas teniendo en cuenta los enfoques diferenciales. ");
+        //Save doc file.
+        string fechaActual = DateTime.Now.ToString("yyyyMMddHHmmss");
+        string nombreArchivo = "DOCUMENTO_BALANCE_DEL_ACOMPANAMIENTO_AL_RyR" + fechaActual + ".doc";
+        document.SaveToFile(nombreArchivo, FileFormat.Doc);
+        //Launching the MS Word file.
+
+        try
+        {
+            System.Diagnostics.Process.Start(nombreArchivo);
+        }
+        catch { }
     }
     #endregion
 
