@@ -4907,7 +4907,12 @@
                                                                             <div class="panel-body">                                                                                
                                                                                 <div class="row">
                                                                                     
-                                                                                </div>                                                                                
+                                                                                </div>
+                                                                                 <div class="row">
+                                                                                    <asp:LinkButton ID="LinkButton16" runat="server" CssClass="btn btn-danger btn-block"  OnClick="btn_generar_balance_Click" Text="Generar documento">
+                                                                                             Generar balance en .doc
+                                                                                    </asp:LinkButton>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>

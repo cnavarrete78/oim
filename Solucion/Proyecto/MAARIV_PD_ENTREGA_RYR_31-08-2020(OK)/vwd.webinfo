@@ -35,6 +35,22 @@
   
     
   
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
     <Service ID="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}"/>
   </StartupServices>
+
+  <comReferences>
+    <reference Name="interop.microsoft.office.interop.word" ID="{00020905-0000-0000-C000-000000000046}\8.7\0"/>
+  </comReferences>
 </VisualWebDeveloper>
