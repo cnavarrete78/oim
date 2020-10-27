@@ -10659,6 +10659,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     txMotivoNoTraslado.Text = "";
                     dvMotivo.Visible = false;
                     Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria();
+                    GetPlanTraslado();
                 }
                 else
                 {
@@ -11538,6 +11539,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 {
                     File.Delete(System.Configuration.ConfigurationManager.AppSettings["Archivos"] + url_archivo);
                     texto("El registro ha sido eliminado correctamente", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+                    Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria();
                 }
             }
             else
