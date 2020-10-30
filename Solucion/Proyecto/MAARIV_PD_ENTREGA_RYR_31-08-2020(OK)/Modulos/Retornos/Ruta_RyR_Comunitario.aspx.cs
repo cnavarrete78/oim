@@ -120,7 +120,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Session["ID_RYR_COMUNIDAD"] = "";
             ViewState["ID_RYR_COMUNIDAD"] = "0";
             Lista.LD_Actividad_nombre(ref LD_actividad_nombre, 14, 1);
-            Lista.LD_Tipo_archivo(ref LD_tipo_archivo,1, 3);
+            Lista.LD_Tipo_archivo(ref LD_tipo_archivo, 1, 3);
             Lista.L_D_Departamentos(ref LD_DepartamentoDia);
             Lista.L_D_Territorial(ref LD_Territorial);
             Lista.L_D_Usuario(ref LD_usuario, Convert.ToInt32(this.id_dependencia.Value), Convert.ToInt32(this.opcion_lista_usuarios.Value));
@@ -446,7 +446,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             case 0:
                 script = @"<script type='text/javascript'> alert('" + mensaje + "'); </script>";
-                ScriptManager.RegisterStartupScript(this, typeof( System.Web.UI.Page), "alerta", script, false);
+                ScriptManager.RegisterStartupScript(this, typeof(System.Web.UI.Page), "alerta", script, false);
                 break;
             case 1:
                 script = @"<script type='text/javascript'> alert('" + mensaje + "'); window.close(); </script>";
@@ -1126,7 +1126,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 }
 
 
-                Lista.L_D_Departamentos(ref LD_Departamento,Convert.ToInt32(LD_Territorial.SelectedValue));
+                Lista.L_D_Departamentos(ref LD_Departamento, Convert.ToInt32(LD_Territorial.SelectedValue));
 
                 if (Convert.ToString(ds.Tables[0].Rows[0]["ID_DEPARTAMENTO"]) != "")
                 {
@@ -3538,7 +3538,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         else
         {
             LD_Departamento.Enabled = true;
-            Lista.L_D_Departamentos(ref LD_Departamento,Convert.ToInt32(LD_Territorial.SelectedValue));
+            Lista.L_D_Departamentos(ref LD_Departamento, Convert.ToInt32(LD_Territorial.SelectedValue));
             LD_Municipio.Items.Clear();
         }
     }
@@ -3819,7 +3819,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         break;
                     case 304:// si es Fase 8 - cierre / balance del acompañamiento -desarrollo que muestra los desarrollos de Liliana rodriguez
                         bool existeplan = GetPlanTrasladoParaBalance();
-                        if(existeplan){
+                        if (existeplan)
+                        {
                             m_Balance.Visible = true;
                             balance_ryr.Visible = true;
                             PanelPT.Visible = true;
@@ -3842,7 +3843,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 L_titulo.Text = Convert.ToString(((Label)gvRow.FindControl("fase_actividad")).Text);
 
-                Lista.LD_Dia_actividad(id_actividad,ref L_D_dia_actividad_documentos);
+                Lista.LD_Dia_actividad(id_actividad, ref L_D_dia_actividad_documentos);
 
                 int id_nombre_actividad = Convert.ToInt32(((Label)gvRow.FindControl("id_nombre_actividad")).Text);
 
@@ -4882,7 +4883,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Crear_actividad_detalle(1);
         Crear_dias_actividad();
         consulta_dias_actividad(1);
-        Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]),ref L_D_dia_actividad_documentos);
+        Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
     }
     protected void B_GCostos_Click(object sender, EventArgs e)
     {
@@ -4949,7 +4950,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             //TB_DescripcionArchivo.Enabled = false;
             //TB_Personas.Enabled = false;
             LD_DepArchivo.SelectedValue = Convert.ToString(((Label)gvRow2.FindControl("ID_DEPARTAMENTO")).Text);
-            Lista.L_D_MunArchivo(LD_DepArchivo.SelectedValue,ref LD_MunArchivo);
+            Lista.L_D_MunArchivo(LD_DepArchivo.SelectedValue, ref LD_MunArchivo);
             // municipio por territorial
             LD_MunArchivo.SelectedValue = Convert.ToString(((Label)gvRow2.FindControl("ID_MUNICIPIO")).Text);
             TB_DescripcionArchivo.Text = ((Label)gvRow2.FindControl("DESCRIPCION")).Text;
@@ -5517,7 +5518,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                             else
                             {
                                 Actualiza_dias_actividad(4);
-                                Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]),ref L_D_dia_actividad_documentos);
+                                Lista.LD_Dia_actividad(Convert.ToInt32(ViewState["id_actividad"]), ref L_D_dia_actividad_documentos);
                                 UP_Archivos.Update();
                             }
                         }
@@ -8722,7 +8723,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         //cast the viewstate as a datatable
 
-        System.Data.DataTable  dt = (System.Data.DataTable)ViewState["gv5"];
+        System.Data.DataTable dt = (System.Data.DataTable)ViewState["gv5"];
         //rebind the grid
         /***
          * Parametros
@@ -10166,7 +10167,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     private void ProcesarFicha()
     {
         Ficha.FormularioActivo = true;
-        Ficha.Comunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]); 
+        Ficha.Comunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
         m_Ficha.Visible = Ficha.FormularioActivo;
         ficha.Visible = Ficha.FormularioActivo;
 
@@ -10719,7 +10720,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
     protected void gv_evidencias_traslado_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-    }    
+    }
 
     //METODOS QUE TRAEN  LA INFORMACION DEL PLAN DE TRASLADO
     public void GetPlanTraslado()
@@ -10743,12 +10744,12 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             LD_Municipio_Llegada.SelectedValue = dsPT.Tables[0].Rows[0]["ID_MUNICIPIO_LLEGADA"].ToString();
             LD_Entorno_Salida.SelectedValue = dsPT.Tables[0].Rows[0]["ID_ENTORNO_SALIDA"].ToString();
             LD_Entorno_Llegada.SelectedValue = dsPT.Tables[0].Rows[0]["ID_ENTORNO_LLEGADA"].ToString();
-            DateTime fechaInicio = Convert.ToDateTime ( dsPT.Tables[0].Rows[0]["FECHA_INICIO_TRASLADO"]);
+            DateTime fechaInicio = Convert.ToDateTime(dsPT.Tables[0].Rows[0]["FECHA_INICIO_TRASLADO"]);
             txFechaInicioTraslado.Text = fechaInicio.ToShortDateString();
             DateTime fechaLlegada = Convert.ToDateTime(dsPT.Tables[0].Rows[0]["FECHA_LLEGADA"]);
             txFechaLlegada.Text = fechaLlegada.ToShortDateString();
 
-            idPlanAccionTraslado.Value = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"].ToString();                       
+            idPlanAccionTraslado.Value = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"].ToString();
             ViewState["idPlanAccionTraslado"] = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"];
         }
     }
@@ -11029,21 +11030,28 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             int idComunidad = Convert.ToInt32(TB_Nit.Text);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
-            if (gv_categoria.Rows.Count > 0)
+            if (idPlan > 0)
             {
-                for (int i = 0; i < gv_categoria.Rows.Count; i++)
+                if (gv_categoria.Rows.Count > 0)
                 {
-                    int id = Convert.ToInt32(gv_categoria.Rows[i].Cells[0].Text); ;
-                    TextBox txtResultado = (TextBox)gv_categoria.Rows[i].Cells[2].FindControl("RESULTADO");
-                    string resultado = txtResultado.Text;
-                    TextBox txtAcciones = (TextBox)gv_categoria.Rows[i].Cells[3].FindControl("ACCIONES");
-                    string acciones = txtAcciones.Text;
-                    TextBox txtObservaciones = (TextBox)gv_categoria.Rows[i].Cells[4].FindControl("OBSERVACIONES");
-                    string observaciones = txtObservaciones.Text;
-                    int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-                    FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(id, idPlan, idComunidad, resultado, acciones, observaciones, idUsuario);
+                    for (int i = 0; i < gv_categoria.Rows.Count; i++)
+                    {
+                        int id = Convert.ToInt32(gv_categoria.Rows[i].Cells[0].Text); ;
+                        TextBox txtResultado = (TextBox)gv_categoria.Rows[i].Cells[2].FindControl("RESULTADO");
+                        string resultado = txtResultado.Text;
+                        TextBox txtAcciones = (TextBox)gv_categoria.Rows[i].Cells[3].FindControl("ACCIONES");
+                        string acciones = txtAcciones.Text;
+                        TextBox txtObservaciones = (TextBox)gv_categoria.Rows[i].Cells[4].FindControl("OBSERVACIONES");
+                        string observaciones = txtObservaciones.Text;
+                        int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+                        FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_categoria_ruta_comunitaria(id, idPlan, idComunidad, resultado, acciones, observaciones, idUsuario);
+                    }
+                    GetCategoria_plan_acción_traslado_Ruta_Comunitaria();
                 }
-                GetCategoria_plan_acción_traslado_Ruta_Comunitaria();
+            }
+            else
+            {
+                Mensajes("Debe ingresar la informacion de datos de salida y llegada del plan de traslado", 0);
             }
         }
         catch (System.Exception ex)
@@ -11059,18 +11067,25 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             if (Convert.ToInt32(LD_EntidadCaracterizacion.SelectedValue) != 0)
             {
                 int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
-                int idEntidad = Convert.ToInt32(LD_EntidadCaracterizacion.SelectedValue);
-                int idCategoria = Convert.ToInt32(ViewState["idCategoria"]);
-                int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_categoria_entidad_Ruta_Comunitaria(idPlan, idEntidad, idCategoria, idUsuario);
-                if (exitoso)
+                if (idPlan > 0)
                 {
-                    LD_EntidadCaracterizacion.SelectedValue = "0";
-                    Get_Entidades_Plan_Accion_Traslado_Ctegorias_Entidad();
+                    int idEntidad = Convert.ToInt32(LD_EntidadCaracterizacion.SelectedValue);
+                    int idCategoria = Convert.ToInt32(ViewState["idCategoria"]);
+                    int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+                    bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_categoria_entidad_Ruta_Comunitaria(idPlan, idEntidad, idCategoria, idUsuario);
+                    if (exitoso)
+                    {
+                        LD_EntidadCaracterizacion.SelectedValue = "0";
+                        Get_Entidades_Plan_Accion_Traslado_Ctegorias_Entidad();
+                    }
+                    else
+                    {
+                        Mensajes("No se ingresó la entidad correctamente.", 0);
+                    }
                 }
                 else
                 {
-                    Mensajes("No se ingresó la entidad correctamente.", 0);
+                    Mensajes("Debe ingresar la informacion de datos de salida y llegada del plan de traslado", 0);
                 }
             }
             else
@@ -11092,17 +11107,25 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 int idComuniad = Convert.ToInt32(TB_Nit.Text);
                 int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
-                int idEntidad = Convert.ToInt32(LD_Entidad.SelectedValue);
-                int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_entidad_Ruta_Comunitaria(idPlan, idEntidad, idUsuario);
-                if (exitoso)
+                if (idPlan > 0)
                 {
-                    LD_Entidad.SelectedValue = "0";
-                    Get_Entidades_Plan_Accion_Traslado_Entidad();
+                    int idEntidad = Convert.ToInt32(LD_Entidad.SelectedValue);
+                    int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+                    bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_entidad_Ruta_Comunitaria(idPlan, idEntidad, idUsuario);
+                    if (exitoso)
+                    {
+                        LD_Entidad.SelectedValue = "0";
+                        Get_Entidades_Plan_Accion_Traslado_Entidad();
+                    }
+                    else
+                    {
+                        Mensajes("No se ingresó la entidad correctamente.", 0);
+                    }
+
                 }
                 else
                 {
-                    Mensajes("No se ingresó la entidad correctamente.", 0);
+                    Mensajes("Debe ingresar la informacion de datos de salida y llegada del plan de traslado", 0);
                 }
             }
             else
@@ -11122,30 +11145,37 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             int idComunidad = Convert.ToInt32(TB_Nit.Text);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
-            int id = 0;
-            if (ViewState["idBalanceTraslado"] != null)
+            if (idPlan > 0)
             {
-                id = Convert.ToInt32(ViewState["idBalanceTraslado"]);
-            }
-            string actividad = txActividad.Text;
-            string responsable = txResponsable.Text;
-            bool cumplida = Convert.ToBoolean(LD_Cumplido.SelectedValue);
-            string observaciones = txObservaciones.Text;
-            int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-            bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(id, idPlan, idComunidad, actividad, responsable, cumplida, observaciones, idUsuario);
-            if (exitoso)
-            {
-                Get_plan_acción_traslado_balance_traslado_ruta_comunitaria();
-                ViewState["idBalanceTraslado"] = null;
-                TB_Nit.Text = "";
-                txResponsable.Text = "";
-                txActividad.Text = "";
-                txObservaciones.Text = "";
-                //LD_Cumplido.SelectedValue = "0";
+                int id = 0;
+                if (ViewState["idBalanceTraslado"] != null)
+                {
+                    id = Convert.ToInt32(ViewState["idBalanceTraslado"]);
+                }
+                string actividad = txActividad.Text;
+                string responsable = txResponsable.Text;
+                bool cumplida = Convert.ToBoolean(LD_Cumplido.SelectedValue);
+                string observaciones = txObservaciones.Text;
+                int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_traslado_ruta_comunitaria(id, idPlan, idComunidad, actividad, responsable, cumplida, observaciones, idUsuario);
+                if (exitoso)
+                {
+                    Get_plan_acción_traslado_balance_traslado_ruta_comunitaria();
+                    ViewState["idBalanceTraslado"] = null;
+                    TB_Nit.Text = "";
+                    txResponsable.Text = "";
+                    txActividad.Text = "";
+                    txObservaciones.Text = "";
+                    //LD_Cumplido.SelectedValue = "0";
+                }
+                else
+                {
+                    Mensajes("No se realizo la operación.", 0);
+                }
             }
             else
             {
-                Mensajes("No se realizo la operación.", 0);
+                Mensajes("Debe ingresar la informacion de datos de salida y llegada del plan de traslado", 0);
             }
         }
         catch (System.Exception ex)
@@ -11160,24 +11190,31 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             int idComunidad = Convert.ToInt32(TB_Nit.Text);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
-            int id = 0;
-            DateTime fechaRegistro = Convert.ToDateTime(Convert.ToString(txtFechaRegistro.Text));
-            int idMunicipio = Convert.ToInt32(LD_MunicipioAlistamiento.SelectedValue);
-            string direccion = txtDireccionRegistro.Text;
-            int idDt = Convert.ToInt32(LD_DireccionTerritorialProfesionalEncargado.SelectedValue);
-            int idEntidad = Convert.ToInt32(LD_EntidadRegistra.SelectedValue);
-            string profesional = txtProfesionalEncargado.Text;
-            string correo = txCorreoProfesionalEncargado.Text;
-            int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-            bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria(id, idPlan, idComunidad, fechaRegistro, idMunicipio, direccion, idDt, idEntidad, profesional, correo, idUsuario);
-            if (exitoso)
+            if (idPlan > 0)
             {
-                Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria();
-                //ViewState["idBalanceTraslado"] = null;                --------------------pendiente
+                int id = 0;
+                DateTime fechaRegistro = Convert.ToDateTime(Convert.ToString(txtFechaRegistro.Text));
+                int idMunicipio = Convert.ToInt32(LD_MunicipioAlistamiento.SelectedValue);
+                string direccion = txtDireccionRegistro.Text;
+                int idDt = Convert.ToInt32(LD_DireccionTerritorialProfesionalEncargado.SelectedValue);
+                int idEntidad = Convert.ToInt32(LD_EntidadRegistra.SelectedValue);
+                string profesional = txtProfesionalEncargado.Text;
+                string correo = txCorreoProfesionalEncargado.Text;
+                int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_alistamiento_traslado_ruta_comunitaria(id, idPlan, idComunidad, fechaRegistro, idMunicipio, direccion, idDt, idEntidad, profesional, correo, idUsuario);
+                if (exitoso)
+                {
+                    Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria();
+                    //ViewState["idBalanceTraslado"] = null;                --------------------pendiente
+                }
+                else
+                {
+                    Mensajes("No se realizo la operación.", 0);
+                }
             }
             else
             {
-                Mensajes("No se realizo la operación.", 0);
+                Mensajes("Debe ingresar la informacion de datos de salida y llegada del plan de traslado", 0);
             }
         }
         catch (System.Exception ex)
@@ -11192,30 +11229,37 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             int idComunidad = Convert.ToInt32(TB_Nit.Text);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
-            string profesional = txNombresProfesionalRealiza.Text;
-            int idEntidad = Convert.ToInt32(LD_EntidadProfesionalRegistra.SelectedValue);
-            string telefono = txTelefonoProfesionalRegistra.Text;
-            string correo = txCorreoProfesionalRegistroAlistamiento.Text;
-            int id = 0;
-            if (ViewState["idProfesionalRegistra"] != null)
+            if (idPlan > 0)
             {
-                id = Convert.ToInt32(ViewState["idProfesionalRegistra"]);
-            }
-            int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-            bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(id, idPlan, idComunidad, profesional, idEntidad, telefono, correo, idUsuario);
-            if (exitoso)
-            {
-                Get_plan_acción_traslado_profesionales_traslado_ruta_comunitaria();
-                ViewState["idProfesionalRegistra"] = null;
-                txNombresProfesionalRealiza.Text = "";
-                LD_EntidadProfesionalRegistra.SelectedValue = "0";
-                txTelefonoProfesionalRegistra.Text = "";
-                txCorreoProfesionalRegistroAlistamiento.Text = "";
+                string profesional = txNombresProfesionalRealiza.Text;
+                int idEntidad = Convert.ToInt32(LD_EntidadProfesionalRegistra.SelectedValue);
+                string telefono = txTelefonoProfesionalRegistra.Text;
+                string correo = txCorreoProfesionalRegistroAlistamiento.Text;
+                int id = 0;
+                if (ViewState["idProfesionalRegistra"] != null)
+                {
+                    id = Convert.ToInt32(ViewState["idProfesionalRegistra"]);
+                }
+                int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_profesionales_traslado_ruta_comunitaria(id, idPlan, idComunidad, profesional, idEntidad, telefono, correo, idUsuario);
+                if (exitoso)
+                {
+                    Get_plan_acción_traslado_profesionales_traslado_ruta_comunitaria();
+                    ViewState["idProfesionalRegistra"] = null;
+                    txNombresProfesionalRealiza.Text = "";
+                    LD_EntidadProfesionalRegistra.SelectedValue = "0";
+                    txTelefonoProfesionalRegistra.Text = "";
+                    txCorreoProfesionalRegistroAlistamiento.Text = "";
 
+                }
+                else
+                {
+                    Mensajes("No se realizo la operación.", 0);
+                }
             }
             else
             {
-                Mensajes("No se realizo la operación.", 0);
+                Mensajes("Debe ingresar la informacion de datos de salida y llegada del plan de traslado", 0);
             }
         }
         catch (System.Exception ex)
@@ -11228,33 +11272,40 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         try
         {
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
-            int idComunidad = Convert.ToInt32(TB_Nit.Text);
-            int idHogar = Convert.ToInt32(ViewState["idHogar"]);
-            int estufas = Convert.ToInt32(txEstufas.Text);
-            int neveras = Convert.ToInt32(txNeveras.Text);
-            int utenciliosCocina = Convert.ToInt32(txMenaje.Text);
-            int camas = Convert.ToInt32(txCamas.Text);
-            int colchones = Convert.ToInt32(txColchones.Text);
-            int cobijas = Convert.ToInt32(txCobijas.Text);
-            int sofas = Convert.ToInt32(txSofas.Text);
-            int sillas = Convert.ToInt32(txSillas.Text);
-            int mesas = Convert.ToInt32(txMesas.Text);
-            int equiposSonido = Convert.ToInt32(txEquiposSonido.Text);
-            int juguetes = Convert.ToInt32(txJuguetes.Text);
-            int bicicletas = Convert.ToInt32(txBicicletas.Text);
-            int motos = Convert.ToInt32(txMotos.Text);
-            int tulas = Convert.ToInt32(txTulas.Text);
-            int peso = Convert.ToInt32(txMotos.Text);
-            bool rotulacion = Convert.ToBoolean(LD_Rotulacion.SelectedValue);
-            int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-            bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria(0, idPlan, idComunidad, idHogar, estufas, neveras, utenciliosCocina, camas, colchones, cobijas, sofas, sillas, mesas, equiposSonido, juguetes, bicicletas, motos, tulas, peso, rotulacion, idUsuario);
-            if (exitoso)
+            if (idPlan > 0)
             {
-                Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria();
+                int idComunidad = Convert.ToInt32(TB_Nit.Text);
+                int idHogar = Convert.ToInt32(ViewState["idHogar"]);
+                int estufas = Convert.ToInt32(txEstufas.Text);
+                int neveras = Convert.ToInt32(txNeveras.Text);
+                int utenciliosCocina = Convert.ToInt32(txMenaje.Text);
+                int camas = Convert.ToInt32(txCamas.Text);
+                int colchones = Convert.ToInt32(txColchones.Text);
+                int cobijas = Convert.ToInt32(txCobijas.Text);
+                int sofas = Convert.ToInt32(txSofas.Text);
+                int sillas = Convert.ToInt32(txSillas.Text);
+                int mesas = Convert.ToInt32(txMesas.Text);
+                int equiposSonido = Convert.ToInt32(txEquiposSonido.Text);
+                int juguetes = Convert.ToInt32(txJuguetes.Text);
+                int bicicletas = Convert.ToInt32(txBicicletas.Text);
+                int motos = Convert.ToInt32(txMotos.Text);
+                int tulas = Convert.ToInt32(txTulas.Text);
+                int peso = Convert.ToInt32(txMotos.Text);
+                bool rotulacion = Convert.ToBoolean(LD_Rotulacion.SelectedValue);
+                int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria(0, idPlan, idComunidad, idHogar, estufas, neveras, utenciliosCocina, camas, colchones, cobijas, sofas, sillas, mesas, equiposSonido, juguetes, bicicletas, motos, tulas, peso, rotulacion, idUsuario);
+                if (exitoso)
+                {
+                    Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria();
+                }
+                else
+                {
+                    Mensajes("No se realizo la operación.", 0);
+                }
             }
             else
             {
-                Mensajes("No se realizo la operación.", 0);
+                Mensajes("Debe ingresar la informacion de datos de salida y llegada del plan de traslado", 0);
             }
 
         }
@@ -11529,7 +11580,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             int idUsuario = Convert.ToInt32(Session["id_usuario"]);
             string rutaCompleta = System.Configuration.ConfigurationManager.AppSettings["Archivos"] + url_archivo;
             if (File.Exists(rutaCompleta))
-            {                
+            {
                 bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(idEvidencia, idBalance, 0, url_archivo, nombre_archivo, extension, idUsuario, false);
                 if (!exitoso)
                 {
@@ -11563,7 +11614,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         Adjuntar_archivos_act adjuntar_archivos = new Adjuntar_archivos_act();
         try
-        {            
+        {
         }
         catch
         {
@@ -11654,12 +11705,13 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             //datos de ssv
             lblTotalSuperacionGI.InnerText = dsPT.Tables[0].Rows[0]["TOTAL_SUPERACION_GI"].ToString();
             lblTotalSuperacionGIBalance.InnerText = dsPT.Tables[0].Rows[0]["TOTAL_SUPERACION_GI_BALANCE"].ToString();
-
+            lblTotalPersonasSuperaron.InnerText = dsPT.Tables[0].Rows[0]["TOTAL_PERSONAS_SUPERAR_SSV"].ToString();
             ViewState["idPlanAccionTraslado"] = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"];
-            return true;        }
+            return true;
+        }
         else
         {
-            return false;            
+            return false;
         }
     }
     public void Get_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria()
@@ -11700,7 +11752,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_balance_ssv.Visible = true;
             gv_balance_ssv.DataSource = dsPE;
             gv_balance_ssv.DataBind();
-            if (dsPE.Tables[0].Rows[0]["FECHA_SISTEMA"] != null && dsPE.Tables[0].Rows[0]["FECHA_SISTEMA"].ToString() != "") {
+            if (dsPE.Tables[0].Rows[0]["FECHA_SISTEMA"] != null && dsPE.Tables[0].Rows[0]["FECHA_SISTEMA"].ToString() != "")
+            {
                 DateTime fechabalance = Convert.ToDateTime(dsPE.Tables[0].Rows[0]["FECHA_SISTEMA"]);
                 lblFechaBalanceDerecho.InnerText = "FECHA EN LA QUE SE GUARDÓ LA SIGUIENTE INFORMACIÓN: " + fechabalance.ToShortDateString();
             }
@@ -11723,8 +11776,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             string correo = txcorreoProcesionalListadoBalance.Text;
             int idUsuario = Convert.ToInt32(Session["id_usuario"]);
             DateTime fechaSSV = Convert.ToDateTime(Convert.ToString(lblMedicionSSV.InnerText));
-            bool exitoso =  FachadaPersistencia.getInstancia().LD_Actualizar_plan_acción_traslado_para_balance_Ruta_Comunitaria(idComunidad, idPlan, idDt, profesional, correo, fechaSSV, idUsuario);
-            if (exitoso) {
+            bool exitoso = FachadaPersistencia.getInstancia().LD_Actualizar_plan_acción_traslado_para_balance_Ruta_Comunitaria(idComunidad, idPlan, idDt, profesional, correo, fechaSSV, idUsuario);
+            if (exitoso)
+            {
                 GetPlanTrasladoParaBalance();
             }
             else
@@ -11742,7 +11796,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         try
         {
-            
+
         }
         catch (System.Exception ex)
         {
@@ -11766,7 +11820,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             string NOMBREDELACOMUNIDAD = dsPT.Tables[0].Rows[0]["NOMBRE_RYR_COMUNIDAD"].ToString(); ;
             string NOMBREDELDEPARTAMENTO = dsPT.Tables[0].Rows[0]["DEPARTAMENTO_LLEGADA"].ToString();
             string NOMBREDELMUNICIPIO = dsPT.Tables[0].Rows[0]["MUNICIPIO_LLEGADA"].ToString();
-            string PROFESIONALESHICIERONBALANCE = dsPT.Tables[0].Rows[0]["PROFESIONAL_ELABORA_LISTADO_BALANCE"].ToString(); 
+            string PROFESIONALESHICIERONBALANCE = dsPT.Tables[0].Rows[0]["PROFESIONAL_ELABORA_LISTADO_BALANCE"].ToString();
             string DIRECCIONTERRITORIAL = dsPT.Tables[0].Rows[0]["PROFESIONAL_ELABORA_LISTADO_BALANCE"].ToString();
             string BARRIO = dsPT.Tables[0].Rows[0]["CORREGIMIENTO_LLEGADA"].ToString();
             string TOTALPERSONAS = dsPT.Tables[0].Rows[0]["TOTAL_PERSONAS_TRASLADAR"].ToString();
@@ -11811,7 +11865,12 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         //paragraph.AppendText("A partir de las acciones concertadas con la comunidad NOMBRE DE LA COMUNIDAD ubicada en el NOMBRE DEL MUNICIPIO del departamento de NOMBRE DEL DEPARTAMENTO, se relaciona a continuación el balance del acompañamiento brindado por la institucionalidad, a su decisión de retornar, reubicarse o integrarse localmente. Para ello se desarrollarán los siguientes elementos: i) comparación de las condiciones de vida de la comunidad cuando inició el acompañamiento y cuando éste cerró, en términos de los componentes del acompañamiento, es decir, cómo estaban en relación con la superación de su situación de vulnerabilidad y su proceso de integración comunitaria y arraigo territorial, y cómo se encuentran una vez se implementaron las acciones del plan; ii) la información de la implementación de las acciones contempladas en el plan, relacionadas con cada uno de los componentes del acompañamiento; iii) la información sobre la materialización del alcance de sostenibilidad de los principios del acompañamiento; y iv) las acciones que fueron implementadas teniendo en cuenta los enfoques diferenciales. ");
         //Save doc file.
         string fechaActual = DateTime.Now.ToString("yyyyMMddHHmmss");
-        string nombreArchivo = "DOCUMENTO_BALANCE_DEL_ACOMPANAMIENTO_AL_RyR" + fechaActual + ".doc";
+        string ruta_downlodad = System.Configuration.ConfigurationManager.AppSettings["PATH_SALVAR_ARCHIVO"].ToString();
+        if (!Directory.Exists(ruta_downlodad))
+        {
+            Directory.CreateDirectory(ruta_downlodad);
+        }
+        string nombreArchivo = ruta_downlodad+ "DOCUMENTO_BALANCE_DEL_ACOMPANAMIENTO_AL_RyR" + fechaActual + ".doc";        
         document.SaveToFile(nombreArchivo, FileFormat.Doc);
         //Launching the MS Word file.
 

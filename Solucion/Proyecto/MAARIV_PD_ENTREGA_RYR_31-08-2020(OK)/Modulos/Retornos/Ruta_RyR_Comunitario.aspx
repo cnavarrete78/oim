@@ -4801,7 +4801,7 @@
                                                                                                             <asp:BoundField DataField="VIVIENDA" HeaderText="VIVIENDA" Visible="true" />
                                                                                                             <asp:BoundField DataField="REUNIFICACION_FAMILIAR" HeaderText="REUNIFICACION FAMILIAR" Visible="true" />
                                                                                                             <asp:BoundField DataField="GENERACION_INGRESOS" HeaderText="GENERACION INGRESOS" Visible="true" />
-                                                                                                            <asp:BoundField DataField="FECHA_MEDICION" HeaderText="FECHA_MEDICION" Visible="true" />
+                                                                                                            <asp:BoundField DataField="FECHA_MEDICION" HeaderText="FECHA MEDICION" Visible="true" />
                                                                                                         </Columns>
                                                                                                         <PagerStyle CssClass="pgr" />
                                                                                                     </asp:GridView>
@@ -4825,6 +4825,12 @@
                                                                                 2. BALANCE DE LA SUPERACIÓN DE LA SITUACIÓN DE VULNERABILIDAD (SIN GENERACIÓN DE INGRESOS)  
                                                                             </div>
                                                                             <div class="panel-body">
+                                                                                 <div class="row">
+                                                                                      <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9 ">TOTAL PERSONAS QUE SUPERARON LA SSV CON EL ACOMPAÑAMIENTO:</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lblTotalPersonasSuperaron"></label>
+                                                                                    </div>                                                                                    
+                                                                                </div>
                                                                                  <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-12" runat="server" id="lblFechaBalanceDerecho">f</label>
