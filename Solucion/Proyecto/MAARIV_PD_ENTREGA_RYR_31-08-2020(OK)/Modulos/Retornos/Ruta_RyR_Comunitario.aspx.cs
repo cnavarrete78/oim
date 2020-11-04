@@ -10192,6 +10192,12 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             this.LD_Territorial_Ficha.SelectedValue = Ficha.Territorial.ToString();
             this.txtProfesionalFicha.Text = Ficha.Profesional;
             this.txtCorreoProfesionalFicha.Text = Ficha.Correo;
+            this.txtIntencionalidadRazones.Text = Ficha.IntencionalidadRazones;
+            this.txtIntencionalidadManifestacion.Text = Ficha.IntencionalidadManifestacion;
+            this.txtCondicionesActualesCaracteristicas.Text = Ficha.CondicionesActualesCaracteristicas;
+            this.txtCondicionesActualesActividades.Text = Ficha.CondicionesActualesActividades;
+            this.txtMujeresEmbarazo.Text = Ficha.MujeresEmbarazo.ToString();
+            this.txtPersonasEnfermedadRuinosa.Text = Ficha.PersonasEnfermedadRuinosa.ToString();
         }
 
         this.txtTotalHogaresFicha.Text = Ficha.TotalHogares.ToString();
@@ -10199,7 +10205,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         this.txtTotalPersonasRUV.Text = Ficha.TotalPersonasRUV.ToString();
         this.txtHogaresReunificacionFamiliar.Text = Ficha.HogaresReunificacionFamiliar.ToString();
         this.txtPersonasAtencionPsicosocial.Text = Ficha.PersonasAtencionPsicosocial.ToString();
-
+        Up_ficha.Update();
     }
 
     protected void LlenarMunicipiosFicha_SelectedIndexChanged(object sender, EventArgs e)
