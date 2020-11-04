@@ -3827,6 +3827,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                             LlenarComboDTBalance();
                             Get_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria();
                             Get_balance_SSV_Ruta_Comunitaria();
+                            Get_Consultar_Balance_GI_Ruta_Comunitaria();
+                            Get_Consultar_Balance_ICYAT_Ruta_Comunitaria();
                         }
                         else
                         {
@@ -10553,8 +10555,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 ViewState["idBalanceTraslado"] = ((Label)gvRow.FindControl("idbalance")).Text;
+                ViewState["OrigenEvidencia"] = "Traslado";
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEvidenciasBalance", "$('#myModalEvidenciasBalance').modal();", true);
-                Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria();
+                Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria("Traslado");
                 UpdatePanelEvidenciasBalance.Update();
             }
         }
@@ -10689,7 +10692,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         try
         {
             GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
-            int idBalance = Convert.ToInt32(((Label)gvRow.FindControl("ID_BALANCE_TRASLADO")).Text);
+            int idBalance = Convert.ToInt32(((Label)gvRow.FindControl("ID_RELACION")).Text);
             int idEvidencia = Convert.ToInt32(((Label)gvRow.FindControl("ID_EVIDENCIA")).Text);
             Session["NOMBRE_ARCHIVO"] = ((Label)gvRow.FindControl("NOMBRE_ARCHIVO")).Text;
             Session["URL_ARCHIVO"] = ((Label)gvRow.FindControl("URL_ARCHIVO")).Text;
@@ -10703,7 +10706,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             else if (e.CommandName == "Eliminar")
             {
                 Elimina_archivo_evidencia(idEvidencia, idBalance);
-                Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria();
+                Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria("Traslado");
                 UpdatePanelEvidenciasBalance.Update();
             }
         }
@@ -10979,22 +10982,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
         gv_personas.Visible = false;
     }
-    public void Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria()
-    {
-        DataSet ds = new DataSet();
-        int idBalance = Convert.ToInt32(ViewState["idBalanceTraslado"]);
-        ds = FachadaPersistencia.getInstancia().Get_Persona_Plan_Accion_Traslado_balance_evidencia(idBalance);
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            gv_evidencias_traslado.Visible = true;
-            gv_evidencias_traslado.DataSource = ds;
-            gv_evidencias_traslado.DataBind();
-        }
-        else
-        {
-            gv_evidencias_traslado.Visible = false;
-        }
-    }
+
 
     //METODOS QUE GUARDAN INFORMACION DEL PLAN DE TRASLADO
     protected void btn_guardar_plan_Accion_traslado_Click(object sender, EventArgs e)
@@ -11439,6 +11427,36 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
 
     //metodos para las evidencias
+    public void Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria(string origen)
+    {
+        int idRelacion = 0;
+        DataSet ds = new DataSet();
+        switch (origen)
+        {           
+            case "Traslado":
+               idRelacion = Convert.ToInt32(ViewState["idBalanceTraslado"]);
+                break;            
+            case "BalanceGI":
+                idRelacion = Convert.ToInt32(ViewState["idPlanBienServicio"]);
+                break;
+            case "BalanceICAT":
+                idRelacion = Convert.ToInt32(ViewState["idPlanBienServicio"]);
+                break;
+            default:
+                break;
+        }
+        ds = FachadaPersistencia.getInstancia().Get_Plan_Accion_Traslado_balance_evidencia(idRelacion, origen);
+        if (!ds.Tables[0].Rows.Count.Equals(0))
+        {
+            gv_evidencias_traslado.Visible = true;
+            gv_evidencias_traslado.DataSource = ds;
+            gv_evidencias_traslado.DataBind();
+        }
+        else
+        {
+            gv_evidencias_traslado.Visible = false;
+        }
+    }
     protected void guardar_evidencia_Click(object sender, EventArgs e)
     {
         Crear_evidencia(1);
@@ -11457,18 +11475,30 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 string nombreArchivo = Session["nombreArchivo"].ToString(); // permite validar el archivo
                 string EXTENSION = Convert.ToString(Session["extension"]);
                 int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-                int idBalance = Convert.ToInt32(ViewState["idBalanceTraslado"]);
                 int idTipoEvidencia = Convert.ToInt32(LD_TipoEvidencia.SelectedValue);
+                string origen = ViewState["OrigenEvidencia"].ToString();
+                int idRelacion = 0;
                 if (URL_ARCHIVO != "")
                 {
-                    exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(0, idBalance, idTipoEvidencia, URL_ARCHIVO, nombreArchivo, EXTENSION, idUsuario, true);
+                    switch (origen)
+                    {
+                        case "Traslado":
+                            idRelacion = Convert.ToInt32(ViewState["idBalanceTraslado"]);
+                            break;
+                        case "BalanceGI":
+                            idRelacion = Convert.ToInt32(ViewState["idPlanBienServicio"]);
+                            break;
+                        default:
+                            break;
+                    }
                 }
+                exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(0, origen, idRelacion, idTipoEvidencia, URL_ARCHIVO, nombreArchivo, EXTENSION, idUsuario, true);
                 if (exitoso == true)
                 {
                     Session["nombreArchivo"] = null;
                     Session["extension"] = null;
                     texto("El registro se inserto correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
-                    Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria();
+                    Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria(origen);
                     validar = true;
                 }
                 else
@@ -11579,9 +11609,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             string nombre_archivo = Session["NOMBRE_ARCHIVO"].ToString();
             int idUsuario = Convert.ToInt32(Session["id_usuario"]);
             string rutaCompleta = System.Configuration.ConfigurationManager.AppSettings["Archivos"] + url_archivo;
+            string origen = ViewState["OrigenEvidencia"].ToString();
             if (File.Exists(rutaCompleta))
             {
-                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(idEvidencia, idBalance, 0, url_archivo, nombre_archivo, extension, idUsuario, false);
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(idEvidencia, origen, idBalance, 0, url_archivo, nombre_archivo, extension, idUsuario, false);
                 if (!exitoso)
                 {
                     texto("El registro no se eliminó debido a una inconsistencia en el sistema!.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
@@ -11590,7 +11621,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 {
                     File.Delete(System.Configuration.ConfigurationManager.AppSettings["Archivos"] + url_archivo);
                     texto("El registro ha sido eliminado correctamente", 1); Mensajes_2("", this.L_mensaje.Text, 1);
-                    Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria();
+                    Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria(origen);
                 }
             }
             else
@@ -11669,6 +11700,105 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     protected void gv_balance_ssv_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
     }
+    protected void gv_GI_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        DataSet ds = new DataSet();
+        Adjuntar_archivos_act adjuntar_archivos = new Adjuntar_archivos_act();
+        try
+        {
+            if (e.CommandName == "AgregarEvidenciaMeta")
+            {
+                GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                ViewState["idPlanBienServicio"] = ((Label)gvRow.FindControl("ID_PLAN_RYR_BIEN_SERVICIO")).Text;
+                ViewState["OrigenEvidencia"] = "BalanceGI";
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEvidenciasBalance", "$('#myModalEvidenciasBalance').modal();", true);
+                Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria("BalanceGI");
+                UpdatePanelEvidenciasBalance.Update();
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void gv_GI_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            TextBox txtVAD = (TextBox)e.Row.FindControl("VICTIMAS_ACOMPANADAS_DIRECTAMENTE");
+            DataRow drGV = ((DataRowView)e.Row.DataItem).Row;
+            txtVAD.Text = drGV["VICTIMAS_ACOMPANADAS_DIRECTAMENTE"].ToString();
+
+            TextBox txtVAI = (TextBox)e.Row.FindControl("VICTIMAS_ACOMPANADAS_INDIRECTAMENTE");
+            DataRow drGVVAI = ((DataRowView)e.Row.DataItem).Row;
+            txtVAI.Text = drGVVAI["VICTIMAS_ACOMPANADAS_INDIRECTAMENTE"].ToString();
+
+            TextBox txtVA = (TextBox)e.Row.FindControl("VICTIMAS_ACOMPANADAS");
+            DataRow drGVVA = ((DataRowView)e.Row.DataItem).Row;
+            txtVA.Text = drGVVA["VICTIMAS_ACOMPANADAS"].ToString();
+
+            TextBox txtResponsable = (TextBox)e.Row.FindControl("RESPONSABLE");
+            DataRow drGVResponsable = ((DataRowView)e.Row.DataItem).Row;
+            txtResponsable.Text = drGVResponsable["RESPONSABLE"].ToString();
+
+            TextBox txtCosto = (TextBox)e.Row.FindControl("COSTO_TOTAL");
+            DataRow drGVCosto = ((DataRowView)e.Row.DataItem).Row;
+            txtCosto.Text = drGVCosto["COSTO_TOTAL"].ToString();
+        }
+    }
+    protected void gv_GI_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+    }
+    protected void gv_ICYAT_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        DataSet ds = new DataSet();
+        Adjuntar_archivos_act adjuntar_archivos = new Adjuntar_archivos_act();
+        try
+        {
+            if (e.CommandName == "AgregarEvidenciaMeta")
+            {
+                GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                ViewState["idPlanBienServicio"] = ((Label)gvRow.FindControl("ID_PLAN_RYR_BIEN_SERVICIO")).Text;
+                ViewState["OrigenEvidencia"] = "BalanceICAT";
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEvidenciasBalance", "$('#myModalEvidenciasBalance').modal();", true);
+                Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria("BalanceICAT");
+                UpdatePanelEvidenciasBalance.Update();
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void gv_ICYAT_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            TextBox txtVAD = (TextBox)e.Row.FindControl("VICTIMAS_ACOMPANADAS_DIRECTAMENTE");
+            DataRow drGV = ((DataRowView)e.Row.DataItem).Row;
+            txtVAD.Text = drGV["VICTIMAS_ACOMPANADAS_DIRECTAMENTE"].ToString();
+
+            TextBox txtVAI = (TextBox)e.Row.FindControl("VICTIMAS_ACOMPANADAS_INDIRECTAMENTE");
+            DataRow drGVVAI = ((DataRowView)e.Row.DataItem).Row;
+            txtVAI.Text = drGVVAI["VICTIMAS_ACOMPANADAS_INDIRECTAMENTE"].ToString();
+
+            TextBox txtVA = (TextBox)e.Row.FindControl("VICTIMAS_ACOMPANADAS");
+            DataRow drGVVA = ((DataRowView)e.Row.DataItem).Row;
+            txtVA.Text = drGVVA["VICTIMAS_ACOMPANADAS"].ToString();
+
+            TextBox txtResponsable = (TextBox)e.Row.FindControl("RESPONSABLE");
+            DataRow drGVResponsable = ((DataRowView)e.Row.DataItem).Row;
+            txtResponsable.Text = drGVResponsable["RESPONSABLE"].ToString();
+
+            TextBox txtCosto = (TextBox)e.Row.FindControl("COSTO_TOTAL");
+            DataRow drGVCosto = ((DataRowView)e.Row.DataItem).Row;
+            txtCosto.Text = drGVCosto["COSTO_TOTAL"].ToString();
+        }
+    }
+    protected void gv_ICYAT_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+    }
+
     public void LlenarComboDTBalance()
     {
         DataSet dsTerritorio = new DataSet();
@@ -11694,10 +11824,23 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             lbl_TotalHogares.InnerText = dsPT.Tables[0].Rows[0]["TOTAL_HOGARES_TRASLADAR"].ToString();
             lbl_TotalPersonas.InnerText = dsPT.Tables[0].Rows[0]["TOTAL_PERSONAS_TRASLADAR"].ToString();
             lbl_TotalRUV.InnerText = dsPT.Tables[0].Rows[0]["TOTAL_PERSONAS_TRASLADAR_RUV"].ToString();
+
             lbl_Departamento_Llegada.InnerText = dsPT.Tables[0].Rows[0]["DEPARTAMENTO_LLEGADA"].ToString();
             lbl_Municipio_Llegada.InnerText = dsPT.Tables[0].Rows[0]["MUNICIPIO_LLEGADA"].ToString();
             lbl_Entorno_Llegada.InnerText = dsPT.Tables[0].Rows[0]["ENTORNO_LLEGADA"].ToString();
             lbl_Corregimiento_Llegada.InnerText = dsPT.Tables[0].Rows[0]["CORREGIMIENTO_LLEGADA"].ToString();
+
+            lbl_Departamento_Salida.InnerText = dsPT.Tables[0].Rows[0]["DEPARTAMENTO_SALIDA"].ToString();
+            lbl_Municipio_Salida.InnerText = dsPT.Tables[0].Rows[0]["MUNICIPIO_SALIDA"].ToString();
+            lbl_Entorno_Salida.InnerText = dsPT.Tables[0].Rows[0]["ENTORNO_SALIDA"].ToString();
+            lbl_Corregimiento_Salida.InnerText = dsPT.Tables[0].Rows[0]["CORREGIMIENTO_SALIDA"].ToString();
+
+
+            txProfesionalListadoBalance.Text = dsPT.Tables[0].Rows[0]["PROFESIONAL_ELABORA_LISTADO_BALANCE"].ToString();
+            txcorreoProcesionalListadoBalance.Text = dsPT.Tables[0].Rows[0]["CORREO_PROFESIONAL_ELABORA_LISTADO_BALANCE"].ToString();
+            LD_DireccionTerritorialProfesionalListadoBalance.SelectedValue = dsPT.Tables[0].Rows[0]["ID_DT_BALANCE"].ToString();
+
+
             DateTime fechaMedicionSSV = Convert.ToDateTime(dsPT.Tables[0].Rows[0]["FECHA_MEDICION"]);
             lblMedicionSSV.InnerText = fechaMedicionSSV.ToShortDateString();
             idPlanAccionTraslado.Value = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"].ToString();
@@ -11765,6 +11908,44 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_balance_ssv.DataBind();
         }
     }
+    public void Get_Consultar_Balance_GI_Ruta_Comunitaria()
+    {
+        int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
+        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        DataSet dsPE = new DataSet();
+        dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Balance_Metas_Ruta_Comunitaria(idComunidad, "GI");
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            gv_GI.Visible = true;
+            gv_GI.DataSource = dsPE;
+            gv_GI.DataBind();
+        }
+        else
+        {
+            gv_GI.Visible = false;
+            gv_GI.DataSource = dsPE;
+            gv_GI.DataBind();
+        }
+    }
+    public void Get_Consultar_Balance_ICYAT_Ruta_Comunitaria()
+    {
+        int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
+        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        DataSet dsPE = new DataSet();
+        dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Balance_Metas_Ruta_Comunitaria(idComunidad, "ICYAT");
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            gv_ICYAT.Visible = true;
+            gv_ICYAT.DataSource = dsPE;
+            gv_ICYAT.DataBind();
+        }
+        else
+        {
+            gv_ICYAT.Visible = false;
+            gv_ICYAT.DataSource = dsPE;
+            gv_ICYAT.DataBind();
+        }
+    }
     protected void btn_guardar_datosProfesionalListado_balance_Click(object sender, EventArgs e)
     {
         try
@@ -11791,7 +11972,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes("Error guardar a información. " + ex.Message, 0);
         }
     }
-
     protected void btn_guardar_balance_ssv_Click(object sender, EventArgs e)
     {
         try
@@ -11804,7 +11984,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
     }
 
-    protected void btn_generar_balance_Click(object sender, EventArgs e)
+    public void GenerarDocumentoBalance(string extension)
     {
         //Create word document
         string rutaPlantillaRyR = System.Configuration.ConfigurationManager.AppSettings["PlantillasRyR"];
@@ -11821,19 +12001,19 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             string NOMBREDELDEPARTAMENTO = dsPT.Tables[0].Rows[0]["DEPARTAMENTO_LLEGADA"].ToString();
             string NOMBREDELMUNICIPIO = dsPT.Tables[0].Rows[0]["MUNICIPIO_LLEGADA"].ToString();
             string PROFESIONALESHICIERONBALANCE = dsPT.Tables[0].Rows[0]["PROFESIONAL_ELABORA_LISTADO_BALANCE"].ToString();
-            string DIRECCIONTERRITORIAL = dsPT.Tables[0].Rows[0]["PROFESIONAL_ELABORA_LISTADO_BALANCE"].ToString();
+            string DIRECCIONTERRITORIAL = dsPT.Tables[0].Rows[0]["DT"].ToString();
             string BARRIO = dsPT.Tables[0].Rows[0]["CORREGIMIENTO_LLEGADA"].ToString();
             string TOTALPERSONAS = dsPT.Tables[0].Rows[0]["TOTAL_PERSONAS_TRASLADAR"].ToString();
             string TOTALPERSONASRUV = dsPT.Tables[0].Rows[0]["TOTAL_PERSONAS_TRASLADAR_RUV"].ToString();
             string TOTALHOMBRES = dsPT.Tables[0].Rows[0]["TOTALHOMBRES"].ToString();
             string TOTALMUJERES = dsPT.Tables[0].Rows[0]["TOTALMUJERES"].ToString();
-            string TOTALHOGARES = dsPT.Tables[0].Rows[0]["TOTALHOGARES"].ToString();
+            string TOTALHOGARES = dsPT.Tables[0].Rows[0]["TOTAL_HOGARES_TRASLADAR"].ToString();
             string TOTALNINOS = dsPT.Tables[0].Rows[0]["TOTALNINOS"].ToString();
             string TOTALAMAYORES = dsPT.Tables[0].Rows[0]["TOTALAMAYORES"].ToString();
             string TOTALLGBTI = dsPT.Tables[0].Rows[0]["TOTALLGBTI"].ToString();
             string TOTALHOMBRESRUV = dsPT.Tables[0].Rows[0]["TOTALHOMBRESRUV"].ToString();
             string TOTALMUJERESRUV = dsPT.Tables[0].Rows[0]["TOTALMUJERESRUV"].ToString();
-            string TOTALHOGARESRUV = dsPT.Tables[0].Rows[0]["TOTALHOGARESRUV"].ToString();
+            string TOTALHOGARESRUV = dsPT.Tables[0].Rows[0]["TOTAL_PERSONAS_TRASLADAR_RUV"].ToString();
             string TOTALNINOSRUV = dsPT.Tables[0].Rows[0]["TOTALNINOSRUV"].ToString();
             string TOTALAMAYORESRUV = dsPT.Tables[0].Rows[0]["TOTALAMAYORESRUV"].ToString();
             string TOTALLGBTIRUV = dsPT.Tables[0].Rows[0]["TOTALLGBTIRUV"].ToString();
@@ -11859,27 +12039,37 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             document.Replace("TOTALAMAYORESRUV", TOTALAMAYORESRUV, true, true);
             document.Replace("TOTALLGBTIRUV", TOTALLGBTIRUV, true, true);
         }
-        //Create a new paragraph
-        //Spire.Doc.Documents.Paragraph paragraph = document.AddSection().AddParagraph();
-        //Append Text
-        //paragraph.AppendText("A partir de las acciones concertadas con la comunidad NOMBRE DE LA COMUNIDAD ubicada en el NOMBRE DEL MUNICIPIO del departamento de NOMBRE DEL DEPARTAMENTO, se relaciona a continuación el balance del acompañamiento brindado por la institucionalidad, a su decisión de retornar, reubicarse o integrarse localmente. Para ello se desarrollarán los siguientes elementos: i) comparación de las condiciones de vida de la comunidad cuando inició el acompañamiento y cuando éste cerró, en términos de los componentes del acompañamiento, es decir, cómo estaban en relación con la superación de su situación de vulnerabilidad y su proceso de integración comunitaria y arraigo territorial, y cómo se encuentran una vez se implementaron las acciones del plan; ii) la información de la implementación de las acciones contempladas en el plan, relacionadas con cada uno de los componentes del acompañamiento; iii) la información sobre la materialización del alcance de sostenibilidad de los principios del acompañamiento; y iv) las acciones que fueron implementadas teniendo en cuenta los enfoques diferenciales. ");
-        //Save doc file.
         string fechaActual = DateTime.Now.ToString("yyyyMMddHHmmss");
         string ruta_downlodad = System.Configuration.ConfigurationManager.AppSettings["PATH_SALVAR_ARCHIVO"].ToString();
         if (!Directory.Exists(ruta_downlodad))
         {
             Directory.CreateDirectory(ruta_downlodad);
         }
-        string nombreArchivo = ruta_downlodad+ "DOCUMENTO_BALANCE_DEL_ACOMPANAMIENTO_AL_RyR" + fechaActual + ".doc";        
-        document.SaveToFile(nombreArchivo, FileFormat.Doc);
-        //Launching the MS Word file.
-
+        string nombreArchivo = ruta_downlodad + "DOCUMENTO_BALANCE_DEL_ACOMPANAMIENTO_AL_RyR" + fechaActual + extension;
+        if (extension == ".doc")
+        {
+            document.SaveToFile(nombreArchivo, FileFormat.Doc);
+        }
+        else
+        {
+            document.SaveToFile(nombreArchivo, FileFormat.PDF);
+        }
         try
         {
             System.Diagnostics.Process.Start(nombreArchivo);
         }
         catch { }
     }
+    protected void btn_generar_balance_pdf_Click(object sender, EventArgs e)
+    {
+
+        GenerarDocumentoBalance(".pdf");
+    }
+    protected void btn_generar_balance_doc_Click(object sender, EventArgs e)
+    {
+        GenerarDocumentoBalance(".doc");
+    }
+
     #endregion
 
 }

@@ -155,12 +155,26 @@
                     //details: false
                 }
             });
+            //PARA LA TABLA DE personas_que_se_acompanan
             $('[id$="gv_listado_personas_que_se_acompanan"]').dataTable({
                 destroy: true,
                 responsive: {
                     //details: false
                 }
             });
+            $('.mGridgv_listado_personas_que_se_acompanan').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'pdf',
+                    'excel',
+                    'csv'
+                ]
+            });
+
             $('[id$="LD_Territorial"]').change(function () {
                 var id_territorial = $('[id$="LD_Territorial"]').val();
                 if (L_D_Territorial != '') {
@@ -182,6 +196,7 @@
                     $('[id$="LD_Municipio"]').empty();
                 }
             });
+
             /* *******************************************
              * codigo de liliana rodriguez             
              *  *****************************************/
@@ -4704,26 +4719,69 @@
                                                                                         <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_TotalRUV"></label>
                                                                                     </div>
                                                                                     <div class="col-md-12">
-                                                                                        <label class="label1 col-sm-9">Departamento</label>
-                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Departamento_Llegada"></label>
-                                                                                    </div>
-                                                                                    <div class="col-md-12">
-                                                                                        <label class="label1 col-sm-9">Municipio</label>
-                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Municipio_Llegada"></label>
-                                                                                    </div>
-                                                                                    <div class="col-md-12">
-                                                                                        <label class="label1 col-sm-9">Entorno urbano/rural</label>
-                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Entorno_Llegada"></label>
-                                                                                    </div>
-                                                                                    <div class="col-md-12">
-                                                                                        <label class="label1 col-sm-9">Corregimiento/vereda/barrio</label>
-                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Corregimiento_Llegada"></label>
-                                                                                    </div>
-                                                                                    <div class="col-md-12">
                                                                                         <label class="label1 col-sm-9">Fecha de la medición de SSV de balance</label>
                                                                                         <label class="label1 col-sm-3 label-informacion" runat="server" id="lblMedicionSSV"></label>
                                                                                     </div>
                                                                                 </div>
+                                                                                <br />
+                                                                                <%--datos de salida--%>
+                                                                                <asp:Panel ID="Panel36" runat="server" CssClass="container-fluid">
+                                                                                    <div class="panel panel-danger">
+                                                                                        <div class="panel-heading">
+                                                                                            LUGAR DE SALIDA 
+                                                                                        </div>
+                                                                                        <div class="panel-body">
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-12">
+                                                                                                    <label class="label1 col-sm-9">Departamento</label>
+                                                                                                    <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Departamento_Salida"></label>
+                                                                                                </div>
+                                                                                                <div class="col-md-12">
+                                                                                                    <label class="label1 col-sm-9">Municipio</label>
+                                                                                                    <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Municipio_Salida"></label>
+                                                                                                </div>
+                                                                                                <div class="col-md-12">
+                                                                                                    <label class="label1 col-sm-9">Entorno</label>
+                                                                                                    <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Entorno_Salida"></label>
+                                                                                                </div>
+                                                                                                <div class="col-md-12">
+                                                                                                    <label class="label1 col-sm-9">Corregimiento/vereda/barrio</label>
+                                                                                                    <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Corregimiento_Salida"></label>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </asp:Panel>
+                                                                                <br />
+                                                                                <%--datos de llegada--%>
+                                                                                <asp:Panel ID="Panel37" runat="server" CssClass="container-fluid">
+                                                                                    <div class="panel panel-danger">
+                                                                                        <div class="panel-heading">
+                                                                                            LUGAR DE LLEGADA 
+                                                                                        </div>
+                                                                                        <div class="panel-body">
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-12">
+                                                                                                    <label class="label1 col-sm-9">Departamento</label>
+                                                                                                    <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Departamento_Llegada"></label>
+                                                                                                </div>
+                                                                                                <div class="col-md-12">
+                                                                                                    <label class="label1 col-sm-9">Municipio </label>
+                                                                                                    <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Municipio_Llegada"></label>
+                                                                                                </div>
+                                                                                                <div class="col-md-12">
+                                                                                                    <label class="label1 col-sm-9">Entorno</label>
+                                                                                                    <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Entorno_Llegada"></label>
+                                                                                                </div>
+                                                                                                <div class="col-md-12">
+                                                                                                    <label class="label1 col-sm-9">Corregimiento/vereda/barrio</label>
+                                                                                                    <label class="label1 col-sm-3 label-informacion" runat="server" id="lbl_Corregimiento_Llegada"></label>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </asp:Panel>
+
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Dirección territorial</label>
@@ -4773,13 +4831,13 @@
                                                                             <div class="panel-heading">
                                                                                 1.Identificacion Poblacional RR  
                                                                             </div>
-                                                                            <div class="panel-body">                                                                               
+                                                                            <div class="panel-body">
                                                                                 <div class="row">
                                                                                     <asp:UpdatePanel ID="UP_DatosSujetos2" runat="server" UpdateMode="Conditional">
                                                                                         <ContentTemplate>
                                                                                             <div class="row">
                                                                                                 <div runat="server" style="overflow-x: scroll">
-                                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_listado_personas_que_se_acompanan"
+                                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="mGridgv_listado_personas_que_se_acompanan" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_listado_personas_que_se_acompanan"
                                                                                                         runat="server" AutoGenerateColumns="false" OnRowCommand="gv_listado_personas_que_se_acompanan_RowCommand" OnRowDataBound="gv_listado_personas_que_se_acompanan_RowDataBound" OnPreRender="gv_listado_personas_que_se_acompanan_PreRender">
                                                                                                         <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                                         <Columns>
@@ -4811,7 +4869,7 @@
                                                                                         <Triggers>
                                                                                         </Triggers>
                                                                                     </asp:UpdatePanel>
-                                                                                </div>                                                                                 
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
@@ -4825,13 +4883,13 @@
                                                                                 2. BALANCE DE LA SUPERACIÓN DE LA SITUACIÓN DE VULNERABILIDAD (SIN GENERACIÓN DE INGRESOS)  
                                                                             </div>
                                                                             <div class="panel-body">
-                                                                                 <div class="row">
-                                                                                      <div class="col-md-12">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
                                                                                         <label class="label1 col-sm-9 ">TOTAL PERSONAS QUE SUPERARON LA SSV CON EL ACOMPAÑAMIENTO:</label>
                                                                                         <label class="label1 col-sm-3 label-informacion" runat="server" id="lblTotalPersonasSuperaron"></label>
-                                                                                    </div>                                                                                    
+                                                                                    </div>
                                                                                 </div>
-                                                                                 <div class="row">
+                                                                                <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-12" runat="server" id="lblFechaBalanceDerecho">f</label>
                                                                                     </div>
@@ -4858,6 +4916,9 @@
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
                                                                     <%--3. BALANCE DERECHO A LA GENERACIÓN DE INGRESOS--%>
                                                                     <asp:Panel ID="Panel33" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
@@ -4865,35 +4926,182 @@
                                                                                 3. BALANCE DERECHO A LA GENERACIÓN DE INGRESOS  
                                                                             </div>
                                                                             <div class="panel-body">
-                                                                                 <div class="row">
-                                                                                      <div class="col-md-12">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
                                                                                         <label class="label1 col-sm-9 ">TOTAL PERSONAS QUE NO SUPERABAN EL DERECHO A GENERACIÓN DE INGRESOS AL INICIO DEL PLAN:</label>
                                                                                         <label class="label1 col-sm-3 label-informacion" runat="server" id="lblTotalSuperacionGI"></label>
                                                                                     </div>
-                                                                                     <div class="col-md-12">
+                                                                                    <div class="col-md-12">
                                                                                         <label class="label1 col-sm-9 ">TOTAL PERSONAS QUE SUPERARON EL DERECHO A GENERACIÓN DE INGRESOS AL BALANCE DEL PLAN:</label>
                                                                                         <label class="label1 col-sm-3 label-informacion" runat="server" id="lblTotalSuperacionGIBalance"></label>
                                                                                     </div>
                                                                                 </div>
+                                                                                <div runat="server" style="overflow-x: scroll">
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_GI"
+                                                                                        runat="server" AutoGenerateColumns="false " OnRowCommand="gv_GI_RowCommand" OnRowDataBound="gv_GI_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                        <Columns>
+                                                                                            <asp:BoundField DataField="BIEN_SERVICIO" HeaderText="Bien Servicio" />
+                                                                                            <asp:BoundField DataField="META" HeaderText="Meta total" />
+                                                                                            <asp:TemplateField HeaderText="Total víctimas acompañadas beneficiadas directamente" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="VICTIMAS_ACOMPANADAS_DIRECTAMENTE" runat="server"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="Total víctimas acompañadas beneficiadas indirectamente" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="VICTIMAS_ACOMPANADAS_INDIRECTAMENTE" runat="server"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="Total víctimas beneficiadas con el bien o servicio" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="VICTIMAS_ACOMPANADAS" runat="server"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="Responsable" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="RESPONSABLE" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="Costo Total" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="COSTO_TOTAL" runat="server"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="Evidencias">
+                                                                                                <ItemTemplate>
+                                                                                                    <div class="btn-group" role="group" aria-label="...">
+                                                                                                        <asp:LinkButton ID="AgregarEvidenciaMeta" runat="server" Visible="true" CssClass="btn btn-default" CausesValidation="False" Style="color: cadetblue" CommandName="AgregarEvidenciaMeta">
+                                                                                                                <span class="fas fa-edit" aria-hidden="true">
+                                                                                                        </asp:LinkButton>
+                                                                                                    </div>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" />
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="ID_PLAN_RYR_BIEN_SERVICIO" Visible="false">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="ID_PLAN_RYR_BIEN_SERVICIO" runat="server" Text='<%# Eval("ID_PLAN_RYR_BIEN_SERVICIO") %>'> </asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                        <PagerStyle CssClass="pgr" />
+                                                                                    </asp:GridView>
+                                                                                </div>
+
                                                                                 <div class="row">
-                                                                                    
-                                                                                </div>                                                                                
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9 ">COSTO TOTAL INVERTIDO EN LOS BIENES O SERVICIOS DIRIGIDOS AL DERECHO A LA GENERACIÓN DE INGRESOS:</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="Label12"></label>
+                                                                                    </div>
+                                                                                </div>
+
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
                                                                     <asp:Panel ID="Panel35" runat="server" CssClass="container-fluid">
                                                                         <div class="panel panel-danger">
                                                                             <div class="panel-heading">
                                                                                 4. BALANCE DEL AVANCE EN EL PROCESO DE INTEGRACIÓN COMUNITARIA Y ARRAIGO TERRITORIAL  
                                                                             </div>
-                                                                            <div class="panel-body">                                                                                
-                                                                                <div class="row">
-                                                                                    
+                                                                            <div class="panel-body">
+                                                                                <div runat="server" style="overflow-x: scroll">
+                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_ICYAT"
+                                                                                        runat="server" AutoGenerateColumns="false " OnRowCommand="gv_ICYAT_RowCommand" OnRowDataBound="gv_ICYAT_RowDataBound">
+                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                        <Columns>
+                                                                                            <asp:BoundField DataField="BIEN_SERVICIO" HeaderText="Bien Servicio" />
+                                                                                            <asp:BoundField DataField="META" HeaderText="Meta Total" />
+                                                                                            <asp:TemplateField HeaderText="Total víctimas acompañadas beneficiadas directamente" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="VICTIMAS_ACOMPANADAS_DIRECTAMENTE" runat="server"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="Total víctimas acompañadas beneficiadas indirectamente" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="VICTIMAS_ACOMPANADAS_INDIRECTAMENTE" runat="server"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="Total víctimas beneficiadas con el bien o servicio" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="VICTIMAS_ACOMPANADAS" runat="server"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+
+
+
+                                                                                            <asp:TemplateField HeaderText="Total personas no víctimas beneficiadas con el bien o servicio" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="PERSONAS_NO_VICTIMAS_BENEFICIADAS" runat="server"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="Total personas beneficiadas con el bien o servicio" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="PERSONAS_BENEFICIADAS" runat="server"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <%--falta una--%>
+
+
+                                                                                            <asp:TemplateField HeaderText="Responsable" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="RESPONSABLE" runat="server" TextMode="MultiLine"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="Costo Total" Visible="true">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:TextBox ID="COSTO_TOTAL" runat="server"></asp:TextBox>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                            <asp:TemplateField HeaderText="Evidencias">
+                                                                                                <ItemTemplate>
+                                                                                                    <div class="btn-group" role="group" aria-label="...">
+                                                                                                        <asp:LinkButton ID="AgregarEvidenciaMeta" runat="server" Visible="true" CssClass="btn btn-default" CausesValidation="False" Style="color: cadetblue" CommandName="AgregarEvidenciaMeta">
+                                                                                                                <span class="fas fa-edit" aria-hidden="true">
+                                                                                                        </asp:LinkButton>
+                                                                                                    </div>
+                                                                                                </ItemTemplate>
+                                                                                                <ItemStyle HorizontalAlign="Center" />
+                                                                                            </asp:TemplateField>
+
+                                                                                            <asp:TemplateField HeaderText="ID_PLAN_RYR_BIEN_SERVICIO" Visible="false">
+                                                                                                <ItemTemplate>
+                                                                                                    <asp:Label ID="ID_PLAN_RYR_BIEN_SERVICIO" runat="server" Text='<%# Eval("ID_PLAN_RYR_BIEN_SERVICIO") %>'> </asp:Label>
+                                                                                                </ItemTemplate>
+                                                                                            </asp:TemplateField>
+                                                                                        </Columns>
+                                                                                        <PagerStyle CssClass="pgr" />
+                                                                                    </asp:GridView>
                                                                                 </div>
-                                                                                 <div class="row">
-                                                                                    <asp:LinkButton ID="LinkButton16" runat="server" CssClass="btn btn-danger btn-block"  OnClick="btn_generar_balance_Click" Text="Generar documento">
+
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-9 ">COSTO TOTAL INVERTIDO EN LOS BIENES O SERVICIOS DIRIGIDOS AL AVANCE EN EL PROCESO DE INTEGRACIÓN COMUNITARIA Y ARRAIGO TERRITORIAL:</label>
+                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="Label13"></label>
+                                                                                    </div>
+                                                                                </div>
+
+
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <asp:LinkButton ID="LinkButton16" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_generar_balance_doc_Click" Text="Generar documento">
                                                                                              Generar balance en .doc
-                                                                                    </asp:LinkButton>
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <asp:LinkButton ID="LinkButton17" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_generar_balance_pdf_Click" Text="Generar documento">
+                                                                                             Generar balance en .pdf
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -5257,7 +5465,7 @@
                                                                 <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                 <Columns>
                                                                     <asp:BoundField DataField="ID" HeaderText="ID" Visible="false" />
-                                                                    <asp:BoundField DataField="ID_BALANCE_TRASLADO" HeaderText="ID" Visible="false" />
+                                                                    <asp:BoundField DataField="ID_RELACION" HeaderText="ID" Visible="false" />
                                                                     <asp:BoundField DataField="ID_TIPO_EVIDENCIA" HeaderText="ID_TIPO_EVIDENCIA" Visible="false" />
                                                                     <asp:BoundField DataField="TIPO_EVIDENCIA" HeaderText="TIPO_EVIDENCIA" />
                                                                     <asp:BoundField DataField="URL_ARCHIVO" HeaderText="URL_ARCHIVO" />
@@ -5280,9 +5488,9 @@
                                                                             <asp:Label ID="ID_EVIDENCIA" runat="server" Text='<%# Eval("ID") %>'> </asp:Label>
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
-                                                                    <asp:TemplateField HeaderText="ID_BALANCE_TRASLADO" Visible="false">
+                                                                    <asp:TemplateField HeaderText="ID_RELACION" Visible="false">
                                                                         <ItemTemplate>
-                                                                            <asp:Label ID="ID_BALANCE_TRASLADO" runat="server" Text='<%# Eval("ID_BALANCE_TRASLADO") %>'> </asp:Label>
+                                                                            <asp:Label ID="ID_RELACION" runat="server" Text='<%# Eval("ID_RELACION") %>'> </asp:Label>
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
                                                                     <asp:TemplateField HeaderText="URL_ARCHIVO" Visible="false">

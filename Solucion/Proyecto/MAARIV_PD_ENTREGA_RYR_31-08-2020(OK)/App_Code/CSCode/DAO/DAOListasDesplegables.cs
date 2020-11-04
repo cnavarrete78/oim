@@ -4735,7 +4735,7 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return ds;
         }
-        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada, DateTime fechaInicio ,DateTime fechaLlegada, int idUsuario)
+        public int LD_Insertar_plan_acción_traslado_Ruta_Comunitaria(int idComunidad, int id_MunSalida, int idMunLlegada, int idEntornoSalida, int idEntornoLlegada, string corregimmientoSalida, string corregimientoLlegada, DateTime fechaInicio, DateTime fechaLlegada, int idUsuario)
         {
             int idPlanTraslado = 0;
             try
@@ -4799,7 +4799,7 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return idPlanTraslado;
         }
-        public bool LD_Actualizar_plan_acción_traslado_para_balance_Ruta_Comunitaria(int idComunidad,int idPlan, int idDt, string profesional, string correo, DateTime fechaSSV, int idUsuario)
+        public bool LD_Actualizar_plan_acción_traslado_para_balance_Ruta_Comunitaria(int idComunidad, int idPlan, int idDt, string profesional, string correo, DateTime fechaSSV, int idUsuario)
         {
             try
             {
@@ -4840,7 +4840,7 @@ namespace com.GACV.lgb.persistencia.dao
             catch (System.Data.SqlClient.SqlException ex)
             {
                 return false;
-            }            
+            }
         }
 
         public bool LD_Insertar_plan_acción_traslado_entidad_ruta_comunitaria(int idPlan, int idEntidad, int idUsuario)
@@ -5310,7 +5310,7 @@ namespace com.GACV.lgb.persistencia.dao
             return true;
         }
 
-        public bool LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria(int id, int idPlan, int idComunidad,int idHogar, int estufas, int neveras, int utenciliosCocina,int camas, int colchones,int cobijas,  int sofas, int sillas, int mesas, int equiposSonido, int juguetes, int bicicletas, int motos, int tulas, int peso,  bool rotulacion, int idUsuario)
+        public bool LD_Insertar_plan_acción_traslado_inventario_hogar_ruta_comunitaria(int id, int idPlan, int idComunidad, int idHogar, int estufas, int neveras, int utenciliosCocina, int camas, int colchones, int cobijas, int sofas, int sillas, int mesas, int equiposSonido, int juguetes, int bicicletas, int motos, int tulas, int peso, bool rotulacion, int idUsuario)
         {
             try
             {
@@ -5323,7 +5323,7 @@ namespace com.GACV.lgb.persistencia.dao
                 Command.CommandType = CommandType.StoredProcedure;
                 Command.Connection = con;
 
-                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO",idPlan );
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
                 oParam.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam);
 
@@ -5359,11 +5359,11 @@ namespace com.GACV.lgb.persistencia.dao
                 oParam8.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam8);
 
-                SqlParameter oParam9 = new SqlParameter("@SOFAS",sofas );
+                SqlParameter oParam9 = new SqlParameter("@SOFAS", sofas);
                 oParam9.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam9);
 
-                SqlParameter oParam10 = new SqlParameter("@SILLAS", sillas );
+                SqlParameter oParam10 = new SqlParameter("@SILLAS", sillas);
                 oParam10.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam10);
 
@@ -5375,7 +5375,7 @@ namespace com.GACV.lgb.persistencia.dao
                 oParam12.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam12);
 
-                SqlParameter oParam13 = new SqlParameter("@JUGUTES_ROPA",juguetes );
+                SqlParameter oParam13 = new SqlParameter("@JUGUTES_ROPA", juguetes);
                 oParam13.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam13);
 
@@ -5391,11 +5391,11 @@ namespace com.GACV.lgb.persistencia.dao
                 oParam16.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam16);
 
-                SqlParameter oParam17 = new SqlParameter("@PESO", peso );
+                SqlParameter oParam17 = new SqlParameter("@PESO", peso);
                 oParam17.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam17);
 
-                SqlParameter oParam18 = new SqlParameter("@ROTULACION",rotulacion );
+                SqlParameter oParam18 = new SqlParameter("@ROTULACION", rotulacion);
                 oParam18.SqlDbType = SqlDbType.Bit;
                 Command.Parameters.Add(oParam18);
 
@@ -5691,7 +5691,7 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam = new SqlParameter("@NUMERO_DOCUMENTO", numDocumetno);
                 oParam.SqlDbType = SqlDbType.Text;
                 Command.Parameters.Add(oParam);
-        
+
                 DataAdapter.SelectCommand = Command;
                 DataAdapter.Fill(ds);
                 con.Close();
@@ -5702,7 +5702,7 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return ds;
         }
-        public bool LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(int idPlan,int idComunidad, int idPersona, bool seTraslada, string motivo, int idUsuario)
+        public bool LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(int idPlan, int idComunidad, int idPersona, bool seTraslada, string motivo, int idUsuario)
         {
             try
             {
@@ -5808,7 +5808,7 @@ namespace com.GACV.lgb.persistencia.dao
         }
 
 
-        public bool LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(int id, int idBalance, int idTipoEvidencia,string urlArchivo,string nombreArchivo, string extension, int idUsuario, bool activo)
+        public bool LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria(int id, string opcion, int idRelacion, int idTipoEvidencia, string urlArchivo, string nombreArchivo, string extension, int idUsuario, bool activo)
         {
             try
             {
@@ -5825,7 +5825,11 @@ namespace com.GACV.lgb.persistencia.dao
                 oParam.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam);
 
-                SqlParameter oParam1 = new SqlParameter("@ID_BALANCE_TRASLADO", idBalance);
+                SqlParameter oParamOp = new SqlParameter("@OPCION", opcion);
+                oParamOp.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParamOp);
+
+                SqlParameter oParam1 = new SqlParameter("@ID_RELACION", idRelacion);
                 oParam1.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam1);
 
@@ -5851,7 +5855,7 @@ namespace com.GACV.lgb.persistencia.dao
 
                 SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
                 oParamIdUsuario.SqlDbType = SqlDbType.Int;
-                Command.Parameters.Add(oParamIdUsuario);        
+                Command.Parameters.Add(oParamIdUsuario);
 
                 Command.ExecuteNonQuery();
                 con.Close();
@@ -5864,7 +5868,7 @@ namespace com.GACV.lgb.persistencia.dao
             return true;
         }
 
-        public DataSet Get_Persona_Plan_Accion_Traslado_balance_evidencia(int idBalance)
+        public DataSet Get_Plan_Accion_Traslado_balance_evidencia(int idRelacion, string opcion )
         {
             DataSet ds = new DataSet();
             try
@@ -5878,9 +5882,12 @@ namespace com.GACV.lgb.persistencia.dao
                 Command.CommandType = CommandType.StoredProcedure;
                 Command.Connection = con;
 
-                SqlParameter oParam = new SqlParameter("@ID_BALANCE_TRASLADO", idBalance);
+                SqlParameter oParam = new SqlParameter("@ID_RELACION", idRelacion);
                 oParam.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam);
+                SqlParameter oParamOp = new SqlParameter("@OPCION", opcion);
+                oParamOp.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParamOp);
 
                 DataAdapter.SelectCommand = Command;
                 DataAdapter.Fill(ds);
@@ -5891,7 +5898,7 @@ namespace com.GACV.lgb.persistencia.dao
                 //MsgBox(ex.Message);
             }
             return ds;
-        }
+        }       
         public DataSet LD_Consultar_Balance_traslado_derechos_Ruta_Comunitaria(int idPlan)
         {
             DataSet ds = new DataSet();
@@ -5909,6 +5916,41 @@ namespace com.GACV.lgb.persistencia.dao
                 SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
                 oParam.SqlDbType = SqlDbType.Int;
                 Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
+
+        public DataSet LD_Consultar_Balance_Metas_Ruta_Comunitaria(int idComunidad, string opcion)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_RYR_GET_BALANCE_METAS", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_COMUNIDAD", idComunidad);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParamOp = new SqlParameter("@OPCION", opcion);
+                oParamOp.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParamOp);
+
 
                 DataAdapter.SelectCommand = Command;
                 DataAdapter.Fill(ds);
