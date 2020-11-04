@@ -3787,6 +3787,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 m_Ficha.Visible = false;
                 ficha.Visible = false;
 
+                m_PlanRyR.Visible = false;
+                plan_ryr.Visible = false;
+
                 m_PlanTraslado.Visible = false;
                 m_Balance.Visible = false;
                 plan_traslado.Visible = false;
@@ -3816,6 +3819,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         Get_plan_acción_traslado_profesionales_traslado_ruta_comunitaria();
                         Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria();
                         LlenarComboTipo_Evidencia();
+                        break;
+                    case 302://Fase 6 - Plan de retorno y reubicaciòn
+                        ProcesarPlanRyR();
                         break;
                     case 304:// si es Fase 8 - cierre / balance del acompañamiento -desarrollo que muestra los desarrollos de Liliana rodriguez
                         bool existeplan = GetPlanTrasladoParaBalance();
@@ -10191,6 +10197,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         this.txtTotalHogaresFicha.Text = Ficha.TotalHogares.ToString();
         this.txtTotalPersonasFicha.Text = Ficha.TotalPersonas.ToString();
         this.txtTotalPersonasRUV.Text = Ficha.TotalPersonasRUV.ToString();
+        this.txtHogaresReunificacionFamiliar.Text = Ficha.HogaresReunificacionFamiliar.ToString();
+        this.txtPersonasAtencionPsicosocial.Text = Ficha.PersonasAtencionPsicosocial.ToString();
 
     }
 
@@ -10206,6 +10214,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     protected void btn_guardar_caracterizacion_Click(object sender, EventArgs e)
     {
         DataSet ds = new DataSet();
+        int mujeresE;
+        int enfermedadR;
         try
         {
             Ficha.Fecha = Convert.ToDateTime(Convert.ToString(txFechaCaracterizacion.Text));
@@ -10215,6 +10225,12 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Ficha.Municipio = Convert.ToInt32(LD_Municipio_Ficha.SelectedValue);
             Ficha.Profesional = txtProfesionalFicha.Text;
             Ficha.Correo = txtCorreoProfesionalFicha.Text;
+            Ficha.IntencionalidadRazones = txtIntencionalidadRazones.Text;
+            Ficha.IntencionalidadManifestacion = txtIntencionalidadManifestacion.Text;
+            Ficha.CondicionesActualesCaracteristicas = txtCondicionesActualesCaracteristicas.Text;
+            Ficha.CondicionesActualesActividades = txtCondicionesActualesActividades.Text;
+            Ficha.MujeresEmbarazo = Int32.TryParse(txtMujeresEmbarazo.Text, out mujeresE) ? mujeresE : 0;
+            Ficha.PersonasEnfermedadRuinosa = Int32.TryParse(txtPersonasEnfermedadRuinosa.Text, out enfermedadR) ? enfermedadR : 0;
             Ficha.Usuario = Convert.ToInt32(Session["id_usuario"]);
             Ficha.GrabarComunidad();
         }
@@ -10234,6 +10250,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Ficha.ActualizarPersona(idPersona, reunificacionFamiliar, atencionPsicosocial);
         }
         Consulta.GV_PersonasFicha(gv_PersonasFicha, Ficha.Comunidad);
+        ProcesarFicha();
+        Up_ficha.Update();
     }
 
     protected void GV_PersonasFicha_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -10262,10 +10280,49 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     #endregion
 
     #region DESARROLLO HERRAMIENTAS PARA LA FORMULACIÓN DEL PLAN DE RETORNO Y REUBICACIÓN
+    private void ProcesarPlanRyR()
+    {
+        PlanRyR.FormularioActivo = true;
+        PlanRyR.Comunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
 
+        m_PlanRyR.Visible = PlanRyR.FormularioActivo;
+        plan_ryr.Visible = PlanRyR.FormularioActivo;
 
+        Lista.L_D_Estado_Plan_RyR(ref LD_Estado_PlanRyR);
+        Lista.L_D_Departamentos(ref LD_Departamento_PlanRyR);
+        Lista.L_D_Entorno(ref LD_Entorno_PlanRyR);
+        Lista.L_D_Territorial(ref LD_Territorial_PlanRyR);
+
+        if (PlanRyR.TraerComunidad())
+        {
+
+        }
+        this.txtHogaresPlanRyR.Text = PlanRyR.TotalHogares.ToString();
+        this.txtPersonasPlanRyR.Text = PlanRyR.TotalPersonas.ToString();
+        this.txtPersonasPlanRyR.Text = PlanRyR.TotalPersonasRUV.ToString();
+    }
+
+    protected void LlenarMunicipiosPlanRyR_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (LD_Departamento_PlanRyR.SelectedValue != "")
+        {
+            int idDepartamento = Convert.ToInt32(LD_Departamento_PlanRyR.SelectedValue);
+            Lista.L_D_Municipios(ref LD_Municipio_PlanRyR, idDepartamento);
+        }
+    }
     #endregion
 
+    protected void btn_guardar_plan_ryr_Click(object sender, EventArgs e)
+    {
+        DataSet ds = new DataSet();
+        try
+        {
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error adicionar el Plan RyR." + ex.Message, 0);
+        }
+    }
 
 
     #region DESARROLLO LILIANA PARA EL TAB DE PLAN DE TRASLADO

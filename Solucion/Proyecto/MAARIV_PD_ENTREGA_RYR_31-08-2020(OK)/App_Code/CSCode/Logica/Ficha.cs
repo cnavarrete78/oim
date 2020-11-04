@@ -31,6 +31,8 @@ public class Ficha
     public static int TotalHogares { get; set; }
     public static int TotalPersonas { get; set; }
     public static int TotalPersonasRUV { get; set; }
+    public static int HogaresReunificacionFamiliar { get; set; }
+    public static int PersonasAtencionPsicosocial { get; set; }
     public static int Estado { get; set; }
     public static int Usuario { get; set; }
     public static DataSet Personas { get; set; }
@@ -57,6 +59,8 @@ public class Ficha
         TotalHogares = 0;
         TotalPersonas = 0;
         TotalPersonasRUV = 0;
+        HogaresReunificacionFamiliar = 0;
+        PersonasAtencionPsicosocial = 0;
     }
     public static bool TraerComunidad()
     {
@@ -81,6 +85,8 @@ public class Ficha
             TotalHogares = Convert.ToInt32(comunidad["TOTAL_HOGARES"]);
             TotalPersonas = Convert.ToInt32(comunidad["TOTAL_PERSONAS"]);
             TotalPersonasRUV = Convert.ToInt32(comunidad["TOTAL_PERSONASRUV"]);
+            HogaresReunificacionFamiliar = Convert.ToInt32(comunidad["HOGARES_REUNIFICACION_FAMILIAR"]);
+            PersonasAtencionPsicosocial = Convert.ToInt32(comunidad["PERSONAS_ATENCION_PSICOSOCIAL"]);
             return true;
         }
         else

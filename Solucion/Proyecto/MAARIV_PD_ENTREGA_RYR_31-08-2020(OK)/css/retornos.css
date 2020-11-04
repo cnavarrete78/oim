@@ -133,6 +133,7 @@
 #ContentPlaceHolder1_m_8 > a,
 #ContentPlaceHolder1_ficha > a,
 #ContentPlaceHolder1_plan_traslado > a,
+#ContentPlaceHolder1_plan_ryr >a,
 #ContentPlaceHolder1_balance > a {
     background: none;
 }

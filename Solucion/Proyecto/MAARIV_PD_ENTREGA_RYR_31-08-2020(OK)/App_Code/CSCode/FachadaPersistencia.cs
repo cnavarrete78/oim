@@ -1807,6 +1807,23 @@ namespace com.GACV.lgb.persistencia.fachada
 
         #endregion
 
+        #region DESARROLLO PLAN RYR
+        public DataSet Get_Plan_RyR(int idComunidad)
+        {
+            return comunitario.Get_Plan_RyR(idComunidad);
+        }
+        public DataSet GetEstadosPlanRyR()
+        {
+            return comunitario.Get_Estado_Plan_RyR();
+        }
+
+        public DataSet Get_Entorno_Plan_RyR()
+        {
+            return comunitario.Get_Entorno_Plan_RyR();
+        }
+
+        #endregion
+
 
         #region DESARROLLO RUTA COMUNITARIA  RYR
         public DataSet GetPlanTrasladoPorComunidad(int idComunidad)

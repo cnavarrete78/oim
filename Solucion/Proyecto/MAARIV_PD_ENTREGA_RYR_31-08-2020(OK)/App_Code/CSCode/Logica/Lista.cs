@@ -58,7 +58,26 @@ public class Lista
             control.Items.Insert(0, new ListItem("Seleccionar el municipio", "0"));
         }
     }
+    public static void L_D_Entorno(ref DropDownList control)
+    {
+        DataSet ds = new DataSet();
+        ds = FachadaPersistencia.getInstancia().Get_Entorno_Plan_RyR();
 
+        control.Items.Clear();
+
+        if (!ds.Tables[0].Rows.Count.Equals(0))
+        {
+            control.DataValueField = "ID_RYR_ENTORNO";
+            control.DataTextField = "ENTORNO_RYR";
+            control.DataSource = ds;
+            control.DataBind();
+            control.Items.Insert(0, new ListItem("Seleccione el entorno", "0"));
+        }
+        else
+        {
+            control.Items.Insert(0, new ListItem("Seleccione el entorno", "0"));
+        }
+    }
     public static void L_D_Entidad(ref DropDownList control)
     {
         DataSet ds = new DataSet();
@@ -317,6 +336,27 @@ public class Lista
         }
 
         control.SelectedValue = "204";
+    }
+
+    public static void L_D_Estado_Plan_RyR(ref DropDownList control)
+    {
+        DataSet ds = new DataSet();
+        ds = FachadaPersistencia.getInstancia().GetEstadosPlanRyR();
+
+        control.Items.Clear();
+
+        if (!ds.Tables[0].Rows.Count.Equals(0))
+        {
+            control.DataValueField = "ID_ESTADO_PLAN_RYR";
+            control.DataTextField = "ESTADO_PLAN_RYR";
+            control.DataSource = ds;
+            control.DataBind();
+            control.Items.Insert(0, new ListItem("Seleccione el Estado", "0"));
+        }
+        else
+        {
+            control.Items.Insert(0, new ListItem("Seleccione el Estado", "0"));
+        }
     }
 
 }
