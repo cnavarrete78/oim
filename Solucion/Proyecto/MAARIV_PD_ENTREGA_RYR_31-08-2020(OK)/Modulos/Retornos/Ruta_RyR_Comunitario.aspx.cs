@@ -10166,14 +10166,32 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     private void ProcesarFicha()
     {
         Ficha.FormularioActivo = true;
-        Ficha.Comunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]); 
+        Ficha.Comunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
+
         m_Ficha.Visible = Ficha.FormularioActivo;
         ficha.Visible = Ficha.FormularioActivo;
 
-        Lista.L_D_Departamentos(ref LD_Departamento_Ficha);
         Lista.L_D_Entidad(ref LD_Entidad_Ficha);
+        Lista.L_D_Departamentos(ref LD_Departamento_Ficha);
         Lista.L_D_Territorial(ref LD_Territorial_Ficha);
         Consulta.GV_PersonasFicha(gv_PersonasFicha, Ficha.Comunidad);
+
+        if (Ficha.TraerComunidad())
+        {
+            this.txFechaCaracterizacion.Text = Ficha.Fecha.ToShortDateString();
+            this.LD_Entidad_Ficha.SelectedValue = Ficha.Entidad.ToString();
+            this.LD_Departamento_Ficha.SelectedValue = Ficha.Departamento.ToString();
+            Lista.L_D_Municipios(ref LD_Municipio_Ficha, Ficha.Departamento);
+            this.LD_Municipio_Ficha.SelectedValue = Ficha.Municipio.ToString();
+            this.LD_Territorial_Ficha.SelectedValue = Ficha.Territorial.ToString();
+            this.txtProfesionalFicha.Text = Ficha.Profesional;
+            this.txtCorreoProfesionalFicha.Text = Ficha.Correo;
+        }
+
+        this.txtTotalHogaresFicha.Text = Ficha.TotalHogares.ToString();
+        this.txtTotalPersonasFicha.Text = Ficha.TotalPersonas.ToString();
+        this.txtTotalPersonasRUV.Text = Ficha.TotalPersonasRUV.ToString();
+
     }
 
     protected void LlenarMunicipiosFicha_SelectedIndexChanged(object sender, EventArgs e)
@@ -10182,6 +10200,62 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             int idDepartamento = Convert.ToInt32(LD_Departamento_Ficha.SelectedValue);
             Lista.L_D_Municipios(ref LD_Municipio_Ficha, idDepartamento);
+        }
+    }
+
+    protected void btn_guardar_caracterizacion_Click(object sender, EventArgs e)
+    {
+        DataSet ds = new DataSet();
+        try
+        {
+            Ficha.Fecha = Convert.ToDateTime(Convert.ToString(txFechaCaracterizacion.Text));
+            Ficha.Entidad = Convert.ToInt32(LD_Entidad_Ficha.SelectedValue);
+            Ficha.Territorial = Convert.ToInt32(LD_Territorial_Ficha.SelectedValue);
+            Ficha.Departamento = Convert.ToInt32(LD_Departamento_Ficha.SelectedValue);
+            Ficha.Municipio = Convert.ToInt32(LD_Municipio_Ficha.SelectedValue);
+            Ficha.Profesional = txtProfesionalFicha.Text;
+            Ficha.Correo = txtCorreoProfesionalFicha.Text;
+            Ficha.Usuario = Convert.ToInt32(Session["id_usuario"]);
+            Ficha.GrabarComunidad();
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error adicionar la entidad." + ex.Message, 0);
+        }
+    }
+
+    protected void btn_actualizar_comunidad_Click(object sender, EventArgs e)
+    {
+        foreach(GridViewRow gvRow in this.gv_PersonasFicha.Rows)
+        {
+            int idPersona = Convert.ToInt32(gv_PersonasFicha.DataKeys[gvRow.DataItemIndex].Values[0]);
+            bool reunificacionFamiliar = ((System.Web.UI.WebControls.CheckBox)gvRow.FindControl("REUNIFICACION_FAMILIAR")).Checked;
+            bool atencionPsicosocial = ((System.Web.UI.WebControls.CheckBox)gvRow.FindControl("ATENCION_PSICOSOCIAL")).Checked;
+            Ficha.ActualizarPersona(idPersona, reunificacionFamiliar, atencionPsicosocial);
+        }
+        Consulta.GV_PersonasFicha(gv_PersonasFicha, Ficha.Comunidad);
+    }
+
+    protected void GV_PersonasFicha_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            if (e.CommandName == "VerDetallePoblacionCaracterizacion")
+            {
+                GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                int idPersona = Convert.ToInt32(gv_PersonasFicha.DataKeys[gvRow.DataItemIndex].Values[0]);
+                foreach (DataRow persona in Ficha.Personas.Tables[0].Rows)
+                    if (persona["ID_PERSONA"].Equals(idPersona))
+                        foreach (Control c in pDetallePersona.Controls)
+                            if (c is Label)
+                                try {((Label)c).Text = persona[c.ID].ToString();}catch { }
+                UpdatePanelDetallePersona.Update();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalPoblacionCaractizacion", "$('#myModalPoblacionCaractizacion').modal();", true);
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
 

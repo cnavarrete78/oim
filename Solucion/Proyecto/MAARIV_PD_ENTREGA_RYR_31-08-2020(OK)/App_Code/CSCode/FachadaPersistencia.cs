@@ -45,8 +45,8 @@ using com.GACV.lgb.DAO.ADES;
 
 using com.GACV.lgb.modelo.ADEP;
 using com.GACV.lgb.DAO.ADEP;
-
-
+using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace com.GACV.lgb.persistencia.fachada
 {
@@ -57,6 +57,8 @@ namespace com.GACV.lgb.persistencia.fachada
         protected static FachadaPersistencia instancia;
 
         private DAOListasDesplegables L_D = new DAOListasDesplegables();
+
+        private DAOComunitario comunitario = new DAOComunitario();
         
         private DAOColectiva colectiva = new DAOColectiva();
         
@@ -1778,6 +1780,29 @@ namespace com.GACV.lgb.persistencia.fachada
         public int Administrar_Contactos(Actividad actividad, int opcion)
         {
             return Actividades.Administrar_Contactos(actividad, opcion);
+        }
+
+        #endregion
+
+
+        #region DESARROLLO FICHA CARACTERIZACION
+
+        public DataSet Get_Comunidad(int idComunidad)
+        {
+            return comunitario.Get_Comunidad(idComunidad);
+        }
+        public DataSet Get_Personas_Comunidad(int idComunidad)
+        {
+            return comunitario.Get_Personas_Comunidad(idComunidad);
+        }
+
+        public void Set_Comunidad(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_Comunidad(Parametros);
+        }
+        public void Set_Personas_Comunidad(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_Personas_Comunidad(Parametros);
         }
 
         #endregion

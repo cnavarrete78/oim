@@ -17,7 +17,7 @@ public class Consulta
     public static void GV_PersonasFicha(GridView control, int idComunidad)
     {
         DataSet dsPE = new DataSet();
-        dsPE = FachadaPersistencia.getInstancia().Get_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria(idComunidad);
+        dsPE = Ficha.TraerPersonasComunidad();
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
         {
             control.Visible = true;
