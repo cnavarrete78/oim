@@ -29,6 +29,11 @@ public class PlanRyR
     public static int TotalPersonas { get; set; }
     public static int TotalPersonasRUV { get; set; }
     public static DataSet Personas { get; set; }
+    public static DataSet Necesidades { get; set; }
+    public static int Necesidad { get; set; }
+    public static string Acciones { get; set; }
+    public static DateTime FechaInicio { get; set; }
+    public static DateTime FechaCierre { get; set; }
     public PlanRyR()
     {
     }
@@ -104,5 +109,23 @@ public class PlanRyR
     {
         Personas = FachadaPersistencia.getInstancia().Get_Personas_Comunidad(Comunidad);
         return Personas;
+    }
+
+    public static DataSet TraerNecesidadesComunidad()
+    {
+        Necesidades = FachadaPersistencia.getInstancia().Get_Necesidades_Comunidad(Comunidad);
+        return Necesidades;
+    }
+
+    public static void GrabarNecesidadPlan()
+    {
+        List<SqlParameter> parametros = new List<SqlParameter>();
+        parametros.Add(new SqlParameter("ID_RYR_COMUNIDAD", Comunidad));
+        parametros.Add(new SqlParameter("ID_NECESIDAD", Necesidad));
+        parametros.Add(new SqlParameter("ACCIONES", Acciones));
+        parametros.Add(new SqlParameter("FECHA_INICIO_TRAMITE", FechaInicio));
+        parametros.Add(new SqlParameter("FECHA_CIERRE_TRAMITE", FechaCierre));
+
+        FachadaPersistencia.getInstancia().Set_Necesidad_Comunidad(parametros);
     }
 }

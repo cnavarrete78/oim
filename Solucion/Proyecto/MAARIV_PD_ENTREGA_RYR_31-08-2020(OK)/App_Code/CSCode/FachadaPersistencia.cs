@@ -1826,6 +1826,14 @@ namespace com.GACV.lgb.persistencia.fachada
             comunitario.Set_Plan_RyR(Parametros);
         }
 
+        public DataSet Get_Necesidades_Comunidad(int idComunidad)
+        {
+            return comunitario.Get_Necesidades_Comunidad(idComunidad);
+        }
+        public void Set_Necesidad_Comunidad(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_Necesidad_Comunidad(Parametros);
+        }
         #endregion
 
 

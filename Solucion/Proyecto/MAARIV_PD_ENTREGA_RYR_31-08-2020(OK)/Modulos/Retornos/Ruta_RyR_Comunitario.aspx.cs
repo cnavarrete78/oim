@@ -10208,7 +10208,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         this.txtHogaresReunificacionFamiliar.Text = Ficha.HogaresReunificacionFamiliar.ToString();
         this.txtPersonasAtencionPsicosocial.Text = Ficha.PersonasAtencionPsicosocial.ToString();
     }
-
     protected void LlenarMunicipiosFicha_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (LD_Departamento_Ficha.SelectedValue != "")
@@ -10219,7 +10218,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
     protected void btn_guardar_caracterizacion_Click(object sender, EventArgs e)
     {
-        DataSet ds = new DataSet();
         int mujeresE;
         int enfermedadR;
         try
@@ -10258,6 +10256,13 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         ProcesarFicha();
         Up_ficha.Update();
     }
+    protected void btn_exportar_comunidad_Click(object sender, EventArgs e)
+    {
+        this.gv_personas_exportar.DataSource = Ficha.Personas;
+        this.gv_personas_exportar.DataBind();
+        Up_personas_exportar.Update();
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalExportarPoblacion", "$('#myModalExportarPoblacion').modal();", true);
+    }
     protected void GV_PersonasFicha_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         try
@@ -10292,7 +10297,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
     protected void GV_PersonasFicha_PreRender(object sender, EventArgs e)
     {
-        if (gv.Rows.Count > 0)
+        if (gv_PersonasFicha.Rows.Count > 0)
         {
             gv_PersonasFicha.HeaderRow.Cells[0].Attributes["data-priority"] = "1";
             gv_PersonasFicha.HeaderRow.Cells[1].Attributes["data-priority"] = "2";
@@ -10303,11 +10308,47 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_PersonasFicha.HeaderRow.TableSection = TableRowSection.TableHeader;
             gv_PersonasFicha.FooterRow.TableSection = TableRowSection.TableFooter;
         }
-        if (gv.Rows.Count == 1)
+        if (gv_PersonasFicha.Rows.Count == 1)
         {
         }
     }
-
+    protected void gv_personas_exportar_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void gv_personas_exportar_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+        }
+    }
+    protected void gv_personas_exportar_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        Up_personas_exportar.Update();
+    }
+    protected void gv_personas_exportar_PreRender(object sender, EventArgs e)
+    {
+        if (gv_personas_exportar.Rows.Count > 0)
+        {
+            gv_personas_exportar.HeaderRow.Cells[0].Attributes["data-priority"] = "1";
+            gv_personas_exportar.HeaderRow.Cells[1].Attributes["data-priority"] = "2";
+            gv_personas_exportar.HeaderRow.Cells[2].Attributes["data-priority"] = "2";
+            gv_personas_exportar.HeaderRow.Cells[3].Attributes["data-priority"] = "1";
+            gv_personas_exportar.HeaderRow.Cells[4].Attributes["data-priority"] = "2";
+            gv_personas_exportar.UseAccessibleHeader = true;
+            gv_personas_exportar.HeaderRow.TableSection = TableRowSection.TableHeader;
+            gv_personas_exportar.FooterRow.TableSection = TableRowSection.TableFooter;
+        }
+        if (gv_personas_exportar.Rows.Count == 1)
+        {
+        }
+    }
     #endregion
 
     #region DESARROLLO HERRAMIENTAS PARA LA FORMULACIÓN DEL PLAN DE RETORNO Y REUBICACIÓN
@@ -10324,6 +10365,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Lista.L_D_Entorno(ref LD_Entorno_PlanRyR);
         Lista.L_D_Territorial(ref LD_Territorial_PlanRyR);
         Consulta.GV_PersonasPlanRyR(gv_PersonasPlanRyR);
+        Consulta.GV_NecesidadesPlanRyR(gv_plan_ryr_necesidad);
 
         if (PlanRyR.TraerComunidad())
         {
@@ -10352,7 +10394,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Lista.L_D_Municipios(ref LD_Municipio_PlanRyR, idDepartamento);
         }
     }
-    #endregion
     protected void btn_guardar_plan_ryr_Click(object sender, EventArgs e)
     {
         DataSet ds = new DataSet();
@@ -10375,6 +10416,13 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             Mensajes("Error adicionar el Plan RyR." + ex.Message, 0);
         }
+    }
+    protected void btn_exportar_comunidad_plan_Click(object sender, EventArgs e)
+    {
+        this.gv_personas_exportar.DataSource = PlanRyR.Personas;
+        this.gv_personas_exportar.DataBind();
+        Up_personas_exportar.Update();
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalExportarPoblacion", "$('#myModalExportarPoblacion').modal();", true);
     }
     protected void GV_PersonasPlanRyR_RowCommand(object sender, GridViewCommandEventArgs e)
     {
@@ -10425,6 +10473,53 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
         }
     }
+    protected void gv_plan_ryr_necesidad_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            if (e.CommandName == "EditarDetalleNecesidadPlanRyR")
+            {
+                GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                int idNecesidad = Convert.ToInt32(gv_plan_ryr_necesidad.DataKeys[gvRow.DataItemIndex].Values[0]);
+                foreach (DataRow necesidad in PlanRyR.Necesidades.Tables[0].Rows)
+                    if (necesidad["ID_NECESIDAD"].Equals(idNecesidad))
+                        foreach (Control c in pDetalleNecesidad.Controls)
+                        {
+                            if (c is Label) try { ((Label)c).Text = necesidad[c.ID].ToString(); } catch { }
+                            if (c is TextBox) 
+                                try 
+                                { 
+                                    ((TextBox)c).Text = ((TextBox)c).ID.Contains("FECHA") ? Convert.ToDateTime(Convert.ToString(necesidad[c.ID])).ToShortDateString() : necesidad[c.ID].ToString(); 
+                                } catch { }
+                        }
+                UpdatePanelNecesidadPlanRyR.Update();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalNecesidadesPlanRyR", "$('#myModalNecesidadesPlanRyR').modal();", true);
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void btn_grabar_necesidades_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            PlanRyR.Necesidad = Convert.ToInt32(this.ID_NECESIDAD.Text);
+            PlanRyR.Acciones = this.ACCIONES.Text;
+            PlanRyR.FechaInicio = Convert.ToDateTime(Convert.ToString(this.FECHA_INICIO_TRAMITE.Text));
+            PlanRyR.FechaCierre = Convert.ToDateTime(Convert.ToString(this.FECHA_CIERRE_TRAMITE.Text));
+            PlanRyR.GrabarNecesidadPlan();
+            Consulta.GV_NecesidadesPlanRyR(gv_plan_ryr_necesidad);
+            Up_plan_ryr.Update();
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error grabar la necesidad." + ex.Message, 0);
+        }
+    }
+
+    #endregion
 
     #region DESARROLLO LILIANA PARA EL TAB DE PLAN DE TRASLADO
 

@@ -59,4 +59,27 @@ public class Consulta
         control.FooterRow.TableSection = TableRowSection.TableFooter;
         control.HeaderRow.TableSection = TableRowSection.TableHeader;
     }
+
+    public static void GV_NecesidadesPlanRyR(GridView control)
+    {
+        DataSet dsPE = new DataSet();
+        dsPE = PlanRyR.TraerNecesidadesComunidad();
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            control.Visible = true;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+        else
+        {
+            control.Visible = false;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+
+        control.UseAccessibleHeader = true;
+        control.HeaderRow.TableSection = TableRowSection.TableHeader;
+        control.FooterRow.TableSection = TableRowSection.TableFooter;
+        control.HeaderRow.TableSection = TableRowSection.TableHeader;
+    }
 }

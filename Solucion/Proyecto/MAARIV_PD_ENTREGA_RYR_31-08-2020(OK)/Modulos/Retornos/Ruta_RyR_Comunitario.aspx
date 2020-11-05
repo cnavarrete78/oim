@@ -169,6 +169,19 @@
                 }
             });
 
+            $('.mgv_personas_exportar').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'pdf',
+                    'excel',
+                    'csv'
+                ]
+            });
+
             //PARA LA TABLA DE personas_que_se_acompanan
             $('[id$="gv_listado_personas_que_se_acompanan"]').dataTable({
                 destroy: true,
@@ -3906,8 +3919,11 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="row">
-                                                                                                <div class="col-md-12">
+                                                                                                <div class="col-md-6">
                                                                                                     <asp:LinkButton ID="LinkButton18" runat="server" CssClass="btn btn-danger btn-block"  OnClick="btn_actualizar_comunidad_Click" Text="Guardar Caracterización" />
+                                                                                                </div>
+                                                                                                <div class="col-md-6">
+                                                                                                    <asp:LinkButton ID="LinkButton24" runat="server" CssClass="btn btn-danger btn-block"  OnClick="btn_exportar_comunidad_Click" Text="Exportar Población" />
                                                                                                 </div>
                                                                                             </div>
                                                                                         </ContentTemplate>
@@ -4230,11 +4246,51 @@
                                                                                                     </asp:GridView>
                                                                                                 </div>
                                                                                             </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-12">
+                                                                                                    <asp:LinkButton ID="LinkButton26" runat="server" CssClass="btn btn-danger btn-block"  OnClick="btn_exportar_comunidad_plan_Click" Text="Exportar Población" />
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </ContentTemplate>
                                                                                         <Triggers>
                                                                                         </Triggers>
                                                                                     </asp:UpdatePanel>
                                                                                 </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <%--Contribución SSV--%>
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Contribución a la superación de la situación de vulnerabilidad
+                                                                            </div>
+                                                                            <div class="panel-body" style="overflow-x:auto; overflow-y:auto; width:100%;height:80%;">
+                                                                                <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_plan_ryr_necesidad"
+                                                                                    runat="server" AutoGenerateColumns="false" DataKeyNames="ID_NECESIDAD" OnRowCommand="gv_plan_ryr_necesidad_RowCommand">
+                                                                                    <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                    <Columns>
+                                                                                        <asp:BoundField DataField="ID_NECESIDAD" HeaderText="ID_NECESIDAD" Visible="false" />
+                                                                                        <asp:BoundField DataField="DERECHO" HeaderText="Derecho" Visible="true" HeaderStyle-Width="15%" ItemStyle-Width="15%" FooterStyle-Width="15%"/>
+                                                                                        <asp:BoundField DataField="NECESIDAD" HeaderText="Necesidad" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%"/>
+                                                                                        <asp:BoundField DataField="NUM_PERSONAS_PENDIENTES_SUPERAR" HeaderText="Número de Personas Pendientes por superar el Derecho" Visible="true" />
+                                                                                        <asp:BoundField DataField="FECHA_INICIO_TRAMITE" HeaderText="Fecha de inicio del trámite" DataFormatString="{0:dd/MM/yyyy}" Visible="true" />
+                                                                                        <asp:BoundField DataField="FECHA_CIERRE_TRAMITE" HeaderText="Fecha de cierre del trámite" DataFormatString="{0:dd/MM/yyyy}" Visible="true" />
+                                                                                        <asp:TemplateField HeaderText="Acciones">
+                                                                                            <ItemTemplate>
+                                                                                                <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                    <asp:LinkButton ID="btn_editar_necesidad" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Editar Detalle" CommandName="EditarDetalleNecesidadPlanRyR" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                                                                                    </asp:LinkButton>
+                                                                                                </div>
+                                                                                                <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                    <asp:LinkButton ID="LinkButton27" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Cargar Evidencias" CommandName="EditarDetalleNecesidadPlanRyR" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-open-file" aria-hidden="true"></span>
+                                                                                                    </asp:LinkButton>
+                                                                                                </div>
+                                                                                            </ItemTemplate>
+                                                                                            <ItemStyle HorizontalAlign="Center" Width="120px" />
+                                                                                        </asp:TemplateField>
+                                                                                    </Columns>
+                                                                                </asp:GridView>
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
@@ -5667,6 +5723,132 @@
                                                                             <div class="col-md-3">
                                                                                 <asp:Label ID="ESTADO_RUV" runat="server" Visible="true" />
                                                                             </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </asp:Panel>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                        <%--modal exportar población caracterizacion--%>
+                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalExportarPoblacion" aria-hidden="true">
+                            <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>
+                            <div class="modal-dialog modal-lg" role="document">
+                                <asp:UpdatePanel runat="server" ID="Up_personas_exportar" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <div class="modal-content">
+                                            <div class="panel panel-danger">
+                                                <div class="panel-heading">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <asp:Label ID="Label19" runat="server" Visible="true" CssClass="text-warning">Listado persona</asp:Label>
+                                                </div>
+                                                <div class="panel-body" style="overflow-x:auto;width:100%;height:80%;">
+                                                    <asp:GridView UseAccessibleHeader="true" CssClass="mgv_personas_exportar footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_personas_exportar" runat="server" AutoGenerateColumns="true"
+                                                        OnRowCommand="gv_personas_exportar_RowCommand" OnRowDataBound="gv_personas_exportar_RowDataBound" OnPreRender="gv_personas_exportar_PreRender">
+                                                        <PagerStyle CssClass="pgr" />
+                                                    </asp:GridView>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                        <%--modal detalle necesidades plan RyR--%>
+                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalNecesidadesPlanRyR" aria-hidden="true">
+                            <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>
+                            <div class="modal-dialog modal-lg" role="document">
+                                <asp:UpdatePanel runat="server" ID="UpdatePanelNecesidadPlanRyR" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <div class="modal-content">
+                                            <div class="">
+                                                <div class="panel panel-danger">
+                                                    <div class="panel-heading">
+                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <asp:Label ID="Label20" runat="server" Visible="true" CssClass="text-warning">Detalle Necesidad</asp:Label>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <asp:Panel ID="pDetalleNecesidad" runat="server">
+                                                                <div class="panel-body">
+                                                                    <div class="row">
+                                                                         <div class="col-md-2">
+                                                                            <label class="label1 col-sm-">Derecho:</label>
+                                                                        </div>
+                                                                        <div class="col-md-10">
+                                                                            <asp:Label ID="DERECHO" runat="server" Visible="true"></asp:Label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-2">
+                                                                            <label class="label1 col-sm-">Necesidad:</label>
+                                                                        </div>
+                                                                        <div class="col-md-10">
+                                                                            <asp:Label ID="ID_NECESIDAD" runat="server" Visible="false"></asp:Label>
+                                                                            <asp:Label ID="NECESIDAD" runat="server" Visible="true"></asp:Label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-10">
+                                                                            <label class="label1 col-sm-">Número de Personas pendientes por superar el Derecho:</label>
+                                                                            <asp:Label ID="NUM_PERSONAS_PENDIENTES_SUPERAR" runat="server" Visible="true"></asp:Label>
+                                                                        </div>
+                                                                        <div class="col-md-2"></div>
+                                                                    </div>
+                                                                    <div class="panel panel-danger">
+                                                                        <div class="panel-heading">
+                                                                            <label class="label1 col-sm-">Acciones por Adelantar</label>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <asp:TextBox ID="ACCIONES" runat="server" ForeColor="Black" TextMode="MultiLine" Width="100%" Rows="5"></asp:TextBox>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="panel panel-danger">
+                                                                        <div class="panel-heading">
+                                                                            <label class="label1 col-sm-">Fechas del Trámite</label>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <div class="row">
+                                                                                <div class="col-md-2">
+                                                                                    <label class="label1 col-sm-">Inicio</label>
+                                                                                </div>
+                                                                                <div class="col-md-4">
+                                                                                    <div class="input-group " id="calendarFechaInicioNecesidadPlanRyR" style="padding-right: 40px;">
+                                                                                        <asp:TextBox ID="FECHA_INICIO_TRAMITE" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
+                                                                                        <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                                    </div>
+                                                                                    <ajaxToolkit:CalendarExtender ID="CalendarExtender11" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="calendarFechaInicioNecesidadPlanRyR" TargetControlID="FECHA_INICIO_TRAMITE"></ajaxToolkit:CalendarExtender>
+                                                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator14" runat="server" ControlToValidate="FECHA_INICIO_TRAMITE" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardarFicha">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator112" runat="server" ControlToValidate="FECHA_INICIO_TRAMITE" CssClass="validador" Display="Dynamic" ValidationGroup="guardarNecesidadPlanRyR">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                                <div class="col-md-2">
+                                                                                    <label class="label1 col-sm-">Cierre</label>
+                                                                                </div>
+                                                                                <div class="col-md-4">
+                                                                                     <div class="input-group " id="calendarFechaCierreNecesidadPlanRyR" style="padding-right: 40px;">
+                                                                                        <asp:TextBox ID="FECHA_CIERRE_TRAMITE" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
+                                                                                        <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                                    </div>
+                                                                                    <ajaxToolkit:CalendarExtender ID="CalendarExtender12" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="calendarFechaCierreNecesidadPlanRyR" TargetControlID="FECHA_CIERRE_TRAMITE"></ajaxToolkit:CalendarExtender>
+                                                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator15" runat="server" ControlToValidate="FECHA_CIERRE_TRAMITE" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardarFicha">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator113" runat="server" ControlToValidate="FECHA_CIERRE_TRAMITE" CssClass="validador" Display="Dynamic" ValidationGroup="guardarNecesidadPlanRyR">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <asp:LinkButton ID="LinkButton25" runat="server" CssClass="btn btn-danger btn-block"  OnClick="btn_grabar_necesidades_Click" Text="Guardar Necesidades" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
