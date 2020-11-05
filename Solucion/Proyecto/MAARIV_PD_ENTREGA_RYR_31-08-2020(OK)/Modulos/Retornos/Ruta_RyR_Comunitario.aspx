@@ -8,7 +8,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 
     <link href="../../css/retornos.css" rel="stylesheet" />
-    <script src="../../js/retornos.js"></script>
 
     <script type="text/javascript" src="../../js/jquery191.min.js"></script>
     <script type="text/javascript" src="../../js/boostrap3335.js"></script>
@@ -155,6 +154,21 @@
                     //details: false
                 }
             });
+
+            $('[id$="gv_PersonasFicha"]').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                }
+            });
+
+            $('[id$="gv_PersonasPlanRyR"]').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                }
+            });
+
             //PARA LA TABLA DE personas_que_se_acompanan
             $('[id$="gv_listado_personas_que_se_acompanan"]').dataTable({
                 destroy: true,
@@ -197,83 +211,6 @@
                 }
             });
 
-            /* *******************************************
-             * codigo de liliana rodriguez             
-             *  *****************************************/
-            //$('[id$="LD_Departamento_Salida"]').change(function () {
-            //    var id_territorial = 0;
-            //    var id_departamento = $('[id$="LD_Departamento_Salida"]').val();
-            //    if (id_departamento != '0') {
-            //        L_D_MunicipiosSalida(id_territorial, id_departamento);
-            //    }
-            //    else {
-            //        $('[id$="LD_Departamento_Salida"]').empty();
-            //        $('[id$="LD_Municipio_Salida"]').empty();
-            //    }
-            //});
-
-            //$('[id$="LD_Departamento_Llegada"]').change(function () {
-            //    var id_territorial = 0;
-            //    var id_departamento = $('[id$="LD_Departamento_Llegada"]').val();
-            //    if (id_departamento != '0') {
-            //        L_D_MunicipiosLlegada(id_territorial, id_departamento);
-            //    }
-            //    else {
-            //        $('[id$="LD_Departamento_Llegada"]').empty();
-            //        $('[id$="LD_Municipio_Llegada"]').empty();
-            //    }
-            //});
-            //function L_D_MunicipiosSalida(id_territorial, id_departamento) {
-            //    var dropdownlist = document.getElementById('ContentPlaceHolder1_LD_Municipio_Salida');
-            //    $.ajax({
-            //        type: "GET",
-            //        url: "/modulos/javascriptComun.aspx/L_D_Municipios?id_territorial=" + id_territorial + "&id_departamento=" + id_departamento,
-            //        contentType: "application/json; charset=utf-8",
-            //        dataType: "json",
-            //        success: function (response) {
-            //            var obj = JSON.parse(response.d.resultado);
-            //            $('#ContentPlaceHolder1_LD_Municipio_Salida').empty();
-            //            var option = document.createElement("option");
-            //            option.text = "seleccione Municipio"; option.value = "0"; dropdownlist.add(option);
-            //            for (var i = 0; i < obj.length; i++) {
-            //                var option = document.createElement("option");
-            //                option.text = obj[i].municipio;
-            //                option.value = obj[i].id_municipio;
-            //                dropdownlist.add(option);
-            //            }
-            //        },
-            //        error: function (xhr) {
-            //            console.log(xhr);
-            //            alert("Error", "No se cargaron los municipios");
-            //        }
-            //    });
-            //}
-
-            //function L_D_MunicipiosLlegada(id_territorial, id_departamento) {
-            //    var dropdownlist = document.getElementById('ContentPlaceHolder1_LD_Municipio_Llegada');
-            //    $.ajax({
-            //        type: "GET",
-            //        url: "/modulos/javascriptComun.aspx/L_D_Municipios?id_territorial=" + id_territorial + "&id_departamento=" + id_departamento,
-            //        contentType: "application/json; charset=utf-8",
-            //        dataType: "json",
-            //        success: function (response) {
-            //            var obj = JSON.parse(response.d.resultado);
-            //            $('#ContentPlaceHolder1_LD_Municipio_Llegada').empty();
-            //            var option = document.createElement("option");
-            //            option.text = "seleccione Municipio"; option.value = "0"; dropdownlist.add(option);
-            //            for (var i = 0; i < obj.length; i++) {
-            //                var option = document.createElement("option");
-            //                option.text = obj[i].municipio;
-            //                option.value = obj[i].id_municipio;
-            //                dropdownlist.add(option);
-            //            }
-            //        },
-            //        error: function (xhr) {
-            //            console.log(xhr);
-            //            alert("Error", "No se cargaron los municipios");
-            //        }
-            //    });
-            //}
 
         }
 
@@ -3931,8 +3868,8 @@
                                                                                         <ContentTemplate>
                                                                                             <div class="row">
                                                                                                 <div runat="server" style="overflow-x: scroll">
-                                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_PersonasFicha"
-                                                                                                        runat="server" AutoGenerateColumns="false" OnRowCommand="GV_PersonasFicha_RowCommand" DataKeyNames="ID_PERSONA">
+                                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="mgv_PersonasFicha footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_PersonasFicha"
+                                                                                                        runat="server" AutoGenerateColumns="false" OnRowCommand="GV_PersonasFicha_RowCommand" OnRowDataBound="GV_PersonasFicha_RowDataBound" OnPreRender="GV_PersonasFicha_PreRender" DataKeyNames="ID_PERSONA">
                                                                                                         <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                                         <Columns>
                                                                                                             <asp:BoundField DataField="ID_PERSONA" HeaderText="ID_PERSONA" Visible="false" />
@@ -4091,10 +4028,10 @@
                                                                             </div>
                                                                             <div class="panel-body">
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Fecha del Acta del CTJT en donde se validó el principio</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <div class="input-group " id="calendarFechaActaPlanRyR" style="padding-right: 40px;">
                                                                                             <asp:TextBox ID="txtFechaActaPlanRyR" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
                                                                                             <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
@@ -4105,10 +4042,10 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Estado</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <asp:DropDownList ID="LD_Estado_PlanRyR" runat="server" CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator106" runat="server"
@@ -4126,42 +4063,42 @@
                                                                             </div>
                                                                             <div class="panel-body">
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Nombre de la Comunidad</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <asp:TextBox ID="txtNombreComunidadPlanRyR" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Total hogares a acompañar</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <asp:TextBox ID="txtHogaresPlanRyR" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Total personas a acompañar</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <asp:TextBox ID="txtPersonasPlanRyR" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Total personas a acompañar incluidas en el RUV por desplazamiento Forzado</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <asp:TextBox ID="txtPersonasRUVPlanRyR" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Departamento</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <asp:DropDownList ID="LD_Departamento_PlanRyR" runat="server" AutoPostBack="True" OnSelectedIndexChanged="LlenarMunicipiosPlanRyR_SelectedIndexChanged"
                                                                                             CssClass="form-control">
                                                                                         </asp:DropDownList>
@@ -4172,10 +4109,10 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Municipio</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <asp:DropDownList ID="LD_Municipio_PlanRyR" runat="server" CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator108" runat="server"
@@ -4185,10 +4122,10 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Entorno Rural / Urbano</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                          <asp:DropDownList ID="LD_Entorno_PlanRyR" runat="server" CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator109" runat="server"
@@ -4198,18 +4135,18 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Corregimiento / Vereda / Barrio / Localidad</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <asp:TextBox ID="txtDireccionPlanRyR" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Dirección territorial de la Unidad para las Victimas</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <asp:DropDownList ID="LD_Territorial_PlanRyR" runat="server" CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator110" runat="server"
@@ -4219,26 +4156,26 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Profesional encargado de elaborar el listado</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <asp:TextBox ID="txtProfesionalPlanRyR" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Correo electrónico</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <asp:TextBox ID="txtCorreoPlanRyR" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <div class="col-md-8">
+                                                                                    <div class="col-md-6">
                                                                                         <label class="label1 col-sm-12">Fecha de medición de SSV</label>
                                                                                     </div>
-                                                                                    <div class="col-md-4">
+                                                                                    <div class="col-md-6">
                                                                                         <div class="input-group " id="calendarFechaMedicionSSVPlanRyR" style="padding-right: 40px;">
                                                                                             <asp:TextBox ID="txtFechaMedicionSSVPlanRyR" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
                                                                                             <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
@@ -4252,6 +4189,51 @@
                                                                                     <div class="col-md-12">
                                                                                         <asp:LinkButton ID="LinkButton22" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_plan_ryr_Click" Text="Guardar Plan RyR" ValidationGroup="guardarPlanRyR" />
                                                                                     </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <%--Datos de la población--%>
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Población
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="row">
+                                                                                    <asp:UpdatePanel ID="Up_plan_ryr_personas" runat="server" UpdateMode="Conditional">
+                                                                                        <ContentTemplate>
+                                                                                            <div class="row">
+                                                                                                <div runat="server" style="overflow-x: scroll">
+                                                                                                    <asp:GridView UseAccessibleHeader="true" CssClass="mgv_PersonasPlanRyR footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_PersonasPlanRyR"
+                                                                                                        runat="server" AutoGenerateColumns="false" OnRowCommand="GV_PersonasPlanRyR_RowCommand" OnRowDataBound="GV_PersonasPlanRyR_RowDataBound" OnPreRender="GV_PersonasPlanRyR_PreRender" DataKeyNames="ID_PERSONA">
+                                                                                                        <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                                        <Columns>
+                                                                                                            <asp:BoundField DataField="ID_PERSONA" HeaderText="ID_PERSONA" Visible="false" />
+                                                                                                            <asp:BoundField DataField="ID_PERSONA_RUV" HeaderText="ID_PERSONA_RUV" Visible="false" />
+                                                                                                            <asp:BoundField DataField="ID_HOGAR" HeaderText="No. Familia" Visible="true" />
+                                                                                                            <asp:BoundField DataField="ID_HOGAR_PERSONA" HeaderText="No. Persona" Visible="false" />
+                                                                                                            <asp:BoundField DataField="PRIMER_NOMBRE" HeaderText="Primer Nombre" Visible="true" />
+                                                                                                            <asp:BoundField DataField="PRIMER_APELLIDO" HeaderText="Primer Apellido" Visible="true" />
+                                                                                                            <asp:BoundField DataField="TIPO_DOCUMENTO" HeaderText="Tipo Documento" Visible="true" />
+                                                                                                            <asp:BoundField DataField="NUMERO_DOCUMENTO" HeaderText="Número Documento" Visible="true" />
+                                                                                                            <asp:TemplateField HeaderText="Acciones">
+                                                                                                                <ItemTemplate>
+                                                                                                                    <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                                        <asp:LinkButton ID="btn_ver_persona" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Ver Detalle" CommandName="VerDetallePoblacionPlanRyR" Visible="true">
+                                                                                                                            <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+                                                                                                                        </asp:LinkButton>
+                                                                                                                    </div>
+                                                                                                                </ItemTemplate>
+                                                                                                                <ItemStyle HorizontalAlign="Center" Width="120px" />
+                                                                                                            </asp:TemplateField>
+                                                                                                        </Columns>
+                                                                                                        <PagerStyle CssClass="pgr" />
+                                                                                                    </asp:GridView>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </ContentTemplate>
+                                                                                        <Triggers>
+                                                                                        </Triggers>
+                                                                                    </asp:UpdatePanel>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -5430,7 +5412,7 @@
                                                                                         </asp:LinkButton>
                                                                                     </div>
                                                                                     <div class="col-md-6">
-                                                                                        <asp:LinkButton ID="LinkButton17" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_generar_balance_pdf_Click" Text="Generar documento">
+                                                                                        <asp:LinkButton ID="LinkButton23" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_generar_balance_pdf_Click" Text="Generar documento">
                                                                                              Generar balance en .pdf
                                                                                         </asp:LinkButton>
                                                                                     </div>
@@ -5468,7 +5450,7 @@
                                                 <div class="panel panel-danger">
                                                     <div class="panel-heading">
                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <asp:Label ID="Label12" runat="server" Visible="true" CssClass="text-warning">Detalle persona</asp:Label>
+                                                        <asp:Label ID="Label17" runat="server" Visible="true" CssClass="text-warning">Detalle persona</asp:Label>
                                                     </div>
                                                     <div class="panel-body">
                                                         <div class="row">
@@ -5476,7 +5458,7 @@
                                                                 <div class="panel-body">
                                                                     <div class="row">
                                                                         <div class="col-md-3">
-                                                                            <asp:Label ID="Label13" runat="server" Visible="true" CssClass="text-warning">Control</asp:Label>
+                                                                            <asp:Label ID="Label18" runat="server" Visible="true" CssClass="text-warning">Control</asp:Label>
                                                                         </div>
                                                                         <div class="col-md-2">
                                                                             <label class="label1 col-sm-">No.Familia:</label>
@@ -5698,7 +5680,6 @@
                                 </asp:UpdatePanel>
                             </div>
                         </div>
-
                         <%--modales de inventario--%>
                         <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalEnseres" aria-hidden="true">
                             <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>

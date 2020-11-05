@@ -61,14 +61,14 @@ public class Lista
     public static void L_D_Entorno(ref DropDownList control)
     {
         DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().Get_Entorno_Plan_RyR();
+        ds = FachadaPersistencia.getInstancia().Get_Entorno();
 
         control.Items.Clear();
 
         if (!ds.Tables[0].Rows.Count.Equals(0))
         {
-            control.DataValueField = "ID_RYR_ENTORNO";
-            control.DataTextField = "ENTORNO_RYR";
+            control.DataValueField = "ID_ENTORNO";
+            control.DataTextField = "ENTORNO";
             control.DataSource = ds;
             control.DataBind();
             control.Items.Insert(0, new ListItem("Seleccione el entorno", "0"));

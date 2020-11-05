@@ -104,21 +104,21 @@ public class Ficha
     public static void GrabarComunidad()
     {
         List<SqlParameter> parametros = new List<SqlParameter>();
-        parametros.Add(new SqlParameter("ID_RYR_COMUNIDAD", Ficha.Comunidad));
-        parametros.Add(new SqlParameter("FECHA", Ficha.Fecha));
-        parametros.Add(new SqlParameter("ID_ENTIDAD", Ficha.Entidad));
-        parametros.Add(new SqlParameter("ID_TERRITORIAL", Ficha.Territorial));
-        parametros.Add(new SqlParameter("ID_DEPARTAMENTO", Ficha.Departamento));
-        parametros.Add(new SqlParameter("ID_MUNICIPIO", Ficha.Municipio));
-        parametros.Add(new SqlParameter("PROFESIONAL", Ficha.Profesional));
-        parametros.Add(new SqlParameter("CORREO", Ficha.Correo));
-        parametros.Add(new SqlParameter("INTENCIONALIDAD_RAZONES", Ficha.IntencionalidadRazones));
-        parametros.Add(new SqlParameter("INTENCIONALIDAD_MANIFESTACION", Ficha.IntencionalidadManifestacion));
-        parametros.Add(new SqlParameter("CONDICIONES_ACTUALES_CARACTERISTICAS", Ficha.CondicionesActualesCaracteristicas));
-        parametros.Add(new SqlParameter("CONDICIONES_ACTUALES_ACTIVIDADES", Ficha.CondicionesActualesActividades));
-        parametros.Add(new SqlParameter("MUJERES_ESTADO_EMBARAZO", Ficha.MujeresEmbarazo));
-        parametros.Add(new SqlParameter("PERSONAS_SITUACION_ENFERMEDAD_RUINOSA", Ficha.PersonasEnfermedadRuinosa));
-        parametros.Add(new SqlParameter("USUARIO", Ficha.Usuario));
+        parametros.Add(new SqlParameter("ID_RYR_COMUNIDAD", Comunidad));
+        parametros.Add(new SqlParameter("FECHA", Fecha));
+        parametros.Add(new SqlParameter("ID_ENTIDAD", Entidad));
+        parametros.Add(new SqlParameter("ID_TERRITORIAL", Territorial));
+        parametros.Add(new SqlParameter("ID_DEPARTAMENTO", Departamento));
+        parametros.Add(new SqlParameter("ID_MUNICIPIO", Municipio));
+        parametros.Add(new SqlParameter("PROFESIONAL", Profesional));
+        parametros.Add(new SqlParameter("CORREO", Correo));
+        parametros.Add(new SqlParameter("INTENCIONALIDAD_RAZONES", IntencionalidadRazones));
+        parametros.Add(new SqlParameter("INTENCIONALIDAD_MANIFESTACION", IntencionalidadManifestacion));
+        parametros.Add(new SqlParameter("CONDICIONES_ACTUALES_CARACTERISTICAS", CondicionesActualesCaracteristicas));
+        parametros.Add(new SqlParameter("CONDICIONES_ACTUALES_ACTIVIDADES", CondicionesActualesActividades));
+        parametros.Add(new SqlParameter("MUJERES_ESTADO_EMBARAZO", MujeresEmbarazo));
+        parametros.Add(new SqlParameter("PERSONAS_SITUACION_ENFERMEDAD_RUINOSA", PersonasEnfermedadRuinosa));
+        parametros.Add(new SqlParameter("USUARIO", Usuario));
 
         FachadaPersistencia.getInstancia().Set_Comunidad(parametros);
     }
@@ -132,5 +132,6 @@ public class Ficha
 
         FachadaPersistencia.getInstancia().Set_Personas_Comunidad(parametros);
     }
+
 
 }

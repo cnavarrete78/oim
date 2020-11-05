@@ -1817,9 +1817,13 @@ namespace com.GACV.lgb.persistencia.fachada
             return comunitario.Get_Estado_Plan_RyR();
         }
 
-        public DataSet Get_Entorno_Plan_RyR()
+        public DataSet Get_Entorno()
         {
-            return comunitario.Get_Entorno_Plan_RyR();
+            return comunitario.Get_Entorno();
+        }
+        public void Set_Plan_RyR(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_Plan_RyR(Parametros);
         }
 
         #endregion

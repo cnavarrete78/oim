@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -27,6 +28,7 @@ public class PlanRyR
     public static int TotalHogares { get; set; }
     public static int TotalPersonas { get; set; }
     public static int TotalPersonasRUV { get; set; }
+    public static DataSet Personas { get; set; }
     public PlanRyR()
     {
     }
@@ -78,5 +80,29 @@ public class PlanRyR
             return false;
         }
 
+    }
+    public static void GrabarPlan()
+    {
+        List<SqlParameter> parametros = new List<SqlParameter>();
+        parametros.Add(new SqlParameter("ID_RYR_COMUNIDAD", Comunidad));
+        parametros.Add(new SqlParameter("FECHA_MEDICION", FechaMedicion));
+        parametros.Add(new SqlParameter("ID_TERRITORIAL", Territorial));
+        parametros.Add(new SqlParameter("ID_DEPARTAMENTO", Departamento));
+        parametros.Add(new SqlParameter("ID_MUNICIPIO", Municipio));
+        parametros.Add(new SqlParameter("ID_ENTORNO", Entorno));
+        parametros.Add(new SqlParameter("DIRECCION", Direccion));
+        parametros.Add(new SqlParameter("PROFESIONAL", Profesional));
+        parametros.Add(new SqlParameter("CORREO", Correo));
+        parametros.Add(new SqlParameter("FECHA_ACTA_CTJT", FechaActa));
+        parametros.Add(new SqlParameter("ID_ESTADO_PLAN_RYR", EstadoPlan));
+        parametros.Add(new SqlParameter("USUARIO", Usuario));
+
+        FachadaPersistencia.getInstancia().Set_Plan_RyR(parametros);
+    }
+
+    public static DataSet TraerPersonasComunidad()
+    {
+        Personas = FachadaPersistencia.getInstancia().Get_Personas_Comunidad(Comunidad);
+        return Personas;
     }
 }
