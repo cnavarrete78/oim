@@ -11711,6 +11711,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 ViewState["idPlanBienServicio"] = ((Label)gvRow.FindControl("ID_PLAN_RYR_BIEN_SERVICIO")).Text;
                 ViewState["OrigenEvidencia"] = "BalanceGI";
+                LlenarComboTipo_Evidencia();
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEvidenciasBalance", "$('#myModalEvidenciasBalance').modal();", true);
                 Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria("BalanceGI");
                 UpdatePanelEvidenciasBalance.Update();
@@ -11760,6 +11761,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
                 ViewState["idPlanBienServicio"] = ((Label)gvRow.FindControl("ID_PLAN_RYR_BIEN_SERVICIO")).Text;
                 ViewState["OrigenEvidencia"] = "BalanceICAT";
+                LlenarComboTipo_Evidencia();
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEvidenciasBalance", "$('#myModalEvidenciasBalance').modal();", true);
                 Get_plan_acción_traslado_balance_traslado_evidencias_ruta_comunitaria("BalanceICAT");
                 UpdatePanelEvidenciasBalance.Update();
@@ -11790,9 +11792,21 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             DataRow drGVResponsable = ((DataRowView)e.Row.DataItem).Row;
             txtResponsable.Text = drGVResponsable["RESPONSABLE"].ToString();
 
+            TextBox txtDescripcion = (TextBox)e.Row.FindControl("DESCRIPCION");
+            DataRow drGVDescripcion = ((DataRowView)e.Row.DataItem).Row;
+            txtDescripcion.Text = drGVDescripcion["DESCRIPCION"].ToString();
+
             TextBox txtCosto = (TextBox)e.Row.FindControl("COSTO_TOTAL");
             DataRow drGVCosto = ((DataRowView)e.Row.DataItem).Row;
             txtCosto.Text = drGVCosto["COSTO_TOTAL"].ToString();
+
+            TextBox txtnovictima = (TextBox)e.Row.FindControl("PERSONAS_NO_VICTIMAS_BENEFICIADAS");
+            DataRow drGVnovictima = ((DataRowView)e.Row.DataItem).Row;
+            txtnovictima.Text = drGVnovictima["PERSONAS_NO_VICTIMAS_BENEFICIADAS"].ToString();
+
+            TextBox txtbeneficiadas = (TextBox)e.Row.FindControl("PERSONAS_BENEFICIADAS");
+            DataRow drGVbeneficiadas = ((DataRowView)e.Row.DataItem).Row;
+            txtbeneficiadas.Text = drGVbeneficiadas["PERSONAS_BENEFICIADAS"].ToString();           
         }
     }
     protected void gv_ICYAT_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -11888,6 +11902,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
         lblFechaBalanceDerecho.InnerText = "LA SIGUIENTE INFORMACIÓN SE PRECARGA DE LA ÚLTIMA MEDICIÓN DE SSV, PERO NO SE HA GUARDADO EN EL REGISTRO.";
+        btnSSV.Visible = true;
         DataSet dsPE = new DataSet();
         dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Balance_traslado_derechos_Ruta_Comunitaria(idPlan);
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
@@ -11899,6 +11914,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             {
                 DateTime fechabalance = Convert.ToDateTime(dsPE.Tables[0].Rows[0]["FECHA_SISTEMA"]);
                 lblFechaBalanceDerecho.InnerText = "FECHA EN LA QUE SE GUARDÓ LA SIGUIENTE INFORMACIÓN: " + fechabalance.ToShortDateString();
+                btnSSV.Visible = false;
             }
         }
         else
@@ -11912,7 +11928,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
         int idComunidad = Convert.ToInt32(TB_Nit.Text);
-        
+        decimal totalGI = 0;
         DataSet dsPE = new DataSet();
         dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Balance_Metas_Ruta_Comunitaria(idComunidad, "GI");
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
@@ -11928,6 +11944,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_GI.Visible = true;
             gv_GI.DataSource = dsPE;
             gv_GI.DataBind();
+
+            for (int i = 0; i < dsPE.Tables[0].Rows.Count; i++)
+            {
+                totalGI = totalGI+  Convert.ToDecimal( dsPE.Tables[i].Rows[0]["COSTO_TOTAL"]);
+            }
         }
         else
         {
@@ -11936,12 +11957,14 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_GI.DataSource = dsPE;
             gv_GI.DataBind();
         }
+        lbltotalBalanceGI.InnerText = "$" + totalGI.ToString();
     }
     public void Get_Consultar_Balance_ICYAT_Ruta_Comunitaria()
     {
         int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
         int idComunidad = Convert.ToInt32(TB_Nit.Text);
-        
+        decimal totalICYAT = 0;
+
         DataSet dsPE = new DataSet();
         dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Balance_Metas_Ruta_Comunitaria(idComunidad, "ICYAT");
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
@@ -11957,6 +11980,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_ICYAT.Visible = true;
             gv_ICYAT.DataSource = dsPE;
             gv_ICYAT.DataBind();
+
+            for (int i = 0; i < dsPE.Tables[0].Rows.Count; i++)
+            {
+                totalICYAT = totalICYAT + Convert.ToDecimal(dsPE.Tables[i].Rows[0]["COSTO_TOTAL"]);
+            }
         }
         else
         {
@@ -11965,6 +11993,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_ICYAT.DataSource = dsPE;
             gv_ICYAT.DataBind();
         }
+        lbltotalBalanceICYAT.InnerText = "$" +  totalICYAT.ToString();
     }
     protected void btn_guardar_datosProfesionalListado_balance_Click(object sender, EventArgs e)
     {
@@ -11996,7 +12025,24 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         try
         {
-
+            int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
+            if (idPlan > 0)
+            {
+                int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_SSV_ruta_comunitaria(idPlan,idUsuario);
+                if (exitoso)
+                {
+                    Get_balance_SSV_Ruta_Comunitaria();
+                }
+                else
+                {
+                    Mensajes("No se ingresó la entidad correctamente.", 0);
+                }
+            }
+            else
+            {
+                Mensajes("Debe ingresar la informacion de datos de salida y llegada del plan de traslado", 0);
+            }
         }
         catch (System.Exception ex)
         {
@@ -12115,7 +12161,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         TextBox txtresponsable = (TextBox)gv_GI.Rows[i].Cells[6].FindControl("RESPONSABLE");
                         string responsable = txtresponsable.Text;
 
-                        TextBox txtcosto = (TextBox)gv_ICYAT.Rows[i].Cells[7].FindControl("COSTO_TOTAL");
+                        TextBox txtcosto = (TextBox)gv_GI.Rows[i].Cells[7].FindControl("COSTO_TOTAL");
                         decimal costo = Convert.ToDecimal(txtcosto.Text != "" ? txtcosto.Text:null);
 
                         int idUsuario = Convert.ToInt32(Session["id_usuario"]);
@@ -12164,11 +12210,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         TextBox txtpersonasBeneficiadas = (TextBox)gv_ICYAT.Rows[i].Cells[7].FindControl("PERSONAS_BENEFICIADAS");
                         int personasBeneficiadas = Convert.ToInt32(txtpersonasBeneficiadas.Text);
 
-                        TextBox txtdescripcion = (TextBox)gv_ICYAT.Rows[i].Cells[8].FindControl("RESPONSABLE");
-                        string descripcion = txtdescripcion.Text;
-
-                        TextBox txtresponsable = (TextBox)gv_ICYAT.Rows[i].Cells[9].FindControl("DESCRIPCION");
+                        TextBox txtresponsable = (TextBox)gv_ICYAT.Rows[i].Cells[8].FindControl("RESPONSABLE");
                         string responsable = txtresponsable.Text;
+
+                        TextBox txtdescripcion = (TextBox)gv_ICYAT.Rows[i].Cells[9].FindControl("DESCRIPCION");
+                        string descripcion = txtdescripcion.Text;
 
                         TextBox txtcosto = (TextBox)gv_ICYAT.Rows[i].Cells[10].FindControl("COSTO_TOTAL");
                         decimal costo = Convert.ToDecimal( txtcosto.Text != "" ? txtcosto.Text :null);

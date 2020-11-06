@@ -4909,7 +4909,7 @@
                                                                                     </asp:GridView>
                                                                                 </div>
                                                                                 <div class="row">
-                                                                                    <asp:LinkButton ID="LinkButton15" runat="server" CssClass="btn btn-danger btn-block" ValidationGroup="agregarDatosListadoBalance" OnClick="btn_guardar_balance_ssv_Click" Text="Guardar">
+                                                                                    <asp:LinkButton ID="btnSSV" runat="server" CssClass="btn btn-danger btn-block" ValidationGroup="agregarDatosListadoBalance" OnClick="btn_guardar_balance_ssv_Click" Text="Guardar">
                                                                                              Guardar Informacion de SSV
                                                                                     </asp:LinkButton>
                                                                                 </div>
@@ -4994,6 +4994,8 @@
                                                                                                 </ItemTemplate>
                                                                                             </asp:TemplateField>
                                                                                             <asp:BoundField DataField="PRECARGUE" HeaderText="PRECARGUE" Visible="false" />
+                                                                                            <asp:BoundField DataField="PERSONAS_NO_VICTIMAS_BENEFICIADAS" HeaderText="PERSONAS_NO_VICTIMAS_BENEFICIADAS" Visible="false" />
+                                                                                            <asp:BoundField DataField="PERSONAS_BENEFICIADAS" HeaderText="PERSONAS_BENEFICIADAS" Visible="false" />
                                                                                         </Columns>
                                                                                         <PagerStyle CssClass="pgr" />
                                                                                     </asp:GridView>
@@ -5001,8 +5003,8 @@
 
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
-                                                                                        <label class="label1 col-sm-11 ">COSTO TOTAL INVERTIDO EN LOS BIENES O SERVICIOS DIRIGIDOS AL DERECHO A LA GENERACIÓN DE INGRESOS:</label>
-                                                                                        <label class="label1 col-sm-1 label-informacion" runat="server" id="Label12"></label>
+                                                                                        <label class="label1 col-sm-10 ">COSTO TOTAL INVERTIDO EN LOS BIENES O SERVICIOS DIRIGIDOS AL DERECHO A LA GENERACIÓN DE INGRESOS:</label>
+                                                                                        <label class="label1 col-sm-2 label-informacion" runat="server" id="lbltotalBalanceGI"></label>
                                                                                     </div>
                                                                                 </div>
 
@@ -5104,8 +5106,8 @@
 
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
-                                                                                        <label class="label1 col-sm-11 ">COSTO TOTAL INVERTIDO EN LOS BIENES O SERVICIOS DIRIGIDOS AL AVANCE EN EL PROCESO DE INTEGRACIÓN COMUNITARIA Y ARRAIGO TERRITORIAL:</label>
-                                                                                        <label class="label1 col-sm-1 label-informacion" runat="server" id="Label13"></label>
+                                                                                        <label class="label1 col-sm-10 ">COSTO TOTAL INVERTIDO EN LOS BIENES O SERVICIOS DIRIGIDOS AL AVANCE EN EL PROCESO DE INTEGRACIÓN COMUNITARIA Y ARRAIGO TERRITORIAL:</label>
+                                                                                      <label class="label1 col-sm-2 label-informacion" runat="server" id="lbltotalBalanceICYAT"></label>
                                                                                     </div>
                                                                                 </div>
 

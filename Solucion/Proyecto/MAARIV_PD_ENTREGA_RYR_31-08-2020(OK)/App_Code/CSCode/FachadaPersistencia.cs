@@ -1928,6 +1928,10 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Consultar_Balance_Metas_Ruta_Comunitaria(idComunidad, opcion);
         }
+        public bool LD_Insertar_plan_acción_traslado_balance_SSV_ruta_comunitaria(int idPlan,int idUsuario)
+        {
+            return L_D.LD_Insertar_plan_acción_traslado_balance_SSV_ruta_comunitaria(idPlan,  idUsuario);
+        }
         #endregion
 
     }
