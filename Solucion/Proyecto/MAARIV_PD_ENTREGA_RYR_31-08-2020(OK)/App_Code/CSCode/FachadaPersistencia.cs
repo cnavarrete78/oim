@@ -1907,7 +1907,10 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Insertar_plan_acción_traslado_balance_evidencia_traslado_ruta_comunitaria( id,opcion, idRelacion,  idTipoEvidencia,  urlArchivo, nombreArchivo,  extension,  idUsuario,  activo);
         }
-
+        public bool LD_Insertar_plan_acción_traslado_balance_bien_servicio_ruta_comunitaria(int idPlanBienServicio, int victimasAcompanadasD, int victimasAcompanadasI, int totalVictimas, int totalNoVictimas, int personasBeneficiadas, string descripcion, string responsable, decimal costo, int idUsuario)
+        {
+            return L_D.LD_Insertar_plan_acción_traslado_balance_bien_servicio_ruta_comunitaria( idPlanBienServicio,  victimasAcompanadasD,  victimasAcompanadasI,  totalVictimas,  totalNoVictimas,  personasBeneficiadas,  descripcion,  responsable, costo,  idUsuario);
+        }
         public DataSet Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(int idPlan)
         {
             return L_D.LD_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria(idPlan);

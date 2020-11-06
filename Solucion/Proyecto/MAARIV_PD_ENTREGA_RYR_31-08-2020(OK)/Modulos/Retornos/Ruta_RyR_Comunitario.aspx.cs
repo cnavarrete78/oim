@@ -11912,16 +11912,26 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
         int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        
         DataSet dsPE = new DataSet();
         dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Balance_Metas_Ruta_Comunitaria(idComunidad, "GI");
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
         {
+            if (dsPE.Tables[0].Rows[0]["PRECARGUE"].ToString() =="1")
+            {
+                lblBalance3.InnerText = "Información guardada en el balance.";
+            }
+            else
+            {
+                lblBalance3.InnerText = "LA SIGUIENTE INFORMACIÓN SE PRECARGA DE LA FORMULACIÓN DEL PLAN DE RETORNO Y REUBICACIÓN.";
+            }
             gv_GI.Visible = true;
             gv_GI.DataSource = dsPE;
             gv_GI.DataBind();
         }
         else
         {
+            lblBalance3.InnerText = "";
             gv_GI.Visible = false;
             gv_GI.DataSource = dsPE;
             gv_GI.DataBind();
@@ -11931,16 +11941,26 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
         int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        
         DataSet dsPE = new DataSet();
         dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Balance_Metas_Ruta_Comunitaria(idComunidad, "ICYAT");
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
         {
+            if (dsPE.Tables[0].Rows[0]["PRECARGUE"].ToString() == "1")
+            {
+                lblBalance4.InnerText = "Información guardada en el balance.";
+            }
+            else
+            {
+                lblBalance4.InnerText = "LA SIGUIENTE INFORMACIÓN SE PRECARGA DE LA FORMULACIÓN DEL PLAN DE RETORNO Y REUBICACIÓN.";
+            }
             gv_ICYAT.Visible = true;
             gv_ICYAT.DataSource = dsPE;
             gv_ICYAT.DataBind();
         }
         else
         {
+            lblFechaBalanceDerecho.InnerText = "";
             gv_ICYAT.Visible = false;
             gv_ICYAT.DataSource = dsPE;
             gv_ICYAT.DataBind();
@@ -12068,6 +12088,106 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     protected void btn_generar_balance_doc_Click(object sender, EventArgs e)
     {
         GenerarDocumentoBalance(".doc");
+    }
+    protected void btn_guardar_balance_GI_Click(object sender, EventArgs e)
+    {
+        DataSet ds = new DataSet();
+        try
+        {
+            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);            
+            if (idPlan > 0)
+            {
+                if (gv_GI.Rows.Count > 0)
+                {
+                    for (int i = 0; i < gv_GI.Rows.Count; i++)
+                    {
+                        int idPlanBienServicio = Convert.ToInt32(((System.Web.UI.WebControls.Label)gv_GI.Rows[i].Cells[0].FindControl("ID_PLAN_RYR_BIEN_SERVICIO")).Text);
+                        TextBox txtvictimasAcompanadasD = (TextBox)gv_GI.Rows[i].Cells[3].FindControl("VICTIMAS_ACOMPANADAS_DIRECTAMENTE");
+                        int victimasAcompanadasD = Convert.ToInt32(txtvictimasAcompanadasD.Text != "" ? txtvictimasAcompanadasD.Text: null);
+                        TextBox txtvictimasAcompanadasI = (TextBox)gv_GI.Rows[i].Cells[4].FindControl("VICTIMAS_ACOMPANADAS_INDIRECTAMENTE");
+                        int victimasAcompanadasI = Convert.ToInt32(txtvictimasAcompanadasI.Text != "" ? txtvictimasAcompanadasI.Text: null);
+                        TextBox txttotalVictimas = (TextBox)gv_GI.Rows[i].Cells[5].FindControl("VICTIMAS_ACOMPANADAS");
+                        int totalVictimas = Convert.ToInt32(txttotalVictimas.Text != "" ? txttotalVictimas.Text:null);
+                        int totalNoVictimas = 0;
+                        int personasBeneficiadas = 0;
+                        string descripcion = "";
+                        TextBox txtresponsable = (TextBox)gv_GI.Rows[i].Cells[6].FindControl("RESPONSABLE");
+                        string responsable = txtresponsable.Text;
+
+                        TextBox txtcosto = (TextBox)gv_ICYAT.Rows[i].Cells[7].FindControl("COSTO_TOTAL");
+                        decimal costo = Convert.ToDecimal(txtcosto.Text != "" ? txtcosto.Text:null);
+
+                        int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+                        FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_bien_servicio_ruta_comunitaria(idPlanBienServicio, victimasAcompanadasD, victimasAcompanadasI, totalVictimas, totalNoVictimas, personasBeneficiadas, descripcion, responsable, costo, idUsuario);
+                    }
+                    Get_Consultar_Balance_GI_Ruta_Comunitaria();
+                }
+            }
+            else
+            {
+                Mensajes("Debe ingresar la información", 0);
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error adicionar la entidad." + ex.Message, 0);
+        }
+    }
+    protected void btn_guardar_balance_ICYAT_Click(object sender, EventArgs e)
+    {
+        DataSet ds = new DataSet();
+        try
+        {
+            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
+            if (idPlan > 0)
+            {
+                if (gv_ICYAT.Rows.Count > 0)
+                {
+                    for (int i = 0; i < gv_ICYAT.Rows.Count; i++)
+                    {
+                        int idPlanBienServicio = Convert.ToInt32(((System.Web.UI.WebControls.Label)gv_ICYAT.Rows[i].Cells[0].FindControl("ID_PLAN_RYR_BIEN_SERVICIO")).Text);
+
+                        TextBox txtvictimasAcompanadasD = (TextBox)gv_ICYAT.Rows[i].Cells[3].FindControl("VICTIMAS_ACOMPANADAS_DIRECTAMENTE");
+                        int victimasAcompanadasD = Convert.ToInt32(txtvictimasAcompanadasD.Text != "" ? txtvictimasAcompanadasD.Text: null);
+
+                        TextBox txtvictimasAcompanadasI = (TextBox)gv_ICYAT.Rows[i].Cells[4].FindControl("VICTIMAS_ACOMPANADAS_INDIRECTAMENTE");
+                        int victimasAcompanadasI = Convert.ToInt32(txtvictimasAcompanadasI.Text);
+
+                        TextBox txttotalVictimas = (TextBox)gv_ICYAT.Rows[i].Cells[5].FindControl("VICTIMAS_ACOMPANADAS");
+                        int totalVictimas = Convert.ToInt32(txttotalVictimas.Text != "" ? txttotalVictimas.Text: null);
+
+                        TextBox txttotalNoVictimas = (TextBox)gv_ICYAT.Rows[i].Cells[6].FindControl("PERSONAS_NO_VICTIMAS_BENEFICIADAS");
+                        int totalNoVictimas = Convert.ToInt32(txttotalNoVictimas.Text != "" ? txttotalNoVictimas.Text:null);
+
+                        TextBox txtpersonasBeneficiadas = (TextBox)gv_ICYAT.Rows[i].Cells[7].FindControl("PERSONAS_BENEFICIADAS");
+                        int personasBeneficiadas = Convert.ToInt32(txtpersonasBeneficiadas.Text);
+
+                        TextBox txtdescripcion = (TextBox)gv_ICYAT.Rows[i].Cells[8].FindControl("RESPONSABLE");
+                        string descripcion = txtdescripcion.Text;
+
+                        TextBox txtresponsable = (TextBox)gv_ICYAT.Rows[i].Cells[9].FindControl("DESCRIPCION");
+                        string responsable = txtresponsable.Text;
+
+                        TextBox txtcosto = (TextBox)gv_ICYAT.Rows[i].Cells[10].FindControl("COSTO_TOTAL");
+                        decimal costo = Convert.ToDecimal( txtcosto.Text != "" ? txtcosto.Text :null);
+
+                        int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+                        FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_bien_servicio_ruta_comunitaria(idPlanBienServicio, victimasAcompanadasD, victimasAcompanadasI, totalVictimas,totalNoVictimas, personasBeneficiadas, descripcion, responsable,costo, idUsuario);
+                    }
+                    Get_Consultar_Balance_ICYAT_Ruta_Comunitaria();
+                }
+            }
+            else
+            {
+                Mensajes("Debe ingresar la información", 0);
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error adicionar la entidad." + ex.Message, 0);
+        }
     }
 
     #endregion

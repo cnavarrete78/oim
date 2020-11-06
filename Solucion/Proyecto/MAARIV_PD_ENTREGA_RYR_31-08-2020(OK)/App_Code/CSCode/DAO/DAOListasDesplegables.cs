@@ -5962,6 +5962,72 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return ds;
         }
+
+
+        public bool LD_Insertar_plan_acción_traslado_balance_bien_servicio_ruta_comunitaria(int idPlanBienServicio,int victimasAcompanadasD, int victimasAcompanadasI,int totalVictimas,int totalNoVictimas,int personasBeneficiadas, string descripcion, string responsable,decimal costo,  int idUsuario)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_ACTUALIZAR_TB_BALANCE_TRASLADO_PLAN_RYR_BIEN_SERVICIO", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParamOp = new SqlParameter("@ID_PLAN_RYR_BIEN_SERVICIO", idPlanBienServicio);
+                oParamOp.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamOp);
+
+                SqlParameter oParam1 = new SqlParameter("@VICTIMAS_ACOMPANADAS_DIRECTAMENTE", victimasAcompanadasD);
+                oParam1.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam1);
+
+                SqlParameter oParam2 = new SqlParameter("@VICTIMAS_ACOMPANADAS_INDIRECTAMENTE", victimasAcompanadasI);
+                oParam2.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam2);
+
+                SqlParameter oParam3 = new SqlParameter("@TOTAL_VICTIMAS_BENEFICIADAS", totalVictimas);
+                oParam3.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam3);
+
+                SqlParameter oParam4 = new SqlParameter("@PERSONAS_NO_VICTIMAS_BENEFICIADAS", totalNoVictimas);
+                oParam4.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam4);
+
+                SqlParameter oParam5 = new SqlParameter("@PERSONAS_BENEFICIADAS", personasBeneficiadas);
+                oParam5.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam5);
+
+                SqlParameter oParam6 = new SqlParameter("@DESCRIPCION", descripcion);
+                oParam6.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam6);
+
+                SqlParameter oParam7=new SqlParameter("@RESPONSABLE", responsable);
+                oParam7.SqlDbType = SqlDbType.Text;
+                Command.Parameters.Add(oParam7);            
+
+                SqlParameter oParam9 = new SqlParameter("@COSTO", costo);
+                oParam9.SqlDbType = SqlDbType.Money;
+                Command.Parameters.Add(oParam9);
+
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
         #endregion
     }
 
