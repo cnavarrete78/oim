@@ -1834,6 +1834,11 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             comunitario.Set_Necesidad_Comunidad(Parametros);
         }
+
+        public DataSet Get_Evidencia(List<SqlParameter> Parametros)
+        {
+            return comunitario.Get_Evidencia(Parametros);
+        }
         #endregion
 
 

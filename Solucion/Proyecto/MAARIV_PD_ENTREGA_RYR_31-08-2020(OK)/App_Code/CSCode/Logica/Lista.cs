@@ -359,4 +359,25 @@ public class Lista
         }
     }
 
+    public static void L_D_Tipo_Evidencia(ref DropDownList control)
+    {
+        DataSet ds = new DataSet();
+        ds = FachadaPersistencia.getInstancia().Get_Tipo_Evidencia();
+
+        control.Items.Clear();
+
+        if (!ds.Tables[0].Rows.Count.Equals(0))
+        {
+            control.DataValueField = "ID_TIPO_EVIDENCIA";
+            control.DataTextField = "NOMBRE";
+            control.DataSource = ds;
+            control.DataBind();
+            control.Items.Insert(0, new ListItem("Seleccione el Tipo de Envidencia", "0"));
+        }
+        else
+        {
+            control.Items.Insert(0, new ListItem("Seleccione el Tipo de Envidencia", "0"));
+        }
+    }
+
 }

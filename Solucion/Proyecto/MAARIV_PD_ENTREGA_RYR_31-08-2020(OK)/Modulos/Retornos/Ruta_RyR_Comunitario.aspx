@@ -4269,6 +4269,7 @@
                                                                                     <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                     <Columns>
                                                                                         <asp:BoundField DataField="ID_NECESIDAD" HeaderText="ID_NECESIDAD" Visible="false" />
+                                                                                        <asp:BoundField DataField="ID_PLAN_RYR_NECESIDAD" HeaderText="Id" Visible="true" />
                                                                                         <asp:BoundField DataField="DERECHO" HeaderText="Derecho" Visible="true" HeaderStyle-Width="15%" ItemStyle-Width="15%" FooterStyle-Width="15%"/>
                                                                                         <asp:BoundField DataField="NECESIDAD" HeaderText="Necesidad" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%"/>
                                                                                         <asp:BoundField DataField="NUM_PERSONAS_PENDIENTES_SUPERAR" HeaderText="Número de Personas Pendientes por superar el Derecho" Visible="true" />
@@ -4282,7 +4283,7 @@
                                                                                                     </asp:LinkButton>
                                                                                                 </div>
                                                                                                 <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
-                                                                                                    <asp:LinkButton ID="LinkButton27" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Cargar Evidencias" CommandName="EditarDetalleNecesidadPlanRyR" Visible="true">
+                                                                                                    <asp:LinkButton ID="LinkButton27" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Cargar Evidencias" CommandName="CargarEvidenciaNecesidadPlanRyR" Visible='<%# !string.IsNullOrEmpty(Eval("ID_PLAN_RYR_NECESIDAD").ToString()) %>'>
                                                                                                         <span class="glyphicon glyphicon-open-file" aria-hidden="true"></span>
                                                                                                     </asp:LinkButton>
                                                                                                 </div>
@@ -4295,6 +4296,11 @@
                                                                         </div>
                                                                     </asp:Panel>
                                                                 </ContentTemplate>
+                                                                <Triggers>
+                                                                    <asp:AsyncPostBackTrigger ControlID="guardar_dias" />
+                                                                    <asp:AsyncPostBackTrigger ControlID="gv5" />
+                                                                    <asp:AsyncPostBackTrigger ControlID="TB_HoraInicio" />
+                                                                </Triggers>
                                                             </asp:UpdatePanel>
                                                         </div>
                                                         <%--tab de PlanTraslado--%>
@@ -6255,6 +6261,58 @@
                                     </ContentTemplate>
                                     <Triggers>
                                         <%--<asp:AsyncPostBackTrigger ControlID="btn_GuardarEnseres" />--%>
+                                    </Triggers>
+                                </asp:UpdatePanel>
+
+                            </div>
+                        </div>
+                        <%--modal gestión evidencias --%>
+                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalEvidencias" aria-hidden="true">
+                            <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>
+                            <div class="modal-dialog modal-lg" role="document">
+                                <asp:UpdatePanel runat="server" ID="UpdatePanelEvidencias" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <div class="modal-content">
+                                            <div class="">
+                                                <div class="panel panel-danger">
+                                                    <div class="panel-heading">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        Documentos y evidencias 
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <asp:Panel ID="Panel38" runat="server" Style="margin-left: 9%; margin-right: 9%;" CssClass="container-fluid">
+                                                            <div class="form-group  col-md-12">
+                                                                <label class="col-md-3 label1 ">Tipo de evidencia</label>
+                                                                <div class="col-md-12">
+                                                                    <asp:DropDownList ID="LD_MTipoEvidencia" runat="server" AutoPostBack="false" CssClass="form-control">
+                                                                    </asp:DropDownList>
+                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator114" runat="server" ControlToValidate="LD_MTipoEvidencia" CssClass="validador" Display="Dynamic" InitialValue="0" ValidationGroup="v_guardar_modal_evidencia">El tipo de archivo es obligatorio</asp:RequiredFieldValidator>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group  col-md-12">
+                                                                <label class="col-md-3 label1 ">Adjuntar el documento</label>
+                                                                <div class="col-md-3">
+                                                                    <div class="input-group">
+                                                                        <asp:FileUpload runat="server" ID="FU_Evidencia"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row form-group">
+                                                                <asp:Label ID="Label21" runat="server" />
+                                                                <div class="col-md-12">
+                                                                    <asp:LinkButton ID="btn_guardar_evidencia" runat="server" CssClass="btn btn-block btn-danger" OnClick="btn_guardar_evidencia_Click" ValidationGroup="v_guardar_modal_evidencia">
+                                                            <span class="glyphicon  glyphicon-plus" aria-hidden="true"></span> Agregar archivo de evidencia
+                                                                    </asp:LinkButton>
+                                                                </div>
+                                                            </div>
+                                                        </asp:Panel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ContentTemplate>
+                                    <Triggers>
+                                        <asp:PostBackTrigger ControlID="btn_guardar_evidencia" />
                                     </Triggers>
                                 </asp:UpdatePanel>
 

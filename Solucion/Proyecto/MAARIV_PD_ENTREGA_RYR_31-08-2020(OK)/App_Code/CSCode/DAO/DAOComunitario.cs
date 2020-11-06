@@ -286,5 +286,34 @@ namespace com.GACV.lgb.persistencia.dao
             }
         }
 
+        public DataSet Get_Evidencia(List<SqlParameter> Parametros)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_EVIDENCIAS", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                if (Parametros != null)
+                    foreach (SqlParameter param in Parametros)
+                        Command.Parameters.Add(param);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
     }
 }

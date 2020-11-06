@@ -10366,6 +10366,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Lista.L_D_Territorial(ref LD_Territorial_PlanRyR);
         Consulta.GV_PersonasPlanRyR(gv_PersonasPlanRyR);
         Consulta.GV_NecesidadesPlanRyR(gv_plan_ryr_necesidad);
+        Lista.L_D_Tipo_Evidencia(ref LD_MTipoEvidencia);
 
         if (PlanRyR.TraerComunidad())
         {
@@ -10495,6 +10496,13 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 UpdatePanelNecesidadPlanRyR.Update();
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalNecesidadesPlanRyR", "$('#myModalNecesidadesPlanRyR').modal();", true);
             }
+            if (e.CommandName == "CargarEvidenciaNecesidadPlanRyR")
+            {
+                GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                UpdatePanelEvidencias.Update();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEvidencias", "$('#myModalEvidencias').modal();", true);
+
+            }
         }
         catch
         {
@@ -10518,7 +10526,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes("Error grabar la necesidad." + ex.Message, 0);
         }
     }
+    protected void btn_guardar_evidencia_Click(object sender, EventArgs e)
+    {
 
+    }
     #endregion
 
     #region DESARROLLO LILIANA PARA EL TAB DE PLAN DE TRASLADO
