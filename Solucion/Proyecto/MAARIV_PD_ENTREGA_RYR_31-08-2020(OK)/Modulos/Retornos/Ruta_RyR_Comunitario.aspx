@@ -174,7 +174,24 @@
                     'csv'
                 ]
             });
-
+            $('[id$="mGridgv_reporte"]').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                }
+            });
+            $('.mGridgv_reporte').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'pdf',
+                    'excel',
+                    'csv'
+                ]
+            });
             $('[id$="LD_Territorial"]').change(function () {
                 var id_territorial = $('[id$="LD_Territorial"]').val();
                 if (L_D_Territorial != '') {
@@ -559,6 +576,9 @@
                                 </div>
                                 <div class="row" style="display: none;">
                                     <input type="button" class="btn btn-block btn-danger" value="Generar PDF" onclick="doPDFPIRC(1707);" />
+                                </div>
+                                <div class="row">
+                                    <asp:Button ID="Button1" runat="server" CssClass="btn-block btn btn-danger" OnClick="mostar_reportes_comunitario_Click" Text="Ver Reportes" />
                                 </div>
                             </div>
                             <div class="row">
@@ -5107,7 +5127,7 @@
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-10 ">COSTO TOTAL INVERTIDO EN LOS BIENES O SERVICIOS DIRIGIDOS AL AVANCE EN EL PROCESO DE INTEGRACIÓN COMUNITARIA Y ARRAIGO TERRITORIAL:</label>
-                                                                                      <label class="label1 col-sm-2 label-informacion" runat="server" id="lbltotalBalanceICYAT"></label>
+                                                                                        <label class="label1 col-sm-2 label-informacion" runat="server" id="lbltotalBalanceICYAT"></label>
                                                                                     </div>
                                                                                 </div>
 
@@ -5131,7 +5151,7 @@
                                                                             <div class="panel-heading">
                                                                                 DOCUMENTO BALANCE DEL ACOMPAÑAMIENTO AL RETORNO Y REUBICACIÓN  
                                                                             </div>
-                                                                            <div class="panel-body">                                                                                
+                                                                            <div class="panel-body">
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <asp:LinkButton ID="LinkButton16" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_generar_balance_doc_Click" Text="Generar documento">
@@ -5164,6 +5184,65 @@
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                             <asp:HiddenField ID="TabName" runat="server" />
+                        </div>
+                        <%--tab de Reportes--%>
+                        <div>
+                            <br />
+                        </div>
+                        <div>
+                            <asp:UpdatePanel runat="server" ID="Up_reporte_ryr" Visible="false" UpdateMode="Conditional">
+                                <ContentTemplate>
+                                    <%--Reporte de SSV--%>
+                                    <asp:Panel ID="Panel39" runat="server" CssClass="container-fluid">
+                                        <div class="panel panel-danger">
+                                            <div class="panel-heading">
+                                                <asp:Label ID="Label12" runat="server" Visible="true" CssClass="text-warning">Reporte de SSV</asp:Label>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="label1 col-sm-12">Reporte</label>
+                                                        <asp:DropDownList ID="LD_Reporte" runat="server" AutoPostBack="True" CssClass="form-control">
+                                                        </asp:DropDownList>
+                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator105" runat="server"
+                                                            ControlToValidate="LD_Reporte" CssClass="validador" Display="Dynamic"
+                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"></asp:RequiredFieldValidator>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <asp:LinkButton ID="LinkButton15" runat="server" CssClass="btn btn-danger btn-block" ValidationGroup="agregarDatosListadoBalance" OnClick="btn_generar_reporte_Click" Text="Generar Reporte">
+                                                                                             Generar Reporte
+                                                    </asp:LinkButton>
+                                                </div>
+                                                <asp:UpdatePanel ID="UpdatePanelReporte" runat="server" UpdateMode="Conditional">
+                                                    <ContentTemplate>
+                                                        <div class="row">
+                                                            <div runat="server" style="overflow-x: scroll">
+                                                                <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_reporte"
+                                                                    runat="server" AutoGenerateColumns="true" OnRowCommand="gv_reporte_RowCommand" OnRowDataBound="gv_reporte_RowDataBound" OnPreRender="gv_reporte_PreRender">
+                                                                    <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                    <Columns>
+                                                                        <%-- <asp:BoundField DataField="NOMBRE_RYR_COMUNIDAD" HeaderText="NOMBRE_RYR_COMUNIDAD" Visible="false" />
+                                                                                            <asp:BoundField DataField="DERECHO" HeaderText="DERECHO" Visible="true" />
+                                                                                            <asp:BoundField DataField="NECESIDAD" HeaderText="NECESIDAD" Visible="true" />
+                                                                                            <asp:BoundField DataField="NUM_PERSONAS_PENDIENTES_SUPERAR" HeaderText="NÚMERO DE PERSONAS PENDIENTES POR SUPERAR EL DERECHO" Visible="true" />
+                                                                                            <asp:BoundField DataField="NUM_PERSONAS_SUPERON" HeaderText="NÚMERO DE PERSONAS QUE SUPERARON EL DERECHO" Visible="true" />
+                                                                                            <asp:BoundField DataField="FECHA_SISTEMA" HeaderText="FECHA_SISTEMA" Visible="false" />--%>
+                                                                    </Columns>
+                                                                    <PagerStyle CssClass="pgr" />
+                                                                </asp:GridView>
+                                                            </div>
+                                                    </ContentTemplate>
+                                                    <Triggers>
+                                                    </Triggers>
+                                                </asp:UpdatePanel>
+                                            </div>
+                                        </div>
+                                    </asp:Panel>
+                                </ContentTemplate>
+                                <Triggers>
+                                </Triggers>
+                            </asp:UpdatePanel>
                         </div>
 
                         <%--modales de inventario--%>

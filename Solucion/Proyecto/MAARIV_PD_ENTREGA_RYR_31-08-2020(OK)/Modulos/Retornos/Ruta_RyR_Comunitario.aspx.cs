@@ -11432,10 +11432,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         int idRelacion = 0;
         DataSet ds = new DataSet();
         switch (origen)
-        {           
+        {
             case "Traslado":
-               idRelacion = Convert.ToInt32(ViewState["idBalanceTraslado"]);
-                break;            
+                idRelacion = Convert.ToInt32(ViewState["idBalanceTraslado"]);
+                break;
             case "BalanceGI":
                 idRelacion = Convert.ToInt32(ViewState["idPlanBienServicio"]);
                 break;
@@ -11806,7 +11806,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
             TextBox txtbeneficiadas = (TextBox)e.Row.FindControl("PERSONAS_BENEFICIADAS");
             DataRow drGVbeneficiadas = ((DataRowView)e.Row.DataItem).Row;
-            txtbeneficiadas.Text = drGVbeneficiadas["PERSONAS_BENEFICIADAS"].ToString();           
+            txtbeneficiadas.Text = drGVbeneficiadas["PERSONAS_BENEFICIADAS"].ToString();
         }
     }
     protected void gv_ICYAT_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -11933,7 +11933,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Balance_Metas_Ruta_Comunitaria(idComunidad, "GI");
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
         {
-            if (dsPE.Tables[0].Rows[0]["PRECARGUE"].ToString() =="1")
+            if (dsPE.Tables[0].Rows[0]["PRECARGUE"].ToString() == "1")
             {
                 lblBalance3.InnerText = "Información guardada en el balance.";
             }
@@ -11947,7 +11947,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
             for (int i = 0; i < dsPE.Tables[0].Rows.Count; i++)
             {
-                totalGI = totalGI+  Convert.ToDecimal( dsPE.Tables[i].Rows[0]["COSTO_TOTAL"]);
+                totalGI = totalGI + Convert.ToDecimal(dsPE.Tables[i].Rows[0]["COSTO_TOTAL"]);
             }
         }
         else
@@ -11993,7 +11993,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_ICYAT.DataSource = dsPE;
             gv_ICYAT.DataBind();
         }
-        lbltotalBalanceICYAT.InnerText = "$" +  totalICYAT.ToString();
+        lbltotalBalanceICYAT.InnerText = "$" + totalICYAT.ToString();
     }
     protected void btn_guardar_datosProfesionalListado_balance_Click(object sender, EventArgs e)
     {
@@ -12029,7 +12029,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             if (idPlan > 0)
             {
                 int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_SSV_ruta_comunitaria(idPlan,idUsuario);
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_SSV_ruta_comunitaria(idPlan, idUsuario);
                 if (exitoso)
                 {
                     Get_balance_SSV_Ruta_Comunitaria();
@@ -12141,7 +12141,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         try
         {
             int idComunidad = Convert.ToInt32(TB_Nit.Text);
-            int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);            
+            int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             if (idPlan > 0)
             {
                 if (gv_GI.Rows.Count > 0)
@@ -12150,11 +12150,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     {
                         int idPlanBienServicio = Convert.ToInt32(((System.Web.UI.WebControls.Label)gv_GI.Rows[i].Cells[0].FindControl("ID_PLAN_RYR_BIEN_SERVICIO")).Text);
                         TextBox txtvictimasAcompanadasD = (TextBox)gv_GI.Rows[i].Cells[3].FindControl("VICTIMAS_ACOMPANADAS_DIRECTAMENTE");
-                        int victimasAcompanadasD = Convert.ToInt32(txtvictimasAcompanadasD.Text != "" ? txtvictimasAcompanadasD.Text: null);
+                        int victimasAcompanadasD = Convert.ToInt32(txtvictimasAcompanadasD.Text != "" ? txtvictimasAcompanadasD.Text : null);
                         TextBox txtvictimasAcompanadasI = (TextBox)gv_GI.Rows[i].Cells[4].FindControl("VICTIMAS_ACOMPANADAS_INDIRECTAMENTE");
-                        int victimasAcompanadasI = Convert.ToInt32(txtvictimasAcompanadasI.Text != "" ? txtvictimasAcompanadasI.Text: null);
+                        int victimasAcompanadasI = Convert.ToInt32(txtvictimasAcompanadasI.Text != "" ? txtvictimasAcompanadasI.Text : null);
                         TextBox txttotalVictimas = (TextBox)gv_GI.Rows[i].Cells[5].FindControl("VICTIMAS_ACOMPANADAS");
-                        int totalVictimas = Convert.ToInt32(txttotalVictimas.Text != "" ? txttotalVictimas.Text:null);
+                        int totalVictimas = Convert.ToInt32(txttotalVictimas.Text != "" ? txttotalVictimas.Text : null);
                         int totalNoVictimas = 0;
                         int personasBeneficiadas = 0;
                         string descripcion = "";
@@ -12162,7 +12162,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         string responsable = txtresponsable.Text;
 
                         TextBox txtcosto = (TextBox)gv_GI.Rows[i].Cells[7].FindControl("COSTO_TOTAL");
-                        decimal costo = Convert.ToDecimal(txtcosto.Text != "" ? txtcosto.Text:null);
+                        decimal costo = Convert.ToDecimal(txtcosto.Text != "" ? txtcosto.Text : null);
 
                         int idUsuario = Convert.ToInt32(Session["id_usuario"]);
                         FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_bien_servicio_ruta_comunitaria(idPlanBienServicio, victimasAcompanadasD, victimasAcompanadasI, totalVictimas, totalNoVictimas, personasBeneficiadas, descripcion, responsable, costo, idUsuario);
@@ -12196,16 +12196,16 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         int idPlanBienServicio = Convert.ToInt32(((System.Web.UI.WebControls.Label)gv_ICYAT.Rows[i].Cells[0].FindControl("ID_PLAN_RYR_BIEN_SERVICIO")).Text);
 
                         TextBox txtvictimasAcompanadasD = (TextBox)gv_ICYAT.Rows[i].Cells[3].FindControl("VICTIMAS_ACOMPANADAS_DIRECTAMENTE");
-                        int victimasAcompanadasD = Convert.ToInt32(txtvictimasAcompanadasD.Text != "" ? txtvictimasAcompanadasD.Text: null);
+                        int victimasAcompanadasD = Convert.ToInt32(txtvictimasAcompanadasD.Text != "" ? txtvictimasAcompanadasD.Text : null);
 
                         TextBox txtvictimasAcompanadasI = (TextBox)gv_ICYAT.Rows[i].Cells[4].FindControl("VICTIMAS_ACOMPANADAS_INDIRECTAMENTE");
                         int victimasAcompanadasI = Convert.ToInt32(txtvictimasAcompanadasI.Text);
 
                         TextBox txttotalVictimas = (TextBox)gv_ICYAT.Rows[i].Cells[5].FindControl("VICTIMAS_ACOMPANADAS");
-                        int totalVictimas = Convert.ToInt32(txttotalVictimas.Text != "" ? txttotalVictimas.Text: null);
+                        int totalVictimas = Convert.ToInt32(txttotalVictimas.Text != "" ? txttotalVictimas.Text : null);
 
                         TextBox txttotalNoVictimas = (TextBox)gv_ICYAT.Rows[i].Cells[6].FindControl("PERSONAS_NO_VICTIMAS_BENEFICIADAS");
-                        int totalNoVictimas = Convert.ToInt32(txttotalNoVictimas.Text != "" ? txttotalNoVictimas.Text:null);
+                        int totalNoVictimas = Convert.ToInt32(txttotalNoVictimas.Text != "" ? txttotalNoVictimas.Text : null);
 
                         TextBox txtpersonasBeneficiadas = (TextBox)gv_ICYAT.Rows[i].Cells[7].FindControl("PERSONAS_BENEFICIADAS");
                         int personasBeneficiadas = Convert.ToInt32(txtpersonasBeneficiadas.Text);
@@ -12217,10 +12217,10 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         string descripcion = txtdescripcion.Text;
 
                         TextBox txtcosto = (TextBox)gv_ICYAT.Rows[i].Cells[10].FindControl("COSTO_TOTAL");
-                        decimal costo = Convert.ToDecimal( txtcosto.Text != "" ? txtcosto.Text :null);
+                        decimal costo = Convert.ToDecimal(txtcosto.Text != "" ? txtcosto.Text : null);
 
                         int idUsuario = Convert.ToInt32(Session["id_usuario"]);
-                        FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_bien_servicio_ruta_comunitaria(idPlanBienServicio, victimasAcompanadasD, victimasAcompanadasI, totalVictimas,totalNoVictimas, personasBeneficiadas, descripcion, responsable,costo, idUsuario);
+                        FachadaPersistencia.getInstancia().LD_Insertar_plan_acción_traslado_balance_bien_servicio_ruta_comunitaria(idPlanBienServicio, victimasAcompanadasD, victimasAcompanadasI, totalVictimas, totalNoVictimas, personasBeneficiadas, descripcion, responsable, costo, idUsuario);
                     }
                     Get_Consultar_Balance_ICYAT_Ruta_Comunitaria();
                 }
@@ -12233,6 +12233,99 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         catch (System.Exception ex)
         {
             Mensajes("Error adicionar la entidad." + ex.Message, 0);
+        }
+    }
+
+    #endregion
+
+    #region DESARROLLO REPORTE RUTA COMUNITARIA
+
+    protected void gv_reporte_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        DataSet ds = new DataSet();
+        Adjuntar_archivos_act adjuntar_archivos = new Adjuntar_archivos_act();
+        try
+        {
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void gv_reporte_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+        }
+    }
+    protected void gv_reporte_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        UpdatePanelReporte.Update();
+    }
+    protected void gv_reporte_PreRender(object sender, EventArgs e)
+    {
+        if (gv.Rows.Count > 0)
+        {
+            gv_reporte.HeaderRow.Cells[0].Attributes["data-priority"] = "1";
+            gv_reporte.HeaderRow.Cells[1].Attributes["data-priority"] = "2";
+            gv_reporte.HeaderRow.Cells[2].Attributes["data-priority"] = "2";
+            gv_reporte.HeaderRow.Cells[3].Attributes["data-priority"] = "1";
+            gv_reporte.HeaderRow.Cells[4].Attributes["data-priority"] = "2";
+            gv_reporte.UseAccessibleHeader = true;
+            gv_reporte.HeaderRow.TableSection = TableRowSection.TableHeader;
+            gv_reporte.FooterRow.TableSection = TableRowSection.TableFooter;
+        }
+        if (gv.Rows.Count == 1)
+        {
+        }
+    }
+    protected void btn_generar_reporte_Click(object sender, EventArgs e)
+    {
+        DataSet dsPE = new DataSet();
+        int idReporte = Convert.ToInt32(LD_Reporte.SelectedValue);
+        string nombreSP = "";
+        DataSet dsR = new DataSet();
+        dsR = FachadaPersistencia.getInstancia().Get_Reportes_Ruta_Comunitaria();
+        if (!dsR.Tables[0].Rows.Count.Equals(0))
+        {
+            for (int i = 0; i < dsR.Tables.Count; i++)
+            {
+                if (Convert.ToInt32(dsR.Tables[i].Rows[0].ItemArray[0]) == idReporte)
+                {
+                    nombreSP = dsR.Tables[i].Rows[0].ItemArray[3].ToString();
+                }                
+            }
+        }
+        dsPE = FachadaPersistencia.getInstancia().LD_Get_Datos_Reportes_Ruta_Comunitaria(nombreSP);
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            gv_reporte.Visible = true;
+            gv_reporte.DataSource = dsPE;
+            gv_reporte.DataBind();
+
+        }
+        else
+        {
+            gv_reporte.Visible = false;
+            gv_reporte.DataSource = dsPE;
+            gv_reporte.DataBind();
+        }
+
+    }
+
+    protected void mostar_reportes_comunitario_Click(object sender, EventArgs e)
+    {
+        Up_reporte_ryr.Visible = true;
+        Up_reporte_ryr.Update();
+
+        DataSet dsPE = new DataSet();
+        dsPE = FachadaPersistencia.getInstancia().Get_Reportes_Ruta_Comunitaria();
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            LD_Reporte.DataValueField = "ID_REPORTE";
+            LD_Reporte.DataTextField = "NOMBRE";
+            LD_Reporte.DataSource = dsPE;
+            LD_Reporte.DataBind();
         }
     }
 

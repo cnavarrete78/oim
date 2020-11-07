@@ -1932,6 +1932,16 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Insertar_plan_acción_traslado_balance_SSV_ruta_comunitaria(idPlan,  idUsuario);
         }
+
+        public DataSet Get_Reportes_Ruta_Comunitaria()
+        {
+            return L_D.LD_Reportes_Ruta_Comunitaria();
+        }
+
+        public DataSet LD_Get_Datos_Reportes_Ruta_Comunitaria(string nombreSp)
+        {
+            return L_D.LD_Get_Datos_Reportes_Ruta_Comunitaria(nombreSp);
+        }
         #endregion
 
     }
