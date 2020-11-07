@@ -6142,6 +6142,146 @@
                                 </asp:UpdatePanel>
                             </div>
                         </div>
+                        <%--modal detalle actividades bienes o servicios plan RyR--%>
+                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalActividadesBienesServiciosPlanRyR" aria-hidden="true">
+                            <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>
+                            <div class="modal-dialog modal-lg" role="document">
+                                <asp:UpdatePanel runat="server" ID="UpdatePanelActividadesBienesServiciosPlanRyR" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <div class="modal-content">
+                                            <div class="">
+                                                <div class="panel panel-danger">
+                                                    <div class="panel-heading">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <asp:Label ID="Label24" runat="server" Visible="true" CssClass="text-warning">Detalle de las Actividades del Bien o Servicio</asp:Label>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Bien o Servicio a Desarrollar</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <asp:Label ID="lblBienServicioNombre" runat="server" ForeColor="Black"></asp:Label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Id</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <asp:TextBox ID="txtActividadId" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly="true"></asp:TextBox>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Clasificación de la Actividad</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <asp:DropDownList ID="LD_Clasificacion_Actividad" runat="server" CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator122" runat="server"
+                                                                    ControlToValidate="LD_Clasificacion_Actividad" CssClass="validador" Display="Dynamic"
+                                                                    ErrorMessage="* Campo obligatorio" InitialValue="0"
+                                                                    ValidationGroup="actividad_bien_servicios_group"></asp:RequiredFieldValidator>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Actividades</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <asp:TextBox ID="txtActividadNombre" runat="server" CssClass="form-control" ForeColor="Black" TextMode="MultiLine" Rows="5"></asp:TextBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator121" runat="server" CssClass="validador" ErrorMessage="* Campo obligatorio" ControlToValidate="txtActividadNombre" ValidationGroup="actividad_bien_servicios_group"></asp:RequiredFieldValidator>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Fecha de la Actividad</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="input-group " id="calendarFechaActividad" style="padding-right: 40px;">
+                                                                    <asp:TextBox ID="txtActividadFecha" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
+                                                                    <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                </div>
+                                                                <ajaxToolkit:CalendarExtender ID="CalendarExtender15" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="calendarFechaActividad" TargetControlID="txtActividadFecha"></ajaxToolkit:CalendarExtender>
+                                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator18" runat="server" ControlToValidate="txtActividadFecha" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardarFicha">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator123" runat="server" ControlToValidate="txtActividadFecha" CssClass="validador" Display="Dynamic" ValidationGroup="actividad_bien_servicios_group">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Responsable</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <asp:TextBox ID="txtActividadResponsable" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Costo</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <asp:TextBox ID="txtActividadCosto" runat="server" CssClass="form-control" ForeColor="Black" ></asp:TextBox>
+                                                            </div>
+                                                        </div>
+                                                         <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Cumplida</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <asp:CheckBox id="chkActividadCumplida" runat="server" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <asp:LinkButton ID="LinkButton33" runat="server" CssClass="btn btn-danger btn-block" Text="Grabar Actividad" OnClick="btn_grabar_actividad_bien_servicio_Click" ValidationGroup="actividad_bien_servicios_group"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_actividad_bienes_servicios"
+                                                                    runat="server" AutoGenerateColumns="false" DataKeyNames="ID_PLAN_RYR_BIEN_SERVICIO_ACTIVIDAD" OnRowCommand="gv_actividad_bienes_servicios_RowCommand">
+                                                                    <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                    <Columns>
+                                                                        <asp:BoundField DataField="ID_PLAN_RYR_BIEN_SERVICIO_ACTIVIDAD" HeaderText="Id" Visible="true" />
+                                                                        <asp:BoundField DataField="CLASIFICACION_ACTIVIDAD" HeaderText="Clasificación de la Actividad" Visible="true" HeaderStyle-Width="15%" ItemStyle-Width="15%" FooterStyle-Width="15%" />
+                                                                        <asp:BoundField DataField="ACTIVIDAD" HeaderText="Actividades" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%" />
+                                                                        <asp:BoundField DataField="FECHA_ACTIVIDAD" HeaderText="Fecha de la Actividad" DataFormatString="{0:dd/MM/yyyy}" Visible="true" />
+                                                                        <asp:BoundField DataField="RESPONSABLE" HeaderText="Responsable" Visible="true" />
+                                                                        <asp:BoundField DataField="COSTO" HeaderText="Costo de la Actividad" DataFormatString="{0:N0}" Visible="true" />
+                                                                        <asp:TemplateField HeaderText="Cumplida">
+                                                                            <ItemTemplate>
+                                                                                <asp:CheckBox ID="CUMPLIDA" runat="server" Checked='<%# Eval("CUMPLIDA") %>' Enabled="false" ViewStateMode="Disabled" />
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+                                                                        <asp:TemplateField HeaderText="Acciones" HeaderStyle-Width="20%" ItemStyle-Width="20%" FooterStyle-Width="20%">
+                                                                            <ItemTemplate>
+                                                                                <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                    <asp:LinkButton ID="btn_editar" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Editar Bien o Servicio" CommandName="EditarActividadBienesServicioPlanRyR" Visible="true">
+                                                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                                                                    </asp:LinkButton>
+                                                                                </div>
+                                                                                <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                    <asp:LinkButton ID="LinkButton30" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Eliminar Bien o Servicio" CommandName="EliminarActividadBienesServicioPlanRyR" Visible="true">
+                                                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                                    </asp:LinkButton>
+                                                                                </div>
+                                                                            </ItemTemplate>
+                                                                            <ItemStyle HorizontalAlign="Center" Width="120px" />
+                                                                        </asp:TemplateField>
+                                                                    </Columns>
+                                                                </asp:GridView>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+
                         <%--modales de inventario--%>
                         <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalEnseres" aria-hidden="true">
                             <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>

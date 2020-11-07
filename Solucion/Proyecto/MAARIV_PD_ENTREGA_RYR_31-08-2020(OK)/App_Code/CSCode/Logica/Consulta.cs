@@ -118,4 +118,22 @@ public class Consulta
             control.DataBind();
         }
     }
+
+    public static void GV_ActividadBienesServicios(GridView control)
+    {
+        DataSet dsPE = new DataSet();
+        dsPE = PlanRyR.TraerActividadBienesServicios();
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            control.Visible = true;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+        else
+        {
+            control.Visible = false;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+    }
 }

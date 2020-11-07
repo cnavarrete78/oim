@@ -380,4 +380,25 @@ public class Lista
         }
     }
 
+    public static void L_D_Clasificacion_Actividad(ref DropDownList control)
+    {
+        DataSet ds = new DataSet();
+        ds = FachadaPersistencia.getInstancia().Get_Clasificacion_Actividad();
+
+        control.Items.Clear();
+
+        if (!ds.Tables[0].Rows.Count.Equals(0))
+        {
+            control.DataValueField = "ID_CLASIFICACION_ACTIVIDAD";
+            control.DataTextField = "CLASIFICACION_ACTIVIDAD";
+            control.DataSource = ds;
+            control.DataBind();
+            control.Items.Insert(0, new ListItem("Seleccione la Clasificación de la Actividad", "0"));
+        }
+        else
+        {
+            control.Items.Insert(0, new ListItem("Seleccione la Clasificación de la Actividad", "0"));
+        }
+    }
+
 }

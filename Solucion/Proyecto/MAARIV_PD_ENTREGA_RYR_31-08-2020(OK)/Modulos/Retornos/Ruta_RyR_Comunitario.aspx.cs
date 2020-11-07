@@ -10374,6 +10374,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         PlanRyR.BienesServiciosGI = (DataSet)gv_bienes_servicios_GI.DataSource;
         Consulta.GV_BienesServicios(gv_bienes_servicios_IC, 2);
         PlanRyR.BienesServiciosIC = (DataSet)gv_bienes_servicios_IC.DataSource;
+        Lista.L_D_Clasificacion_Actividad(ref LD_Clasificacion_Actividad);
 
         if (PlanRyR.TraerComunidad())
         {
@@ -10634,6 +10635,29 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 }
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalBienesServiciosPlanRyR", "$('#myModalBienesServiciosPlanRyR').modal();", true);
             }
+            if (e.CommandName == "EditarActividadesBienesServicioPlanRyR")
+            {
+                foreach (DataRow row in PlanRyR.BienesServiciosGI.Tables[0].Rows)
+                {
+                    if (row["ID_PLAN_RYR_BIEN_SERVICIO"].ToString().Equals(PlanRyR.BienServicioId.ToString()))
+                    {
+                        this.lblBienServicioNombre.Text = row["BIEN_SERVICIO"].ToString();
+                        Consulta.GV_ActividadBienesServicios(gv_actividad_bienes_servicios);
+                        PlanRyR.Actividades = (DataSet)gv_actividad_bienes_servicios.DataSource;
+                    }
+                }
+
+                this.txtActividadId.Text = "0";
+                this.txtActividadNombre.Text = "";
+                this.txtActividadFecha.Text = "";
+                this.txtActividadResponsable.Text = "";
+                this.txtActividadCosto.Text = "0";
+
+                PlanRyR.LimpiarActividadBienesServicios();
+                UpdatePanelActividadesBienesServiciosPlanRyR.Update();
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalActividadesBienesServiciosPlanRyR", "$('#myModalActividadesBienesServiciosPlanRyR').modal();", true);
+            }
             if (e.CommandName == "CargarEvidenciasBienesServicioPlanRyR")
             {
                 Evidencia.IdControl = Convert.ToInt32(gv_bienes_servicios_GI.DataKeys[gvRow.DataItemIndex].Values[0]);
@@ -10706,6 +10730,29 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 }
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalBienesServiciosPlanRyR", "$('#myModalBienesServiciosPlanRyR').modal();", true);
             }
+            if (e.CommandName == "EditarActividadesBienesServicioPlanRyR")
+            {
+                foreach (DataRow row in PlanRyR.BienesServiciosIC.Tables[0].Rows)
+                {
+                    if (row["ID_PLAN_RYR_BIEN_SERVICIO"].ToString().Equals(PlanRyR.BienServicioId.ToString()))
+                    {
+                        this.lblBienServicioNombre.Text = row["BIEN_SERVICIO"].ToString();
+                        Consulta.GV_ActividadBienesServicios(gv_actividad_bienes_servicios);
+                        PlanRyR.Actividades = (DataSet)gv_actividad_bienes_servicios.DataSource;
+                    }
+                }
+
+                this.txtActividadId.Text = "0";
+                this.txtActividadNombre.Text = "";
+                this.txtActividadFecha.Text = "";
+                this.txtActividadResponsable.Text = "";
+                this.txtActividadCosto.Text = "0";
+
+                PlanRyR.LimpiarActividadBienesServicios();
+                UpdatePanelActividadesBienesServiciosPlanRyR.Update();
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalActividadesBienesServiciosPlanRyR", "$('#myModalActividadesBienesServiciosPlanRyR').modal();", true);
+            }
             if (e.CommandName == "CargarEvidenciasBienesServicioPlanRyR")
             {
                 Evidencia.IdControl = Convert.ToInt32(gv_bienes_servicios_IC.DataKeys[gvRow.DataItemIndex].Values[0]);
@@ -10726,6 +10773,66 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
+    }
+
+    protected void gv_actividad_bienes_servicios_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+            PlanRyR.ActividadId = Convert.ToInt32(gv_actividad_bienes_servicios.DataKeys[gvRow.DataItemIndex].Values[0]);
+
+            if (e.CommandName == "EditarActividadBienesServicioPlanRyR")
+            {
+                foreach(DataRow actividad in PlanRyR.Actividades.Tables[0].Rows)
+                {
+                    if (actividad["ID_PLAN_RYR_BIEN_SERVICIO_ACTIVIDAD"].ToString().Equals(PlanRyR.ActividadId.ToString()))
+                    {
+                        this.txtActividadId.Text = PlanRyR.ActividadId.ToString();
+                        this.LD_Clasificacion_Actividad.SelectedValue = actividad["ID_CLASIFICACION_ACTIVIDAD"].ToString();
+                        this.txtActividadNombre.Text = actividad["ACTIVIDAD"].ToString();
+                        this.txtActividadFecha.Text = Convert.ToDateTime(actividad["FECHA_ACTIVIDAD"].ToString()).ToShortDateString();
+                        this.txtActividadResponsable.Text = actividad["RESPONSABLE"].ToString();
+                        this.txtActividadCosto.Text = string.Format("{0:N0}", actividad["COSTO"]);
+                        chkActividadCumplida.Checked = (bool)actividad["CUMPLIDA"];
+                    }
+                }
+            }
+            
+            if (e.CommandName == "EliminarActividadBienesServicioPlanRyR")
+            {
+                PlanRyR.EliminarActividadBienesServiciosPlan();
+                texto("El registro se elimino correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+                Consulta.GV_ActividadBienesServicios(gv_actividad_bienes_servicios);
+                UpdatePanelActividadesBienesServiciosPlanRyR.Update();
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void btn_grabar_actividad_bien_servicio_Click(object sender, EventArgs e)
+    {
+        PlanRyR.ActividadId = Convert.ToInt32(this.txtActividadId.Text);
+        PlanRyR.ActividadClasificacionId = Convert.ToInt32(this.LD_Clasificacion_Actividad.SelectedValue);
+        PlanRyR.ActividadNombre = this.txtActividadNombre.Text;
+        PlanRyR.ActividadFecha = Convert.ToDateTime(Convert.ToString(this.txtActividadFecha.Text));
+        PlanRyR.ActividadResponsable = this.txtActividadResponsable.Text;
+        PlanRyR.ActividadCosto = Convert.ToInt32(this.txtActividadCosto.Text.Replace(",","").Replace(".",""));
+        PlanRyR.ActividadCumplida = this.chkActividadCumplida.Checked;
+        PlanRyR.ActividadActivo = true;
+        PlanRyR.GrabarActividadBienesServiciosPlan();
+        PlanRyR.LimpiarActividadBienesServicios();
+        texto("El registro se grabo correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+        this.txtActividadId.Text = "0";
+        this.txtActividadNombre.Text = "";
+        this.txtActividadFecha.Text = "";
+        this.txtActividadResponsable.Text = "";
+        this.txtActividadCosto.Text = "0";
+        Consulta.GV_ActividadBienesServicios(gv_actividad_bienes_servicios);
+        ProcesarPlanRyR();
+        Up_plan_ryr.Update();
     }
 
     #endregion

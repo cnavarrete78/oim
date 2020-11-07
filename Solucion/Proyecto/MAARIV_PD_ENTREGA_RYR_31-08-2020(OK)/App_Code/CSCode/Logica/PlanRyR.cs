@@ -52,6 +52,17 @@ public class PlanRyR
     public static DataSet BienesServiciosGI { get; set; }
     public static DataSet BienesServiciosIC { get; set; }
 
+    public static int ActividadId { get; set; }
+    public static int ActividadClasificacionId { get; set; }
+    public static string ActividadNombre { get; set; }
+    public static bool ActividadCumplida { get; set; }
+    public static DateTime ActividadFecha { get; set; }
+    public static string ActividadResponsable { get; set; }
+    public static decimal ActividadCosto { get; set; }
+    public static bool ActividadActivo { get; set; }
+
+    public static DataSet Actividades { get; set; }
+
     public PlanRyR()
     {
     }
@@ -200,5 +211,49 @@ public class PlanRyR
         BienServicioPersonasNoVictimasBeneficiadas = 0;
         BienServicioPersonasBeneficiadas = 0;
         BienServicioIniciativaPDET = 0;
+    }
+
+    public static DataSet TraerActividadBienesServicios()
+    {
+        List<SqlParameter> parametros = new List<SqlParameter>();
+        parametros.Add(new SqlParameter("ID_PLAN_RYR_BIEN_SERVICIO", BienServicioId));
+        return FachadaPersistencia.getInstancia().Get_ActividadBienesServicios_Comunidad(parametros);
+    }
+    public static void GrabarActividadBienesServiciosPlan()
+    {
+        List<SqlParameter> parametros = new List<SqlParameter>();
+        parametros.Add(new SqlParameter("ID_PLAN_RYR_BIEN_SERVICIO_ACTIVIDAD", ActividadId));
+        parametros.Add(new SqlParameter("ID_PLAN_RYR_BIEN_SERVICIO", BienServicioId));
+        parametros.Add(new SqlParameter("ID_CLASIFICACION_ACTIVIDAD", ActividadClasificacionId));
+        parametros.Add(new SqlParameter("ACTIVIDAD", ActividadNombre));
+        parametros.Add(new SqlParameter("CUMPLIDA", ActividadCumplida));
+        parametros.Add(new SqlParameter("FECHA_ACTIVIDAD", ActividadFecha));
+        parametros.Add(new SqlParameter("RESPONSABLE", ActividadResponsable));
+        parametros.Add(new SqlParameter("COSTO", ActividadCosto));
+        parametros.Add(new SqlParameter("ACTIVO", ActividadActivo));
+
+        FachadaPersistencia.getInstancia().Set_ActividadBienesServicios_Comunidad(parametros);
+        LimpiarActividadBienesServicios();
+    }
+
+    public static void EliminarActividadBienesServiciosPlan()
+    {
+        List<SqlParameter> parametros = new List<SqlParameter>();
+        parametros.Add(new SqlParameter("ID_PLAN_RYR_BIEN_SERVICIO_ACTIVIDAD", ActividadId));
+        parametros.Add(new SqlParameter("ACTIVO", false));
+
+        FachadaPersistencia.getInstancia().Set_ActividadBienesServicios_Comunidad(parametros);
+    }
+
+    public static void LimpiarActividadBienesServicios()
+    {
+        ActividadId = 0;
+        ActividadClasificacionId = 0;
+        ActividadNombre = "";
+        ActividadCumplida = false;
+        ActividadFecha = new DateTime();
+        ActividadResponsable = "";
+        ActividadCosto = 0;
+        ActividadActivo = false;
     }
 }

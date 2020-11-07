@@ -1821,6 +1821,10 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return comunitario.Get_Entorno();
         }
+        public DataSet Get_Clasificacion_Actividad()
+        {
+            return comunitario.Get_Clasificacion_Actividad();
+        }
         public void Set_Plan_RyR(List<SqlParameter> Parametros)
         {
             comunitario.Set_Plan_RyR(Parametros);
@@ -1853,6 +1857,16 @@ namespace com.GACV.lgb.persistencia.fachada
         public void Set_BienesServicios_Comunidad(List<SqlParameter> Parametros)
         {
             comunitario.Set_BienesServicios_Comunidad(Parametros);
+        }
+
+        public DataSet Get_ActividadBienesServicios_Comunidad(List<SqlParameter> Parametros)
+        {
+            return comunitario.Get_ActividadBienesServicios_Comunidad(Parametros);
+        }
+
+        public void Set_ActividadBienesServicios_Comunidad(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_ActividadBienesServicios_Comunidad(Parametros);
         }
         #endregion
 

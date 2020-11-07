@@ -205,6 +205,31 @@ namespace com.GACV.lgb.persistencia.dao
             return ds;
         }
 
+        public DataSet Get_Clasificacion_Actividad()
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_CLASIFICACION_ACTIVIDAD", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
         public void Set_Plan_RyR(List<SqlParameter> Parametros)
         {
             try
@@ -380,6 +405,61 @@ namespace com.GACV.lgb.persistencia.dao
                 con.Open();
 
                 SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_SET_TB_PLAN_RYR_BIEN_SERVICIO", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                if (Parametros != null)
+                    foreach (SqlParameter param in Parametros)
+                        Command.Parameters.Add(param);
+                Command.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+        }
+
+        public DataSet Get_ActividadBienesServicios_Comunidad(List<SqlParameter> Parametros)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_TB_PLAN_RYR_BIEN_SERVICIO_ACTIVIDAD", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                if (Parametros != null)
+                    foreach (SqlParameter param in Parametros)
+                        Command.Parameters.Add(param);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
+        public void Set_ActividadBienesServicios_Comunidad(List<SqlParameter> Parametros)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_SET_TB_PLAN_RYR_BIEN_SERVICIO_ACTIVIDAD", con);
                 Command.CommandType = CommandType.StoredProcedure;
                 Command.Connection = con;
 
