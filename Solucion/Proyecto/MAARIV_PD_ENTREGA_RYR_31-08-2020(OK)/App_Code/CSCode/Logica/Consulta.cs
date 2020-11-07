@@ -82,4 +82,40 @@ public class Consulta
         control.FooterRow.TableSection = TableRowSection.TableFooter;
         control.HeaderRow.TableSection = TableRowSection.TableHeader;
     }
+
+    public static void GV_Evidencias(GridView control)
+    {
+        DataSet dsPE = new DataSet();
+        dsPE = Evidencia.TraerEvidencias();
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            control.Visible = true;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+        else
+        {
+            control.Visible = false;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+    }
+
+    public static void GV_BienesServicios(GridView control,int idComponente)
+    {
+        DataSet dsPE = new DataSet();
+        dsPE = PlanRyR.TraerBienesServicios(idComponente);
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            control.Visible = true;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+        else
+        {
+            control.Visible = false;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+    }
 }

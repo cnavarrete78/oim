@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 
 /// <summary>
@@ -15,6 +16,8 @@ public class PlanRyR
     public static int Comunidad { get; set; }
     public static string NombreComunidad { get; set; }
     public static DateTime FechaMedicion { get; set; }
+    public static DateTime FechaInicioPlanRyR { get; set; }
+    public static DateTime FechaDialogoPlanRyR { get; set; }
     public static int Territorial { get; set; }
     public static int Departamento { get; set; }
     public static int Municipio { get; set; }
@@ -30,10 +33,25 @@ public class PlanRyR
     public static int TotalPersonasRUV { get; set; }
     public static DataSet Personas { get; set; }
     public static DataSet Necesidades { get; set; }
+
     public static int Necesidad { get; set; }
     public static string Acciones { get; set; }
     public static DateTime FechaInicio { get; set; }
     public static DateTime FechaCierre { get; set; }
+
+    public static int BienServicioId { get; set; }
+    public static string BienServicioNombre { get; set; }
+    public static int BienServicioMeta { get; set; }
+    public static int BienServicioVictimasDirectas { get; set; }
+    public static int BienServicioVictimasIndirectas { get; set; }
+    public static int BienServicioVictimasBeneficiadas { get; set; }
+    public static int BienServicioIdComponente { get; set; }
+    public static int BienServicioPersonasNoVictimasBeneficiadas { get; set; }
+    public static int BienServicioPersonasBeneficiadas { get; set; }
+    public static long BienServicioIniciativaPDET { get; set; }
+    public static DataSet BienesServiciosGI { get; set; }
+    public static DataSet BienesServiciosIC { get; set; }
+
     public PlanRyR()
     {
     }
@@ -41,6 +59,8 @@ public class PlanRyR
     private static void LimpiarComunidad()
     {
         FechaMedicion = new DateTime();
+        FechaInicioPlanRyR = new DateTime();
+        FechaDialogoPlanRyR = new DateTime();
         Territorial = 0;
         Departamento = 0;
         Municipio = 0;
@@ -62,9 +82,12 @@ public class PlanRyR
         if (!ds.Tables[0].Rows.Count.Equals(0))
         {
             DataRow comunidad = ds.Tables[0].Rows[0];
+            DateTime fecha;
 
             NombreComunidad = comunidad["NOMBRE_RYR_COMUNIDAD"].ToString();
-            FechaMedicion = Convert.ToDateTime(comunidad["FECHA_MEDICION"]);
+            FechaMedicion = DateTime.TryParse(comunidad["FECHA_MEDICION"].ToString(), out fecha) ? fecha : new DateTime();
+            FechaInicioPlanRyR = DateTime.TryParse(comunidad["FECHA_INICIO"].ToString(), out fecha) ? fecha : new DateTime();
+            FechaDialogoPlanRyR = DateTime.TryParse(comunidad["FECHA_DIALOGO"].ToString(), out fecha) ? fecha : new DateTime();
             Territorial = Convert.ToInt32(comunidad["ID_TERRITORIAL"]);
             Departamento = Convert.ToInt32(comunidad["ID_DEPARTAMENTO"]);
             Municipio = Convert.ToInt32(comunidad["ID_MUNICIPIO"]);
@@ -72,7 +95,7 @@ public class PlanRyR
             Direccion = comunidad["DIRECCION"].ToString();
             Profesional = comunidad["PROFESIONAL"].ToString();
             Correo = comunidad["CORREO"].ToString();
-            FechaActa = Convert.ToDateTime(comunidad["FECHA_ACTA_CTJT"]);
+            FechaActa = DateTime.TryParse(comunidad["FECHA_ACTA_CTJT"].ToString(), out fecha) ? fecha : new DateTime(); 
             EstadoPlan = Convert.ToInt32(comunidad["ID_ESTADO_PLAN_RYR"]);
             TotalHogares = Convert.ToInt32(comunidad["TOTAL_HOGARES"]);
             TotalPersonas = Convert.ToInt32(comunidad["TOTAL_PERSONAS"]);
@@ -100,6 +123,8 @@ public class PlanRyR
         parametros.Add(new SqlParameter("CORREO", Correo));
         parametros.Add(new SqlParameter("FECHA_ACTA_CTJT", FechaActa));
         parametros.Add(new SqlParameter("ID_ESTADO_PLAN_RYR", EstadoPlan));
+        parametros.Add(new SqlParameter("FECHA_INICIO", FechaInicioPlanRyR));
+        parametros.Add(new SqlParameter("FECHA_DIALOGO", FechaDialogoPlanRyR));
         parametros.Add(new SqlParameter("USUARIO", Usuario));
 
         FachadaPersistencia.getInstancia().Set_Plan_RyR(parametros);
@@ -127,5 +152,53 @@ public class PlanRyR
         parametros.Add(new SqlParameter("FECHA_CIERRE_TRAMITE", FechaCierre));
 
         FachadaPersistencia.getInstancia().Set_Necesidad_Comunidad(parametros);
+    }
+
+    public static DataSet TraerBienesServicios(int idComponente)
+    {
+        List<SqlParameter> parametros = new List<SqlParameter>();
+        parametros.Add(new SqlParameter("ID_RYR_COMUNIDAD", Comunidad));
+        parametros.Add(new SqlParameter("ID_COMPONENTE", idComponente));
+        return FachadaPersistencia.getInstancia().Get_BienesServicios_Comunidad(parametros);
+    }
+    public static void GrabarBienesServiciosPlan()
+    {
+        List<SqlParameter> parametros = new List<SqlParameter>();
+        parametros.Add(new SqlParameter("ID_PLAN_RYR_BIEN_SERVICIO", BienServicioId));
+        parametros.Add(new SqlParameter("ID_RYR_COMUNIDAD", Comunidad));
+        parametros.Add(new SqlParameter("BIEN_SERVICIO", BienServicioNombre));
+        parametros.Add(new SqlParameter("META", BienServicioMeta));
+        parametros.Add(new SqlParameter("VICTIMAS_ACOMPANADAS_DIRECTAMENTE", BienServicioVictimasDirectas));
+        parametros.Add(new SqlParameter("VICTIMAS_ACOMPANADAS_INDIRECTAMENTE", BienServicioVictimasIndirectas));
+        parametros.Add(new SqlParameter("ID_COMPONENTE", BienServicioIdComponente));
+        parametros.Add(new SqlParameter("PERSONAS_NO_VICTIMAS_BENEFICIADAS", BienServicioPersonasNoVictimasBeneficiadas));
+        parametros.Add(new SqlParameter("PERSONAS_BENEFICIADAS", BienServicioPersonasBeneficiadas));
+        parametros.Add(new SqlParameter("INICIATIVAPDET", BienServicioIniciativaPDET));
+
+        FachadaPersistencia.getInstancia().Set_BienesServicios_Comunidad(parametros);
+        LimpiarBienesServicios();
+    }
+
+    public static void EliminarBienesServiciosPlan()
+    {
+        List<SqlParameter> parametros = new List<SqlParameter>();
+        parametros.Add(new SqlParameter("ID_PLAN_RYR_BIEN_SERVICIO", BienServicioId));
+        parametros.Add(new SqlParameter("ACTIVO", false));
+
+        FachadaPersistencia.getInstancia().Set_BienesServicios_Comunidad(parametros);
+    }
+
+    public static void LimpiarBienesServicios()
+    {
+        BienServicioId = 0;
+        BienServicioNombre = "";
+        BienServicioMeta = 0;
+        BienServicioVictimasDirectas = 0;
+        BienServicioVictimasIndirectas = 0;
+        BienServicioVictimasBeneficiadas = 0;
+        BienServicioIdComponente = 0;
+        BienServicioPersonasNoVictimasBeneficiadas = 0;
+        BienServicioPersonasBeneficiadas = 0;
+        BienServicioIniciativaPDET = 0;
     }
 }

@@ -3920,10 +3920,10 @@
                                                                                             </div>
                                                                                             <div class="row">
                                                                                                 <div class="col-md-6">
-                                                                                                    <asp:LinkButton ID="LinkButton18" runat="server" CssClass="btn btn-danger btn-block"  OnClick="btn_actualizar_comunidad_Click" Text="Guardar Caracterización" />
+                                                                                                    <asp:LinkButton ID="LinkButton18" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_actualizar_comunidad_Click" Text="Guardar Caracterización" />
                                                                                                 </div>
                                                                                                 <div class="col-md-6">
-                                                                                                    <asp:LinkButton ID="LinkButton24" runat="server" CssClass="btn btn-danger btn-block"  OnClick="btn_exportar_comunidad_Click" Text="Exportar Población" />
+                                                                                                    <asp:LinkButton ID="LinkButton24" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_exportar_comunidad_Click" Text="Exportar Población" />
                                                                                                 </div>
                                                                                             </div>
                                                                                         </ContentTemplate>
@@ -3949,7 +3949,7 @@
                                                                                         <asp:TextBox ID="txtIntencionalidadRazones" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="5" />
                                                                                     </div>
                                                                                 </div>
-                                                                                 <div class="row">
+                                                                                <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-12">Manifestación por parte de los miembros de la comunidad de compartir un mismo territorio</label>
                                                                                     </div>
@@ -3982,7 +3982,7 @@
                                                                                         <asp:TextBox ID="txtCondicionesActualesCaracteristicas" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="5" />
                                                                                     </div>
                                                                                 </div>
-                                                                                 <div class="row">
+                                                                                <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <label class="label1 col-sm-12">Actividades económicas que desarrollan</label>
                                                                                     </div>
@@ -4037,7 +4037,7 @@
                                                             <asp:UpdatePanel runat="server" ID="Up_plan_ryr" UpdateMode="Conditional">
                                                                 <ContentTemplate>
                                                                     <asp:Panel ID="pPlanRyR" runat="server" CssClass="container-fluid">
-                                                                         <%--Principio de Seguridad--%>
+                                                                        <%--Principio de Seguridad--%>
                                                                         <div class="panel panel-danger">
                                                                             <div class="panel-heading">
                                                                                 Principio de Seguridad
@@ -4142,7 +4142,7 @@
                                                                                         <label class="label1 col-sm-12">Entorno Rural / Urbano</label>
                                                                                     </div>
                                                                                     <div class="col-md-6">
-                                                                                         <asp:DropDownList ID="LD_Entorno_PlanRyR" runat="server" CssClass="form-control">
+                                                                                        <asp:DropDownList ID="LD_Entorno_PlanRyR" runat="server" CssClass="form-control">
                                                                                         </asp:DropDownList>
                                                                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator109" runat="server"
                                                                                             ControlToValidate="LD_Entorno_PlanRyR" CssClass="validador" Display="Dynamic"
@@ -4202,6 +4202,34 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Fecha Inicio de la Formulación del Plan de Retorno y Reubicación</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="input-group " id="calendarFechaInicioPlanRyR" style="padding-right: 40px;">
+                                                                                            <asp:TextBox ID="txtFechaInicioPlanRyR" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
+                                                                                            <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                                        </div>
+                                                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender13" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="calendarFechaInicioPlanRyR" TargetControlID="txtFechaInicioPlanRyR"></ajaxToolkit:CalendarExtender>
+                                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator16" runat="server" ControlToValidate="txtFechaInicioPlanRyR" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardarFicha">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator115" runat="server" ControlToValidate="txtFechaInicioPlanRyR" CssClass="validador" Display="Dynamic" ValidationGroup="guardarPlanRyR">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Fecha de las Jornadas de Diálogo Comunitario</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="input-group " id="calendarFechaDialogoPlanRyR" style="padding-right: 40px;">
+                                                                                            <asp:TextBox ID="txtFechaDialogoPlanRyR" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
+                                                                                            <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
+                                                                                        </div>
+                                                                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender14" runat="server" Enabled="True" Format="dd/MM/yyyy" PopupButtonID="calendarFechaDialogoPlanRyR" TargetControlID="txtFechaDialogoPlanRyR"></ajaxToolkit:CalendarExtender>
+                                                                                        <asp:RegularExpressionValidator ID="RegularExpressionValidator17" runat="server" ControlToValidate="txtFechaDialogoPlanRyR" CssClass="validador" Display="Dynamic" ValidationExpression="^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((1[6-9]|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((1[6-9]|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$" ValidationGroup="guardarFicha">Formato de fecha incorrecto</asp:RegularExpressionValidator>
+                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator116" runat="server" ControlToValidate="txtFechaDialogoPlanRyR" CssClass="validador" Display="Dynamic" ValidationGroup="guardarPlanRyR">* Campo obligatorio</asp:RequiredFieldValidator>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <asp:LinkButton ID="LinkButton22" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_plan_ryr_Click" Text="Guardar Plan RyR" ValidationGroup="guardarPlanRyR" />
                                                                                     </div>
@@ -4248,7 +4276,7 @@
                                                                                             </div>
                                                                                             <div class="row">
                                                                                                 <div class="col-md-12">
-                                                                                                    <asp:LinkButton ID="LinkButton26" runat="server" CssClass="btn btn-danger btn-block"  OnClick="btn_exportar_comunidad_plan_Click" Text="Exportar Población" />
+                                                                                                    <asp:LinkButton ID="LinkButton26" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_exportar_comunidad_plan_Click" Text="Exportar Población" />
                                                                                                 </div>
                                                                                             </div>
                                                                                         </ContentTemplate>
@@ -4263,35 +4291,183 @@
                                                                             <div class="panel-heading">
                                                                                 Contribución a la superación de la situación de vulnerabilidad
                                                                             </div>
-                                                                            <div class="panel-body" style="overflow-x:auto; overflow-y:auto; width:100%;height:80%;">
-                                                                                <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_plan_ryr_necesidad"
-                                                                                    runat="server" AutoGenerateColumns="false" DataKeyNames="ID_NECESIDAD" OnRowCommand="gv_plan_ryr_necesidad_RowCommand">
-                                                                                    <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
-                                                                                    <Columns>
-                                                                                        <asp:BoundField DataField="ID_NECESIDAD" HeaderText="ID_NECESIDAD" Visible="false" />
-                                                                                        <asp:BoundField DataField="ID_PLAN_RYR_NECESIDAD" HeaderText="Id" Visible="true" />
-                                                                                        <asp:BoundField DataField="DERECHO" HeaderText="Derecho" Visible="true" HeaderStyle-Width="15%" ItemStyle-Width="15%" FooterStyle-Width="15%"/>
-                                                                                        <asp:BoundField DataField="NECESIDAD" HeaderText="Necesidad" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%"/>
-                                                                                        <asp:BoundField DataField="NUM_PERSONAS_PENDIENTES_SUPERAR" HeaderText="Número de Personas Pendientes por superar el Derecho" Visible="true" />
-                                                                                        <asp:BoundField DataField="FECHA_INICIO_TRAMITE" HeaderText="Fecha de inicio del trámite" DataFormatString="{0:dd/MM/yyyy}" Visible="true" />
-                                                                                        <asp:BoundField DataField="FECHA_CIERRE_TRAMITE" HeaderText="Fecha de cierre del trámite" DataFormatString="{0:dd/MM/yyyy}" Visible="true" />
-                                                                                        <asp:TemplateField HeaderText="Acciones">
-                                                                                            <ItemTemplate>
-                                                                                                <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
-                                                                                                    <asp:LinkButton ID="btn_editar_necesidad" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Editar Detalle" CommandName="EditarDetalleNecesidadPlanRyR" Visible="true">
-                                                                                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                                                                                    </asp:LinkButton>
-                                                                                                </div>
-                                                                                                <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
-                                                                                                    <asp:LinkButton ID="LinkButton27" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Cargar Evidencias" CommandName="CargarEvidenciaNecesidadPlanRyR" Visible='<%# !string.IsNullOrEmpty(Eval("ID_PLAN_RYR_NECESIDAD").ToString()) %>'>
-                                                                                                        <span class="glyphicon glyphicon-open-file" aria-hidden="true"></span>
-                                                                                                    </asp:LinkButton>
-                                                                                                </div>
-                                                                                            </ItemTemplate>
-                                                                                            <ItemStyle HorizontalAlign="Center" Width="120px" />
-                                                                                        </asp:TemplateField>
-                                                                                    </Columns>
-                                                                                </asp:GridView>
+                                                                            <div class="panel-body" style="overflow-x: auto; overflow-y: auto; width: 100%; height: 80%;">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Total Personas que no superan la situación de vulnerabilidad</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <asp:TextBox ID="txtPersonasNoSuperanContribucionSSV" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_plan_ryr_necesidad"
+                                                                                            runat="server" AutoGenerateColumns="false" DataKeyNames="ID_NECESIDAD" OnRowCommand="gv_plan_ryr_necesidad_RowCommand">
+                                                                                            <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                            <Columns>
+                                                                                                <asp:BoundField DataField="ID_NECESIDAD" HeaderText="ID_NECESIDAD" Visible="false" />
+                                                                                                <asp:BoundField DataField="ID_PLAN_RYR_NECESIDAD" HeaderText="Id" Visible="true" />
+                                                                                                <asp:BoundField DataField="DERECHO" HeaderText="Derecho" Visible="true" HeaderStyle-Width="15%" ItemStyle-Width="15%" FooterStyle-Width="15%" />
+                                                                                                <asp:BoundField DataField="NECESIDAD" HeaderText="Necesidad" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%" />
+                                                                                                <asp:BoundField DataField="NUM_PERSONAS_PENDIENTES_SUPERAR" HeaderText="Número de Personas Pendientes por superar el Derecho" Visible="true" />
+                                                                                                <asp:BoundField DataField="FECHA_INICIO_TRAMITE" HeaderText="Fecha de inicio del trámite" DataFormatString="{0:dd/MM/yyyy}" Visible="true" />
+                                                                                                <asp:BoundField DataField="FECHA_CIERRE_TRAMITE" HeaderText="Fecha de cierre del trámite" DataFormatString="{0:dd/MM/yyyy}" Visible="true" />
+                                                                                                <asp:TemplateField HeaderText="Acciones">
+                                                                                                    <ItemTemplate>
+                                                                                                        <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                            <asp:LinkButton ID="btn_editar_necesidad" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Editar Detalle" CommandName="EditarDetalleNecesidadPlanRyR" Visible="true">
+                                                                                                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                                                                                            </asp:LinkButton>
+                                                                                                        </div>
+                                                                                                        <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                            <asp:LinkButton ID="LinkButton27" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Cargar Evidencias" CommandName="CargarEvidenciaNecesidadPlanRyR" Visible='<%# !string.IsNullOrEmpty(Eval("ID_PLAN_RYR_NECESIDAD").ToString()) %>'>
+                                                                                                                <span class="far fa-file" aria-hidden="true"></span>
+                                                                                                            </asp:LinkButton>
+                                                                                                        </div>
+                                                                                                    </ItemTemplate>
+                                                                                                    <ItemStyle HorizontalAlign="Center" Width="120px" />
+                                                                                                </asp:TemplateField>
+                                                                                            </Columns>
+                                                                                        </asp:GridView>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <%--Generación de Ingresos--%>
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Generación de Ingresos
+                                                                            </div>
+                                                                            <div class="panel-body" style="overflow-x: auto; overflow-y: auto; width: 100%; height: 80%;">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Total Personas que no superan el derecho a Generación de Ingresos</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <asp:TextBox ID="txtPersonasNoSuperanGeneracionIngresos" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Costo Total de los Bienes y Servicios </label>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <asp:TextBox ID="txtCostoTotalBienesServiciosGI" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                                 <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <asp:LinkButton ID="LinkButton28" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_modal_bien_servicio_gi_Click" Text="Agregar Bien o Servicio"/>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_bienes_servicios_GI"
+                                                                                            runat="server" AutoGenerateColumns="false" DataKeyNames="ID_PLAN_RYR_BIEN_SERVICIO" OnRowCommand="gv_bienes_servicios_GI_RowCommand" >
+                                                                                            <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                            <Columns>
+                                                                                                <asp:BoundField DataField="ID_PLAN_RYR_BIEN_SERVICIO" HeaderText="Id" Visible="true" />
+                                                                                                <asp:BoundField DataField="BIEN_SERVICIO" HeaderText="Bien o Servicio a Desarrollar" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%"/>
+                                                                                                <asp:BoundField DataField="META" HeaderText="Meta Total" Visible="true" />
+                                                                                                <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_DIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas directamente" Visible="true" />
+                                                                                                <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_INDIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas inddirectamente" Visible="true" />
+                                                                                                <asp:BoundField DataField="VICTIMAS_BENEFICIADAS" HeaderText="Total Vícticas beneficiadas con el bien o servicio" Visible="true" />
+                                                                                                <asp:BoundField DataField="COSTO_BIEN_SERVICIO" HeaderText="Costo Total del Bien o Servicio" DataFormatString="{0:N0}" Visible="true" />
+                                                                                                <asp:TemplateField HeaderText="Acciones" HeaderStyle-Width="20%" ItemStyle-Width="20%" FooterStyle-Width="20%" >
+                                                                                                    <ItemTemplate>
+                                                                                                        <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                            <asp:LinkButton ID="btn_editar" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Editar Bien o Servicio" CommandName="EditarBienesServicioPlanRyR" Visible="true">
+                                                                                                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                                                                                            </asp:LinkButton>
+                                                                                                        </div>
+                                                                                                        <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                            <asp:LinkButton ID="LinkButton31" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Editar Actividades" CommandName="EditarActividadesBienesServicioPlanRyR" Visible="true">
+                                                                                                                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                                                                                                            </asp:LinkButton>
+                                                                                                        </div>
+                                                                                                        <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                            <asp:LinkButton ID="btn_cargar" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Cargar Evidencias" CommandName="CargarEvidenciasBienesServicioPlanRyR" Visible="true">
+                                                                                                                <span class="far fa-file" aria-hidden="true"></span>
+                                                                                                            </asp:LinkButton>
+                                                                                                        </div>
+                                                                                                         <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                            <asp:LinkButton ID="LinkButton30" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Eliminar Bien o Servicio" CommandName="EliminarBienesServicioPlanRyR" Visible="true">
+                                                                                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                                                            </asp:LinkButton>
+                                                                                                        </div>
+                                                                                                    </ItemTemplate>
+                                                                                                    <ItemStyle HorizontalAlign="Center" Width="120px" />
+                                                                                                </asp:TemplateField>
+                                                                                            </Columns>
+                                                                                        </asp:GridView>
+                                                                                    </div>
+                                                                                 </div>
+                                                                                
+                                                                            </div>
+                                                                        </div>
+                                                                        <%--Integración Comunitaria y Arraigo Territorial--%>
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                Integración Comunitaria y Arraigo Territorial
+                                                                            </div>
+                                                                            <div class="panel-body" style="overflow-x: auto; overflow-y: auto; width: 100%; height: 80%;">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <label class="label1 col-sm-12">Costo Total de los Bienes y Servicios </label>
+                                                                                    </div>
+                                                                                    <div class="col-md-6">
+                                                                                        <asp:TextBox ID="txtCostoTotalBienesServiciosIC" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
+                                                                                    </div>
+                                                                                </div>
+                                                                                 <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <asp:LinkButton ID="LinkButton32" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_modal_bien_servicio_ic_Click" Text="Agregar Bien o Servicio"/>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_bienes_servicios_IC"
+                                                                                            runat="server" AutoGenerateColumns="false" DataKeyNames="ID_PLAN_RYR_BIEN_SERVICIO" OnRowCommand="gv_bienes_servicios_IC_RowCommand" >
+                                                                                            <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                                            <Columns>
+                                                                                                <asp:BoundField DataField="ID_PLAN_RYR_BIEN_SERVICIO" HeaderText="Id" Visible="true" />
+                                                                                                <asp:BoundField DataField="BIEN_SERVICIO" HeaderText="Bien o Servicio a Desarrollar" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%"/>
+                                                                                                <asp:BoundField DataField="META" HeaderText="Meta Total" Visible="true" />
+                                                                                                <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_DIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas directamente" Visible="true" />
+                                                                                                <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_INDIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas inddirectamente" Visible="true" />
+                                                                                                <asp:BoundField DataField="VICTIMAS_BENEFICIADAS" HeaderText="Total Vícticas beneficiadas con el bien o servicio" Visible="true" />
+                                                                                                <asp:BoundField DataField="COSTO_BIEN_SERVICIO" HeaderText="Costo Total del Bien o Servicio" DataFormatString="{0:N0}" Visible="true" />
+                                                                                                <asp:TemplateField HeaderText="Acciones" HeaderStyle-Width="20%" ItemStyle-Width="20%" FooterStyle-Width="20%" >
+                                                                                                    <ItemTemplate>
+                                                                                                        <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                            <asp:LinkButton ID="btn_editar" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Editar Bien o Servicio" CommandName="EditarBienesServicioPlanRyR" Visible="true">
+                                                                                                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                                                                                            </asp:LinkButton>
+                                                                                                        </div>
+                                                                                                        <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                            <asp:LinkButton ID="LinkButton31" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Editar Actividades" CommandName="EditarActividadesBienesServicioPlanRyR" Visible="true">
+                                                                                                                <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                                                                                                            </asp:LinkButton>
+                                                                                                        </div>
+                                                                                                        <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                            <asp:LinkButton ID="btn_cargar" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Cargar Evidencias" CommandName="CargarEvidenciasBienesServicioPlanRyR" Visible="true">
+                                                                                                                <span class="far fa-file" aria-hidden="true"></span>
+                                                                                                            </asp:LinkButton>
+                                                                                                        </div>
+                                                                                                         <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                            <asp:LinkButton ID="LinkButton30" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Eliminar Bien o Servicio" CommandName="EliminarBienesServicioPlanRyR" Visible="true">
+                                                                                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                                                            </asp:LinkButton>
+                                                                                                        </div>
+                                                                                                    </ItemTemplate>
+                                                                                                    <ItemStyle HorizontalAlign="Center" Width="120px" />
+                                                                                                </asp:TemplateField>
+                                                                                            </Columns>
+                                                                                        </asp:GridView>
+                                                                                    </div>
+                                                                                 </div>
+                                                                                
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
@@ -5754,7 +5930,7 @@
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                     <asp:Label ID="Label19" runat="server" Visible="true" CssClass="text-warning">Listado persona</asp:Label>
                                                 </div>
-                                                <div class="panel-body" style="overflow-x:auto;width:100%;height:80%;">
+                                                <div class="panel-body" style="overflow-x: auto; width: 100%; height: 80%;">
                                                     <asp:GridView UseAccessibleHeader="true" CssClass="mgv_personas_exportar footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_personas_exportar" runat="server" AutoGenerateColumns="true"
                                                         OnRowCommand="gv_personas_exportar_RowCommand" OnRowDataBound="gv_personas_exportar_RowDataBound" OnPreRender="gv_personas_exportar_PreRender">
                                                         <PagerStyle CssClass="pgr" />
@@ -5776,7 +5952,7 @@
                                             <div class="">
                                                 <div class="panel panel-danger">
                                                     <div class="panel-heading">
-                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                         <asp:Label ID="Label20" runat="server" Visible="true" CssClass="text-warning">Detalle Necesidad</asp:Label>
                                                     </div>
                                                     <div class="panel-body">
@@ -5784,7 +5960,7 @@
                                                             <asp:Panel ID="pDetalleNecesidad" runat="server">
                                                                 <div class="panel-body">
                                                                     <div class="row">
-                                                                         <div class="col-md-2">
+                                                                        <div class="col-md-2">
                                                                             <label class="label1 col-sm-">Derecho:</label>
                                                                         </div>
                                                                         <div class="col-md-10">
@@ -5841,7 +6017,7 @@
                                                                                     <label class="label1 col-sm-">Cierre</label>
                                                                                 </div>
                                                                                 <div class="col-md-4">
-                                                                                     <div class="input-group " id="calendarFechaCierreNecesidadPlanRyR" style="padding-right: 40px;">
+                                                                                    <div class="input-group " id="calendarFechaCierreNecesidadPlanRyR" style="padding-right: 40px;">
                                                                                         <asp:TextBox ID="FECHA_CIERRE_TRAMITE" runat="server" CssClass="form-control " placeholder="dd/MM/yyyy" Text=''></asp:TextBox>
                                                                                         <span class="input-group-addon glyphicon glyphicon-calendar" style="border-radius: 0px 4px 4px 0px"></span>
                                                                                     </div>
@@ -5854,11 +6030,109 @@
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-12">
-                                                                            <asp:LinkButton ID="LinkButton25" runat="server" CssClass="btn btn-danger btn-block"  OnClick="btn_grabar_necesidades_Click" Text="Guardar Necesidades" />
+                                                                            <asp:LinkButton ID="LinkButton25" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_grabar_necesidades_Click" Text="Guardar Necesidades" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </asp:Panel>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                        <%--modal detalle bienes o servicios plan RyR--%>
+                        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalBienesServiciosPlanRyR" aria-hidden="true">
+                            <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>
+                            <div class="modal-dialog modal-lg" role="document">
+                                <asp:UpdatePanel runat="server" ID="UpdatePanelBienesServiciosPlanRyR" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <div class="modal-content">
+                                            <div class="">
+                                                <div class="panel panel-danger">
+                                                    <div class="panel-heading">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <asp:Label ID="Label22" runat="server" Visible="true" CssClass="text-warning">Detalle Bien o Servicio</asp:Label>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Bien o Servicio a Desarrollar</label>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <asp:TextBox ID="txtBienServicioNombre" runat="server" CssClass="form-control" ForeColor="Black" TextMode="MultiLine" Rows="5"></asp:TextBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator119" runat="server" CssClass="validador" ErrorMessage="* Campo obligatorio" ControlToValidate="txtBienServicioNombre" ValidationGroup="bien_servicios_group"></asp:RequiredFieldValidator>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Meta Total</label>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <asp:TextBox ID="txtBienServicioMeta" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator120" runat="server" CssClass="validador" ErrorMessage="* Campo obligatorio" ControlToValidate="txtBienServicioMeta" ValidationGroup="bien_servicios_group"></asp:RequiredFieldValidator>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Iniciativa PDET</label>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <asp:TextBox ID="txtBienServicioIniciativaPDET" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="panel panel-danger">
+                                                                <div class="panel-heading">
+                                                                    <asp:Label ID="Label23" runat="server" Visible="true" CssClass="text-warning">Población beneficiada con el Bien o Servicio</asp:Label>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <label class="label1 col-sm-12">Total víctimas acompañadas beneficiadas directamente</label>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                            <asp:TextBox ID="txtBienServicioVictimasDirectas" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator117" runat="server" CssClass="validador" ErrorMessage="* Campo obligatorio" ControlToValidate="txtBienServicioVictimasDirectas" ValidationGroup="bien_servicios_group"></asp:RequiredFieldValidator>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <label class="label1 col-sm-12">Total víctimas acompañadas beneficiadas indirectamente</label>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                            <asp:TextBox ID="txtBienServicioVictimasIndirectas" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator118" runat="server" CssClass="validador" ErrorMessage="* Campo obligatorio" ControlToValidate="txtBienServicioVictimasIndirectas" ValidationGroup="bien_servicios_group"></asp:RequiredFieldValidator>
+                                                                        </div>
+                                                                    </div>
+                                                                    <asp:Panel ID="PanelBienesServiciosIC" runat="server">
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <label class="label1 col-sm-12">Total personas no víctimas beneficiadas con el bien o servicio</label>
+                                                                            </div>
+                                                                            <div class="col-md-2">
+                                                                                <asp:TextBox ID="txtBienServicioPersonasNoVictimasBeneficiadas" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <label class="label1 col-sm-12">Total personas beneficiadas con el bien o servicio</label>
+                                                                            </div>
+                                                                            <div class="col-md-2">
+                                                                                <asp:TextBox ID="txtBienServicioPersonasBeneficiadas" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <asp:LinkButton ID="LinkButton29" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_grabar_bien_servicio_gi_Click" Text="Grabar Bien o Servicio" ValidationGroup="bien_servicios_group"/>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -6293,7 +6567,7 @@
                                                                 <label class="col-md-3 label1 ">Adjuntar el documento</label>
                                                                 <div class="col-md-3">
                                                                     <div class="input-group">
-                                                                        <asp:FileUpload runat="server" ID="FU_Evidencia"/>
+                                                                        <asp:FileUpload runat="server" ID="FU_Evidencia" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -6306,6 +6580,33 @@
                                                                 </div>
                                                             </div>
                                                         </asp:Panel>
+                                                        <%--tabla de las evidencias cargadas--%>
+                                                        <div class="row">
+                                                            <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_evidencias"
+                                                                runat="server" AutoGenerateColumns="false " OnRowCommand="gv_evidencias_RowCommand" DataKeyNames="ID_EVIDENCIA">
+                                                                <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                                <Columns>
+                                                                    <asp:BoundField DataField="TIPO_EVIDENCIA" HeaderText="Tipo Evidencia" />
+                                                                    <asp:BoundField DataField="NOMBRE_ARCHIVO" HeaderText="Nombre Archivo" />
+                                                                    <asp:BoundField DataField="URL_ARCHIVO" HeaderText="Ubicación Archivo" />
+                                                                    <asp:BoundField DataField="EXTENSION" HeaderText="Extensión" />
+                                                                    <asp:BoundField DataField="FECHA" HeaderText="Fecha Cargue" />
+                                                                    <asp:TemplateField HeaderText="Acciones">
+                                                                        <ItemTemplate>
+                                                                            <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                <asp:LinkButton ID="Descarga_evidencia" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Descargar Evidencia" CommandName="DescargarEvidencia">                                                                                                    
+                                                                                                        <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span>
+                                                                                </asp:LinkButton>
+                                                                                <asp:LinkButton ID="Eliminar_evidencia" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Eliminar Evidencia" CommandName="EliminarEvidencia" Visible="true">
+                                                                                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                                </asp:LinkButton>
+                                                                            </div>
+                                                                        </ItemTemplate>
+                                                                        <ItemStyle HorizontalAlign="Center" Width="80px" />
+                                                                    </asp:TemplateField>
+                                                                </Columns>
+                                                            </asp:GridView>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
