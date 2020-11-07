@@ -1290,6 +1290,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             guardar.Visible = false;
         }
         D_Sujetos.Visible = false;
+        panelReportes.Visible = false;
 
     }
 
@@ -12260,11 +12261,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
     protected void gv_reporte_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
-        UpdatePanelReporte.Update();
+        UpdatePanelReportes.Update();
     }
     protected void gv_reporte_PreRender(object sender, EventArgs e)
     {
-        if (gv.Rows.Count > 0)
+        if (gv_reporte.Rows.Count > 0)
         {
             gv_reporte.HeaderRow.Cells[0].Attributes["data-priority"] = "1";
             gv_reporte.HeaderRow.Cells[1].Attributes["data-priority"] = "2";
@@ -12275,7 +12276,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_reporte.HeaderRow.TableSection = TableRowSection.TableHeader;
             gv_reporte.FooterRow.TableSection = TableRowSection.TableFooter;
         }
-        if (gv.Rows.Count == 1)
+        if (gv_reporte.Rows.Count == 1)
         {
         }
     }
@@ -12315,8 +12316,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     protected void mostar_reportes_comunitario_Click(object sender, EventArgs e)
     {
-        Up_reporte_ryr.Visible = true;
-        Up_reporte_ryr.Update();
+        panelReportes.Visible = true;       
+        UpdatePanelReportes.Update();
 
         DataSet dsPE = new DataSet();
         dsPE = FachadaPersistencia.getInstancia().Get_Reportes_Ruta_Comunitaria();

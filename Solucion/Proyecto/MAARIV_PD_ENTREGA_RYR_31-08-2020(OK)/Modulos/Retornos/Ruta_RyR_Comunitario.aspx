@@ -174,7 +174,8 @@
                     'csv'
                 ]
             });
-            $('[id$="mGridgv_reporte"]').dataTable({
+            //PARA LA TABLA DE reportes
+            $('[id$="gv_reporte"]').dataTable({
                 destroy: true,
                 responsive: {
                     //details: false
@@ -5185,66 +5186,56 @@
                             </asp:UpdatePanel>
                             <asp:HiddenField ID="TabName" runat="server" />
                         </div>
-                        <%--tab de Reportes--%>
+                        <%--Reportes--%>
                         <div>
                             <br />
                         </div>
-                        <div>
-                            <asp:UpdatePanel runat="server" ID="Up_reporte_ryr" Visible="false" UpdateMode="Conditional">
-                                <ContentTemplate>
-                                    <%--Reporte de SSV--%>
-                                    <asp:Panel ID="Panel39" runat="server" CssClass="container-fluid">
-                                        <div class="panel panel-danger">
-                                            <div class="panel-heading">
-                                                <asp:Label ID="Label12" runat="server" Visible="true" CssClass="text-warning">Reporte de SSV</asp:Label>
-                                            </div>
-                                            <div class="panel-body">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <label class="label1 col-sm-12">Reporte</label>
-                                                        <asp:DropDownList ID="LD_Reporte" runat="server" AutoPostBack="True" CssClass="form-control">
-                                                        </asp:DropDownList>
-                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator105" runat="server"
-                                                            ControlToValidate="LD_Reporte" CssClass="validador" Display="Dynamic"
-                                                            ErrorMessage="* Campo obligatorio" InitialValue="0"></asp:RequiredFieldValidator>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <asp:LinkButton ID="LinkButton15" runat="server" CssClass="btn btn-danger btn-block" ValidationGroup="agregarDatosListadoBalance" OnClick="btn_generar_reporte_Click" Text="Generar Reporte">
-                                                                                             Generar Reporte
-                                                    </asp:LinkButton>
-                                                </div>
-                                                <asp:UpdatePanel ID="UpdatePanelReporte" runat="server" UpdateMode="Conditional">
-                                                    <ContentTemplate>
-                                                        <div class="row">
-                                                            <div runat="server" style="overflow-x: scroll">
-                                                                <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_reporte"
-                                                                    runat="server" AutoGenerateColumns="true" OnRowCommand="gv_reporte_RowCommand" OnRowDataBound="gv_reporte_RowDataBound" OnPreRender="gv_reporte_PreRender">
-                                                                    <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
-                                                                    <Columns>
-                                                                        <%-- <asp:BoundField DataField="NOMBRE_RYR_COMUNIDAD" HeaderText="NOMBRE_RYR_COMUNIDAD" Visible="false" />
-                                                                                            <asp:BoundField DataField="DERECHO" HeaderText="DERECHO" Visible="true" />
-                                                                                            <asp:BoundField DataField="NECESIDAD" HeaderText="NECESIDAD" Visible="true" />
-                                                                                            <asp:BoundField DataField="NUM_PERSONAS_PENDIENTES_SUPERAR" HeaderText="NÚMERO DE PERSONAS PENDIENTES POR SUPERAR EL DERECHO" Visible="true" />
-                                                                                            <asp:BoundField DataField="NUM_PERSONAS_SUPERON" HeaderText="NÚMERO DE PERSONAS QUE SUPERARON EL DERECHO" Visible="true" />
-                                                                                            <asp:BoundField DataField="FECHA_SISTEMA" HeaderText="FECHA_SISTEMA" Visible="false" />--%>
-                                                                    </Columns>
-                                                                    <PagerStyle CssClass="pgr" />
-                                                                </asp:GridView>
-                                                            </div>
-                                                    </ContentTemplate>
-                                                    <Triggers>
-                                                    </Triggers>
-                                                </asp:UpdatePanel>
+
+                        <asp:Panel ID="panelReportes" Visible="false" runat="server" CssClass="container-fluid">
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    Generación de reportes del modulo de Comunidades RyR
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <%--busqueda--%>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label class="label1 col-sm-12">Reporte</label>
+                                                <asp:DropDownList ID="LD_Reporte" runat="server" AutoPostBack="True" CssClass="form-control">
+                                                </asp:DropDownList>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator105" runat="server"
+                                                    ControlToValidate="LD_Reporte" CssClass="validador" Display="Dynamic"
+                                                    ErrorMessage="* Campo obligatorio" InitialValue="0"></asp:RequiredFieldValidator>
                                             </div>
                                         </div>
-                                    </asp:Panel>
-                                </ContentTemplate>
-                                <Triggers>
-                                </Triggers>
-                            </asp:UpdatePanel>
-                        </div>
-
+                                        <div class="row">
+                                            <asp:LinkButton ID="LinkButton15" runat="server" CssClass="btn btn-danger btn-block" ValidationGroup="agregarDatosListadoBalance" OnClick="btn_generar_reporte_Click" Text="Generar Reporte">
+                                             Generar Reporte</asp:LinkButton>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <asp:UpdatePanel ID="UpdatePanelReportes" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
+                                                <div class="row">
+                                                    <div runat="server" style="overflow-x: scroll">
+                                                        <asp:GridView UseAccessibleHeader="true" CssClass="mGridgv_reporte" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_reporte"
+                                                            runat="server" AutoGenerateColumns="true" OnRowCommand="gv_reporte_RowCommand" OnRowDataBound="gv_reporte_RowDataBound" OnPreRender="gv_reporte_PreRender">
+                                                            <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                            <Columns>                                                                
+                                                            </Columns>
+                                                            <PagerStyle CssClass="pgr" />
+                                                        </asp:GridView>
+                                                    </div>
+                                                </div>
+                                            </ContentTemplate>
+                                            <Triggers>
+                                            </Triggers>
+                                        </asp:UpdatePanel>
+                                    </div>
+                                </div>
+                            </div>
+                        </asp:Panel>
                         <%--modales de inventario--%>
                         <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalEnseres" aria-hidden="true">
                             <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>
