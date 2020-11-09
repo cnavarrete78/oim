@@ -12760,7 +12760,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         //Create word document
         string rutaPlantillaRyR = System.Configuration.ConfigurationManager.AppSettings["PlantillasRyR"];
-        string rutaCompletaPlantillaRyR = rutaPlantillaRyR + "DOCUMENTO_BALANCE_DEL_ACOMPANAMIENTO_AL_RyR.docx";
+        string rutaCompletaPlantillaRyR = Server.MapPath(rutaPlantillaRyR + "DOCUMENTO_PLAN_DE_RETORNO_Y_REUBICACION.docx");
+
         Spire.Doc.Document document = new Spire.Doc.Document(rutaCompletaPlantillaRyR);
 
         DataSet dsPT = new DataSet();
