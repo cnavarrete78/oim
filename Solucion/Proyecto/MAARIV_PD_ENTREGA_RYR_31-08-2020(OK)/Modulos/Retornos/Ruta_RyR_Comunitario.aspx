@@ -5287,7 +5287,7 @@
                                                                 </Triggers>
                                                             </asp:UpdatePanel>
                                                         </div>
-   <%--tab de balance--%>
+                                                        <%--tab de balance--%>
                                                         <div role="tabpanel" class="tab-pane active" id="balance_ryr" runat="server">
                                                             <asp:UpdatePanel runat="server" ID="Up_balance" UpdateMode="Conditional">
                                                                 <ContentTemplate>
