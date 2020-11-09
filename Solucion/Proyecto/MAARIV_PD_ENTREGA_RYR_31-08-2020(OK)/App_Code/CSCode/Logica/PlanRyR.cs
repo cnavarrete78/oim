@@ -19,9 +19,13 @@ public class PlanRyR
     public static DateTime FechaInicioPlanRyR { get; set; }
     public static DateTime FechaDialogoPlanRyR { get; set; }
     public static int Territorial { get; set; }
+    public static string NombreTerritorial { get; set; }
     public static int Departamento { get; set; }
+    public static string NombreDepartamento { get; set; }
     public static int Municipio { get; set; }
+    public static string NombreMunicipio { get; set; }
     public static int Entorno { get; set; }
+    public static string NombreEntorno { get; set; }
     public static string Direccion { get; set; }
     public static string Profesional { get; set; }
     public static string Correo { get; set; }
@@ -32,6 +36,7 @@ public class PlanRyR
     public static int TotalPersonas { get; set; }
     public static int TotalPersonasRUV { get; set; }
     public static DataSet Personas { get; set; }
+    public static DataSet PersonasDetalle { get; set; }
     public static DataSet Necesidades { get; set; }
 
     public static int Necesidad { get; set; }
@@ -100,9 +105,13 @@ public class PlanRyR
             FechaInicioPlanRyR = DateTime.TryParse(comunidad["FECHA_INICIO"].ToString(), out fecha) ? fecha : new DateTime();
             FechaDialogoPlanRyR = DateTime.TryParse(comunidad["FECHA_DIALOGO"].ToString(), out fecha) ? fecha : new DateTime();
             Territorial = Convert.ToInt32(comunidad["ID_TERRITORIAL"]);
+            NombreTerritorial = comunidad["NOMBRE_ENTIDAD"].ToString();
             Departamento = Convert.ToInt32(comunidad["ID_DEPARTAMENTO"]);
+            NombreDepartamento = comunidad["DEPARTAMENTO"].ToString();
             Municipio = Convert.ToInt32(comunidad["ID_MUNICIPIO"]);
+            NombreMunicipio = comunidad["MUNICIPIO"].ToString();
             Entorno = Convert.ToInt32(comunidad["ID_ENTORNO"]);
+            NombreEntorno = comunidad["ENTORNO"].ToString();
             Direccion = comunidad["DIRECCION"].ToString();
             Profesional = comunidad["PROFESIONAL"].ToString();
             Correo = comunidad["CORREO"].ToString();
@@ -145,6 +154,11 @@ public class PlanRyR
     {
         Personas = FachadaPersistencia.getInstancia().Get_Personas_Comunidad(Comunidad);
         return Personas;
+    }
+    public static DataSet TraerPersonasDetalleComunidad()
+    {
+        PersonasDetalle = FachadaPersistencia.getInstancia().Get_Personas_Detalle_Comunidad(Comunidad);
+        return PersonasDetalle;
     }
 
     public static DataSet TraerNecesidadesComunidad()

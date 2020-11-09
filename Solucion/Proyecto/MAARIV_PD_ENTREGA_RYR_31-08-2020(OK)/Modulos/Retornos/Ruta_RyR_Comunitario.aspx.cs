@@ -10835,6 +10835,70 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Up_plan_ryr.Update();
     }
 
+    public void GenerarDocumentoPlanRyR(string extension)
+    {
+        //Create word document
+        string rutaPlantillaRyR = System.Configuration.ConfigurationManager.AppSettings["PlantillasRyR"];
+        string rutaCompletaPlantillaRyR = Server.MapPath(rutaPlantillaRyR + "DOCUMENTO_PLAN_DE_RETORNO_Y_REUBICACION.docx");
+        Spire.Doc.Document document = new Spire.Doc.Document(rutaCompletaPlantillaRyR);
+
+        PlanRyR.TraerPersonasDetalleComunidad();
+        string NOMBREDELACOMUNIDAD = PlanRyR.NombreComunidad;
+
+        document.Replace("NOMBREDELACOMUNIDAD", PlanRyR.NombreComunidad, true, true);
+        document.Replace("NOMBREDELDEPARTAMENTO", PlanRyR.NombreDepartamento, true, true);
+        document.Replace("NOMBREDELMUNICIPIO", PlanRyR.NombreMunicipio, true, true);
+        document.Replace("PROFESIONALES", PlanRyR.Profesional, true, true);
+        document.Replace("DIRECCIONTERRITORIAL", PlanRyR.NombreTerritorial, true, true);
+        document.Replace("BARRIO", PlanRyR.Direccion, true, true);
+        document.Replace("TOTALPERSONAS", PlanRyR.TotalPersonas.ToString(), true, true);
+        document.Replace("TOTALPERSONASRUV", PlanRyR.TotalPersonasRUV.ToString(), true, true);
+        document.Replace("TOTALHOMBRES", ((System.Data.DataTable)PlanRyR.Personas.Tables[0]).Compute("count(ID_PERSONA)", "SEXO = 'HOMBRE'").ToString(), true, true);
+        document.Replace("TOTALMUJERES", ((System.Data.DataTable)PlanRyR.Personas.Tables[0]).Compute("count(ID_PERSONA)", "SEXO = 'MUJER'").ToString(), true, true);
+        document.Replace("TOTALHOGARES", PlanRyR.TotalHogares.ToString(), true, true);
+        document.Replace("TOTALNINOS", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(NINO)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALAMAYORES", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(MAYOR)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALLGBTI", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(LGBTI)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALHOMBRESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(HOMBRE_RUV)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALMUJERESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(MUJER_RUV)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALHOGARESRUV",PlanRyR.TotalHogares.ToString(), true, true);
+        document.Replace("TOTALNINOSRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(NINO_RUV)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALAMAYORESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(MAYOR_RUV)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALLGBTIRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(LGBTIRUV)", string.Empty).ToString(), true, true);
+
+        string fechaActual = DateTime.Now.ToString("yyyyMMddHHmmss");
+        string ruta_downlodad = System.Configuration.ConfigurationManager.AppSettings["PATH_SALVAR_ARCHIVO"].ToString();
+
+        if (!Directory.Exists(ruta_downlodad))
+        {
+            Directory.CreateDirectory(ruta_downlodad);
+        }
+        string nombreArchivo = ruta_downlodad + "DOCUMENTO_PLAN_DE_RETORNO_Y_REUBICACION" + fechaActual + extension;
+        if (extension == ".doc")
+        {
+            document.SaveToFile(nombreArchivo, FileFormat.Doc);
+        }
+        else
+        {
+            document.SaveToFile(nombreArchivo, FileFormat.PDF);
+        }
+        try
+        {
+            System.Diagnostics.Process.Start(nombreArchivo);
+        }
+        catch { }
+    }
+    protected void btn_plan_ryr_doc_Click(object sender, EventArgs e)
+    {
+
+        GenerarDocumentoPlanRyR(".doc");
+    }
+    protected void btn_plan_ryr_pdf_Click(object sender, EventArgs e)
+    {
+        GenerarDocumentoPlanRyR(".pdf");
+    }
+
+
     #endregion
 
     #region DESARROLLO LILIANA PARA EL TAB DE PLAN DE TRASLADO

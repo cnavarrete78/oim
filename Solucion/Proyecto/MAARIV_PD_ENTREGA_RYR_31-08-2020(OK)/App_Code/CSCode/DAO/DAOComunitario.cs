@@ -126,7 +126,36 @@ namespace com.GACV.lgb.persistencia.dao
             return ds;
         }
 
-        
+        public DataSet Get_Personas_Detalle_Comunidad(int idComunidad)
+        {
+            DataSet ds = new DataSet();
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
+
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_GET_PERSONAS_DETALLE_COMUNIDAD", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_COMUNIDAD", idComunidad);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                DataAdapter.SelectCommand = Command;
+                DataAdapter.Fill(ds);
+                con.Close();
+            }
+            catch (SqlException ex)
+            {
+                //MsgBox(ex.Message);
+            }
+            return ds;
+        }
+
+
         public DataSet Get_Plan_RyR(int idComunidad)
         {
             DataSet ds = new DataSet();

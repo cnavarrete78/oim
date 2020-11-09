@@ -1795,7 +1795,11 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return comunitario.Get_Personas_Comunidad(idComunidad);
         }
-
+        public DataSet Get_Personas_Detalle_Comunidad(int idComunidad)
+        {
+            return comunitario.Get_Personas_Detalle_Comunidad(idComunidad);
+        }
+        
         public void Set_Comunidad(List<SqlParameter> Parametros)
         {
             comunitario.Set_Comunidad(Parametros);

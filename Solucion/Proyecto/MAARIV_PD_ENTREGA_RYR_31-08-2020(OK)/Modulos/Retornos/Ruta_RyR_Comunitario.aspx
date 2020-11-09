@@ -4466,8 +4466,28 @@
                                                                                             </Columns>
                                                                                         </asp:GridView>
                                                                                     </div>
-                                                                                 </div>
-                                                                                
+                                                                                </div>
+
+                                                                            </div>
+                                                                             <%--Generación del Plan RyR--%>
+                                                                            <div class="panel panel-danger">
+                                                                                <div class="panel-heading">
+                                                                                    Generación del documento del Plan de Retornos y Reubicaciones
+                                                                                </div>
+                                                                                <div class="panel-body" style="overflow-x: auto; overflow-y: auto; width: 100%; height: 80%;">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <asp:LinkButton ID="LinkButton34" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_plan_ryr_doc_Click" Text="Generar documento">
+                                                                                                     Generar Plan RyR en .doc
+                                                                                            </asp:LinkButton>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <asp:LinkButton ID="LinkButton35" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_plan_ryr_pdf_Click" Text="Generar documento">
+                                                                                                     Generar Plan RyR en .pdf
+                                                                                            </asp:LinkButton>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
