@@ -5287,7 +5287,7 @@
                                                                 </Triggers>
                                                             </asp:UpdatePanel>
                                                         </div>
-                                                        <%--tab de balance--%>
+   <%--tab de balance--%>
                                                         <div role="tabpanel" class="tab-pane active" id="balance_ryr" runat="server">
                                                             <asp:UpdatePanel runat="server" ID="Up_balance" UpdateMode="Conditional">
                                                                 <ContentTemplate>
@@ -5603,7 +5603,7 @@
 
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
-                                                                                        <asp:LinkButton ID="LinkButton18" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_balance_GI_Click" Text="Categorias">
+                                                                                        <asp:LinkButton ID="LinkButton36" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_balance_GI_Click" Text="Categorias">
                                                                                             Guardar
                                                                                         </asp:LinkButton>
                                                                                     </div>
@@ -5699,21 +5699,41 @@
 
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
-                                                                                        <label class="label1 col-sm-9 ">COSTO TOTAL INVERTIDO EN LOS BIENES O SERVICIOS DIRIGIDOS AL AVANCE EN EL PROCESO DE INTEGRACIÓN COMUNITARIA Y ARRAIGO TERRITORIAL:</label>
-                                                                                        <label class="label1 col-sm-3 label-informacion" runat="server" id="Label13"></label>
+                                                                                        <label class="label1 col-sm-10 ">COSTO TOTAL INVERTIDO EN LOS BIENES O SERVICIOS DIRIGIDOS AL AVANCE EN EL PROCESO DE INTEGRACIÓN COMUNITARIA Y ARRAIGO TERRITORIAL:</label>
+                                                                                        <label class="label1 col-sm-2 label-informacion" runat="server" id="lbltotalBalanceICYAT"></label>
                                                                                     </div>
                                                                                 </div>
 
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <asp:LinkButton ID="LinkButton16" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_balance_ICYAT_Click" Text="Categorias">
+                                                                                             Guardar
+                                                                                        </asp:LinkButton>
+                                                                                    </div>
+                                                                                </div>
 
+                                                                            </div>
+                                                                        </div>
+                                                                    </asp:Panel>
+                                                                    <div>
+                                                                        <br />
+                                                                    </div>
+                                                                    <%--Generacion del documento--%>
+                                                                    <asp:Panel ID="Panel39" runat="server" CssClass="container-fluid">
+                                                                        <div class="panel panel-danger">
+                                                                            <div class="panel-heading">
+                                                                                DOCUMENTO BALANCE DEL ACOMPAÑAMIENTO AL RETORNO Y REUBICACIÓN  
+                                                                            </div>
+                                                                            <div class="panel-body">
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
-                                                                                        <asp:LinkButton ID="LinkButton16" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_generar_balance_doc_Click" Text="Generar documento">
-                                                                                             Generar balance en .doc
+                                                                                        <asp:LinkButton ID="LinkButton23" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_generar_balance_doc_Click" Text="Generar documento">
+                                                                                             Generar .doc
                                                                                         </asp:LinkButton>
                                                                                     </div>
                                                                                     <div class="col-md-6">
-                                                                                        <asp:LinkButton ID="LinkButton23" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_generar_balance_pdf_Click" Text="Generar documento">
-                                                                                             Generar balance en .pdf
+                                                                                        <asp:LinkButton ID="LinkButton37" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_generar_balance_pdf_Click" Text="Generar documento">
+                                                                                             Generar .pdf
                                                                                         </asp:LinkButton>
                                                                                     </div>
                                                                                 </div>
@@ -6361,7 +6381,7 @@
                                                 <label class="label1 col-sm-12">Reporte</label>
                                                 <asp:DropDownList ID="LD_Reporte" runat="server" AutoPostBack="True" CssClass="form-control">
                                                 </asp:DropDownList>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator105" runat="server"
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator124" runat="server"
                                                     ControlToValidate="LD_Reporte" CssClass="validador" Display="Dynamic"
                                                     ErrorMessage="* Campo obligatorio" InitialValue="0"></asp:RequiredFieldValidator>
                                             </div>
