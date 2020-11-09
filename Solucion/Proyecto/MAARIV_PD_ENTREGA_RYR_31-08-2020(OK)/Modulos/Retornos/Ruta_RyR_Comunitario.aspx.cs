@@ -10428,6 +10428,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             PlanRyR.FechaInicioPlanRyR = Convert.ToDateTime(Convert.ToString(this.txtFechaInicioPlanRyR.Text));
             PlanRyR.FechaDialogoPlanRyR = Convert.ToDateTime(Convert.ToString(this.txtFechaDialogoPlanRyR.Text));
             PlanRyR.Usuario = Convert.ToInt32(Session["id_usuario"]);
+            PlanRyR.TotalNoSuperanGI = Convert.ToInt32(this.txtPersonasNoSuperanGeneracionIngresos.Text);
             PlanRyR.GrabarPlan();
             ProcesarPlanRyR();
             texto("El registro se inserto correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);

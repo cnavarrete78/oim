@@ -1816,6 +1816,15 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return comunitario.Get_Plan_RyR(idComunidad);
         }
+
+        public DataSet Get_Personas_Comunidad_Plan_RyR(int idComunidad)
+        {
+            return comunitario.Get_Personas_Comunidad_Plan_RyR(idComunidad);
+        }
+        public DataSet Get_Personas_Detalle_Comunidad_Plan_RyR(int idComunidad)
+        {
+            return comunitario.Get_Personas_Detalle_Comunidad_Plan_RyR(idComunidad);
+        }
         public DataSet GetEstadosPlanRyR()
         {
             return comunitario.Get_Estado_Plan_RyR();

@@ -32,6 +32,7 @@ public class PlanRyR
     public static DateTime FechaActa { get; set; }
     public static int EstadoPlan { get; set; }
     public static int Usuario { get; set; }
+    public static int TotalNoSuperanGI { get; set; }
     public static int TotalHogares { get; set; }
     public static int TotalPersonas { get; set; }
     public static int TotalPersonasRUV { get; set; }
@@ -87,6 +88,7 @@ public class PlanRyR
         FechaActa = new DateTime();
         EstadoPlan = 0;
         Usuario = 0;
+        TotalNoSuperanGI = 0;
         TotalHogares = 0;
         TotalPersonas = 0;
         TotalPersonasRUV = 0;
@@ -143,6 +145,7 @@ public class PlanRyR
         parametros.Add(new SqlParameter("CORREO", Correo));
         parametros.Add(new SqlParameter("FECHA_ACTA_CTJT", FechaActa));
         parametros.Add(new SqlParameter("ID_ESTADO_PLAN_RYR", EstadoPlan));
+        parametros.Add(new SqlParameter("TOTAL_NO_SUPERAN_GI", TotalNoSuperanGI));
         parametros.Add(new SqlParameter("FECHA_INICIO", FechaInicioPlanRyR));
         parametros.Add(new SqlParameter("FECHA_DIALOGO", FechaDialogoPlanRyR));
         parametros.Add(new SqlParameter("USUARIO", Usuario));
@@ -152,12 +155,12 @@ public class PlanRyR
 
     public static DataSet TraerPersonasComunidad()
     {
-        Personas = FachadaPersistencia.getInstancia().Get_Personas_Comunidad(Comunidad);
+        Personas = FachadaPersistencia.getInstancia().Get_Personas_Comunidad_Plan_RyR(Comunidad);
         return Personas;
     }
     public static DataSet TraerPersonasDetalleComunidad()
     {
-        PersonasDetalle = FachadaPersistencia.getInstancia().Get_Personas_Detalle_Comunidad(Comunidad);
+        PersonasDetalle = FachadaPersistencia.getInstancia().Get_Personas_Detalle_Comunidad_Plan_RyR(Comunidad);
         return PersonasDetalle;
     }
 
