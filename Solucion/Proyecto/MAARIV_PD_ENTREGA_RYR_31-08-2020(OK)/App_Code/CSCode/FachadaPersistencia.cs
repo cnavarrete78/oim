@@ -45,8 +45,8 @@ using com.GACV.lgb.DAO.ADES;
 
 using com.GACV.lgb.modelo.ADEP;
 using com.GACV.lgb.DAO.ADEP;
-
-
+using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace com.GACV.lgb.persistencia.fachada
 {
@@ -57,6 +57,8 @@ namespace com.GACV.lgb.persistencia.fachada
         protected static FachadaPersistencia instancia;
 
         private DAOListasDesplegables L_D = new DAOListasDesplegables();
+
+        private DAOComunitario comunitario = new DAOComunitario();
         
         private DAOColectiva colectiva = new DAOColectiva();
         
@@ -1780,6 +1782,96 @@ namespace com.GACV.lgb.persistencia.fachada
             return Actividades.Administrar_Contactos(actividad, opcion);
         }
 
+        #endregion
+
+
+        #region DESARROLLO FICHA CARACTERIZACION
+
+        public DataSet Get_Comunidad(int idComunidad)
+        {
+            return comunitario.Get_Comunidad(idComunidad);
+        }
+        public DataSet Get_Personas_Comunidad(int idComunidad)
+        {
+            return comunitario.Get_Personas_Comunidad(idComunidad);
+        }
+        public DataSet Get_Personas_Detalle_Comunidad(int idComunidad)
+        {
+            return comunitario.Get_Personas_Detalle_Comunidad(idComunidad);
+        }
+        
+        public void Set_Comunidad(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_Comunidad(Parametros);
+        }
+        public void Set_Personas_Comunidad(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_Personas_Comunidad(Parametros);
+        }
+
+        #endregion
+
+        #region DESARROLLO PLAN RYR
+        public DataSet Get_Plan_RyR(int idComunidad)
+        {
+            return comunitario.Get_Plan_RyR(idComunidad);
+        }
+        public DataSet GetEstadosPlanRyR()
+        {
+            return comunitario.Get_Estado_Plan_RyR();
+        }
+
+        public DataSet Get_Entorno()
+        {
+            return comunitario.Get_Entorno();
+        }
+        public DataSet Get_Clasificacion_Actividad()
+        {
+            return comunitario.Get_Clasificacion_Actividad();
+        }
+        public void Set_Plan_RyR(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_Plan_RyR(Parametros);
+        }
+
+        public DataSet Get_Necesidades_Comunidad(int idComunidad)
+        {
+            return comunitario.Get_Necesidades_Comunidad(idComunidad);
+        }
+        public void Set_Necesidad_Comunidad(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_Necesidad_Comunidad(Parametros);
+        }
+
+        public DataSet Get_Evidencia(List<SqlParameter> Parametros)
+        {
+            return comunitario.Get_Evidencia(Parametros);
+        }
+
+        public void Set_Evidencia(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_Evidencia(Parametros);
+        }
+
+        public DataSet Get_BienesServicios_Comunidad(List<SqlParameter> Parametros)
+        {
+            return comunitario.Get_BienesServicios_Comunidad(Parametros);
+        }
+
+        public void Set_BienesServicios_Comunidad(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_BienesServicios_Comunidad(Parametros);
+        }
+
+        public DataSet Get_ActividadBienesServicios_Comunidad(List<SqlParameter> Parametros)
+        {
+            return comunitario.Get_ActividadBienesServicios_Comunidad(Parametros);
+        }
+
+        public void Set_ActividadBienesServicios_Comunidad(List<SqlParameter> Parametros)
+        {
+            comunitario.Set_ActividadBienesServicios_Comunidad(Parametros);
+        }
         #endregion
 
 

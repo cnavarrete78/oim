@@ -30,7 +30,34 @@ public partial class Descargar_evidencia : System.Web.UI.Page
         {
             try
             {
-                if (Request.QueryString["ID_BALANCE"] != null)
+                if (Request.QueryString["ID"] != null)
+                {
+                    Evidencia.IdEvidencia = Convert.ToInt32(Request.QueryString["ID"]);
+                    Evidencia.TraerEvidencia();
+                    FileStream Archivo = new FileStream(Evidencia.UrlArchivo, FileMode.Open, FileAccess.Read);
+                    byte[] Contenido;
+                    Contenido = new byte[Archivo.Length];
+                    Archivo.Read(Contenido, 0, (int)Archivo.Length);
+                    Response.ClearContent(); //Borra todo el contenido del buffer
+                    Response.ClearHeaders(); //Borra todos los encabezados
+                    Response.Buffer = true;
+                    Response.ContentType = Evidencia.ExtArchivo; //Se establece el tipo MIME
+                    if (Evidencia.ExtArchivo.ToUpper() == ".PDF")
+                    {
+                        Response.AddHeader("content-disposition", " filename=" + Evidencia.NombreArchivo); //attachment;
+                    }
+                    else
+                    {
+                        Response.AddHeader("content-disposition", "attachment; filename=" + Evidencia.NombreArchivo); //attachment;
+                    }
+                    Response.BinaryWrite(Contenido); //Escribe datos binarios en el flujo de salida HTTP y por tanto, se muestra o descarga el archivo
+                    Archivo.Close();
+                    Contenido = null;
+
+                    Response.End();
+                }
+
+                else if (Request.QueryString["ID_BALANCE"] != null)
                 {
                     int id = Convert.ToInt32(Request.QueryString["ID_BALANCE"]);
 
@@ -264,15 +291,15 @@ public partial class Descargar_evidencia : System.Web.UI.Page
 
             //adjuntar_archivos.P_ID_ACTIVIDAD_ARCHIVO = Convert.ToInt32(((Label)(gv16.SelectedRow.Cells[0].FindControl("id_actividad_archivo"))).Text);
             adjuntar_archivos.P_ID_ACTIVIDAD_ARCHIVO = id_actividad_archivo;
-            ds = FachadaPersistencia.getInstancia().consultar_actividad_archivos(adjuntar_archivos, 1);            
-        
+            ds = FachadaPersistencia.getInstancia().consultar_actividad_archivos(adjuntar_archivos, 1);
+
             if (!ds.Tables[0].Rows.Count.Equals(0))
             {
-                
+
                 if ((Convert.ToInt32(ds.Tables[0].Rows[0]["ID_ACTIVIDAD_ARCHIVO_ESTADO"]) == 1) && ((id_usuario_2da_instancia == Convert.ToInt32(Session["rol"])) || (id_usuario_3ra_instancia == Convert.ToInt32(Session["rol"]))))
                 {
                     ActualizaGrid_archivo(id_actividad_archivo);
-                } 
+                }
                 FileStream Archivo = new FileStream(System.Configuration.ConfigurationManager.AppSettings["Archivos"] + Convert.ToString(ds.Tables[0].Rows[0]["URL_ARCHIVO"]), FileMode.Open, FileAccess.Read);
                 extension = (Convert.ToString(ds.Tables[0].Rows[0]["EXTENSION"]));
 
@@ -297,7 +324,7 @@ public partial class Descargar_evidencia : System.Web.UI.Page
 
                 //HttpContext.Current.ApplicationInstance.CompleteRequest();
 
-                Response.End();          
+                Response.End();
             }
             else
             {

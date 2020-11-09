@@ -14,10 +14,10 @@ public class Consulta
     public Consulta()
     {
     }
-    public static void GV_PersonasFicha(GridView control, int idComunidad)
+    public static void GV_PersonasFicha(GridView control)
     {
         DataSet dsPE = new DataSet();
-        dsPE = FachadaPersistencia.getInstancia().Get_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria(idComunidad);
+        dsPE = Ficha.TraerPersonasComunidad();
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
         {
             control.Visible = true;
@@ -35,5 +35,105 @@ public class Consulta
         control.HeaderRow.TableSection = TableRowSection.TableHeader;
         control.FooterRow.TableSection = TableRowSection.TableFooter;
         control.HeaderRow.TableSection = TableRowSection.TableHeader;
+    }
+
+    public static void GV_PersonasPlanRyR(GridView control)
+    {
+        DataSet dsPE = new DataSet();
+        dsPE = PlanRyR.TraerPersonasComunidad();
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            control.Visible = true;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+        else
+        {
+            control.Visible = false;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+
+        control.UseAccessibleHeader = true;
+        control.HeaderRow.TableSection = TableRowSection.TableHeader;
+        control.FooterRow.TableSection = TableRowSection.TableFooter;
+        control.HeaderRow.TableSection = TableRowSection.TableHeader;
+    }
+
+    public static void GV_NecesidadesPlanRyR(GridView control)
+    {
+        DataSet dsPE = new DataSet();
+        dsPE = PlanRyR.TraerNecesidadesComunidad();
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            control.Visible = true;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+        else
+        {
+            control.Visible = false;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+
+        control.UseAccessibleHeader = true;
+        control.HeaderRow.TableSection = TableRowSection.TableHeader;
+        control.FooterRow.TableSection = TableRowSection.TableFooter;
+        control.HeaderRow.TableSection = TableRowSection.TableHeader;
+    }
+
+    public static void GV_Evidencias(GridView control)
+    {
+        DataSet dsPE = new DataSet();
+        dsPE = Evidencia.TraerEvidencias();
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            control.Visible = true;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+        else
+        {
+            control.Visible = false;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+    }
+
+    public static void GV_BienesServicios(GridView control,int idComponente)
+    {
+        DataSet dsPE = new DataSet();
+        dsPE = PlanRyR.TraerBienesServicios(idComponente);
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            control.Visible = true;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+        else
+        {
+            control.Visible = false;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+    }
+
+    public static void GV_ActividadBienesServicios(GridView control)
+    {
+        DataSet dsPE = new DataSet();
+        dsPE = PlanRyR.TraerActividadBienesServicios();
+        if (!dsPE.Tables[0].Rows.Count.Equals(0))
+        {
+            control.Visible = true;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
+        else
+        {
+            control.Visible = false;
+            control.DataSource = dsPE;
+            control.DataBind();
+        }
     }
 }

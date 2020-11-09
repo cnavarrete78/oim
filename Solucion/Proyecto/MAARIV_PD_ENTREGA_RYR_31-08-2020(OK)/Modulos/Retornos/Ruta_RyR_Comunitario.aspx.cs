@@ -3788,6 +3788,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 m_Ficha.Visible = false;
                 ficha.Visible = false;
 
+                m_PlanRyR.Visible = false;
+                plan_ryr.Visible = false;
+
                 m_PlanTraslado.Visible = false;
                 m_Balance.Visible = false;
                 plan_traslado.Visible = false;
@@ -3817,6 +3820,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         Get_plan_acción_traslado_profesionales_traslado_ruta_comunitaria();
                         Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria();
                         LlenarComboTipo_Evidencia();
+                        break;
+                    case 302://Fase 6 - Plan de retorno y reubicaciòn
+                        ProcesarPlanRyR();
                         break;
                     case 304:// si es Fase 8 - cierre / balance del acompañamiento -desarrollo que muestra los desarrollos de Liliana rodriguez
                         bool existeplan = GetPlanTrasladoParaBalance();
@@ -10174,11 +10180,35 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         m_Ficha.Visible = Ficha.FormularioActivo;
         ficha.Visible = Ficha.FormularioActivo;
 
-        Lista.L_D_Departamentos(ref LD_Departamento_Ficha);
         Lista.L_D_Entidad(ref LD_Entidad_Ficha);
-        Consulta.GV_PersonasFicha(gv_PersonasFicha, Ficha.Comunidad);
-    }
+        Lista.L_D_Departamentos(ref LD_Departamento_Ficha);
+        Lista.L_D_Territorial(ref LD_Territorial_Ficha);
+        Consulta.GV_PersonasFicha(gv_PersonasFicha);
 
+        if (Ficha.TraerComunidad())
+        {
+            this.txFechaCaracterizacion.Text = Ficha.Fecha.ToShortDateString();
+            this.LD_Entidad_Ficha.SelectedValue = Ficha.Entidad.ToString();
+            this.LD_Departamento_Ficha.SelectedValue = Ficha.Departamento.ToString();
+            Lista.L_D_Municipios(ref LD_Municipio_Ficha, Ficha.Departamento);
+            this.LD_Municipio_Ficha.SelectedValue = Ficha.Municipio.ToString();
+            this.LD_Territorial_Ficha.SelectedValue = Ficha.Territorial.ToString();
+            this.txtProfesionalFicha.Text = Ficha.Profesional;
+            this.txtCorreoProfesionalFicha.Text = Ficha.Correo;
+            this.txtIntencionalidadRazones.Text = Ficha.IntencionalidadRazones;
+            this.txtIntencionalidadManifestacion.Text = Ficha.IntencionalidadManifestacion;
+            this.txtCondicionesActualesCaracteristicas.Text = Ficha.CondicionesActualesCaracteristicas;
+            this.txtCondicionesActualesActividades.Text = Ficha.CondicionesActualesActividades;
+            this.txtMujeresEmbarazo.Text = Ficha.MujeresEmbarazo.ToString();
+            this.txtPersonasEnfermedadRuinosa.Text = Ficha.PersonasEnfermedadRuinosa.ToString();
+        }
+
+        this.txtTotalHogaresFicha.Text = Ficha.TotalHogares.ToString();
+        this.txtTotalPersonasFicha.Text = Ficha.TotalPersonas.ToString();
+        this.txtTotalPersonasRUV.Text = Ficha.TotalPersonasRUV.ToString();
+        this.txtHogaresReunificacionFamiliar.Text = Ficha.HogaresReunificacionFamiliar.ToString();
+        this.txtPersonasAtencionPsicosocial.Text = Ficha.PersonasAtencionPsicosocial.ToString();
+    }
     protected void LlenarMunicipiosFicha_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (LD_Departamento_Ficha.SelectedValue != "")
@@ -10187,15 +10217,690 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Lista.L_D_Municipios(ref LD_Municipio_Ficha, idDepartamento);
         }
     }
-
+    protected void btn_guardar_caracterizacion_Click(object sender, EventArgs e)
+    {
+        int mujeresE;
+        int enfermedadR;
+        try
+        {
+            Ficha.Fecha = Convert.ToDateTime(Convert.ToString(txFechaCaracterizacion.Text));
+            Ficha.Entidad = Convert.ToInt32(LD_Entidad_Ficha.SelectedValue);
+            Ficha.Territorial = Convert.ToInt32(LD_Territorial_Ficha.SelectedValue);
+            Ficha.Departamento = Convert.ToInt32(LD_Departamento_Ficha.SelectedValue);
+            Ficha.Municipio = Convert.ToInt32(LD_Municipio_Ficha.SelectedValue);
+            Ficha.Profesional = txtProfesionalFicha.Text;
+            Ficha.Correo = txtCorreoProfesionalFicha.Text;
+            Ficha.IntencionalidadRazones = txtIntencionalidadRazones.Text;
+            Ficha.IntencionalidadManifestacion = txtIntencionalidadManifestacion.Text;
+            Ficha.CondicionesActualesCaracteristicas = txtCondicionesActualesCaracteristicas.Text;
+            Ficha.CondicionesActualesActividades = txtCondicionesActualesActividades.Text;
+            Ficha.MujeresEmbarazo = Int32.TryParse(txtMujeresEmbarazo.Text, out mujeresE) ? mujeresE : 0;
+            Ficha.PersonasEnfermedadRuinosa = Int32.TryParse(txtPersonasEnfermedadRuinosa.Text, out enfermedadR) ? enfermedadR : 0;
+            Ficha.Usuario = Convert.ToInt32(Session["id_usuario"]);
+            Ficha.GrabarComunidad();
+            ProcesarFicha();
+            texto("El registro se inserto correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error adicionar la caracterización." + ex.Message, 0);
+        }
+    }
+    protected void btn_actualizar_comunidad_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow gvRow in this.gv_PersonasFicha.Rows)
+        {
+            int idPersona = Convert.ToInt32(gv_PersonasFicha.DataKeys[gvRow.DataItemIndex].Values[0]);
+            bool reunificacionFamiliar = ((System.Web.UI.WebControls.CheckBox)gvRow.FindControl("REUNIFICACION_FAMILIAR")).Checked;
+            bool atencionPsicosocial = ((System.Web.UI.WebControls.CheckBox)gvRow.FindControl("ATENCION_PSICOSOCIAL")).Checked;
+            Ficha.ActualizarPersona(idPersona, reunificacionFamiliar, atencionPsicosocial);
+        }
+        texto("Los registros se actualizaron correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+        Consulta.GV_PersonasFicha(gv_PersonasFicha);
+        ProcesarFicha();
+        Up_ficha.Update();
+    }
+    protected void btn_exportar_comunidad_Click(object sender, EventArgs e)
+    {
+        this.gv_personas_exportar.DataSource = Ficha.Personas;
+        this.gv_personas_exportar.DataBind();
+        Up_personas_exportar.Update();
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalExportarPoblacion", "$('#myModalExportarPoblacion').modal();", true);
+    }
+    protected void GV_PersonasFicha_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            if (e.CommandName == "VerDetallePoblacionCaracterizacion")
+            {
+                GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                int idPersona = Convert.ToInt32(gv_PersonasFicha.DataKeys[gvRow.DataItemIndex].Values[0]);
+                foreach (DataRow persona in Ficha.Personas.Tables[0].Rows)
+                    if (persona["ID_PERSONA"].Equals(idPersona))
+                        foreach (Control c in pDetallePersona.Controls)
+                            if (c is Label)
+                                try { ((Label)c).Text = persona[c.ID].ToString(); } catch { }
+                UpdatePanelDetallePersona.Update();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalPoblacionCaractizacion", "$('#myModalPoblacionCaractizacion').modal();", true);
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void GV_PersonasFicha_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+        }
+    }
+    protected void GV_PersonasFicha_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        Up_ficha_personas.Update();
+    }
+    protected void GV_PersonasFicha_PreRender(object sender, EventArgs e)
+    {
+        if (gv_PersonasFicha.Rows.Count > 0)
+        {
+            gv_PersonasFicha.HeaderRow.Cells[0].Attributes["data-priority"] = "1";
+            gv_PersonasFicha.HeaderRow.Cells[1].Attributes["data-priority"] = "2";
+            gv_PersonasFicha.HeaderRow.Cells[2].Attributes["data-priority"] = "2";
+            gv_PersonasFicha.HeaderRow.Cells[3].Attributes["data-priority"] = "1";
+            gv_PersonasFicha.HeaderRow.Cells[4].Attributes["data-priority"] = "2";
+            gv_PersonasFicha.UseAccessibleHeader = true;
+            gv_PersonasFicha.HeaderRow.TableSection = TableRowSection.TableHeader;
+            gv_PersonasFicha.FooterRow.TableSection = TableRowSection.TableFooter;
+        }
+        if (gv_PersonasFicha.Rows.Count == 1)
+        {
+        }
+    }
+    protected void gv_personas_exportar_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void gv_personas_exportar_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+        }
+    }
+    protected void gv_personas_exportar_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        Up_personas_exportar.Update();
+    }
+    protected void gv_personas_exportar_PreRender(object sender, EventArgs e)
+    {
+        if (gv_personas_exportar.Rows.Count > 0)
+        {
+            gv_personas_exportar.HeaderRow.Cells[0].Attributes["data-priority"] = "1";
+            gv_personas_exportar.HeaderRow.Cells[1].Attributes["data-priority"] = "2";
+            gv_personas_exportar.HeaderRow.Cells[2].Attributes["data-priority"] = "2";
+            gv_personas_exportar.HeaderRow.Cells[3].Attributes["data-priority"] = "1";
+            gv_personas_exportar.HeaderRow.Cells[4].Attributes["data-priority"] = "2";
+            gv_personas_exportar.UseAccessibleHeader = true;
+            gv_personas_exportar.HeaderRow.TableSection = TableRowSection.TableHeader;
+            gv_personas_exportar.FooterRow.TableSection = TableRowSection.TableFooter;
+        }
+        if (gv_personas_exportar.Rows.Count == 1)
+        {
+        }
+    }
     #endregion
 
     #region DESARROLLO HERRAMIENTAS PARA LA FORMULACIÓN DEL PLAN DE RETORNO Y REUBICACIÓN
+    private void ProcesarPlanRyR()
+    {
+        PlanRyR.FormularioActivo = true;
+        PlanRyR.Comunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
+
+        m_PlanRyR.Visible = PlanRyR.FormularioActivo;
+        plan_ryr.Visible = PlanRyR.FormularioActivo;
+
+        Lista.L_D_Estado_Plan_RyR(ref LD_Estado_PlanRyR);
+        Lista.L_D_Departamentos(ref LD_Departamento_PlanRyR);
+        Lista.L_D_Entorno(ref LD_Entorno_PlanRyR);
+        Lista.L_D_Territorial(ref LD_Territorial_PlanRyR);
+        Consulta.GV_PersonasPlanRyR(gv_PersonasPlanRyR);
+        Consulta.GV_NecesidadesPlanRyR(gv_plan_ryr_necesidad);
+        Lista.L_D_Tipo_Evidencia(ref LD_MTipoEvidencia);
+        Consulta.GV_BienesServicios(gv_bienes_servicios_GI, 1);
+        PlanRyR.BienesServiciosGI = (DataSet)gv_bienes_servicios_GI.DataSource;
+        Consulta.GV_BienesServicios(gv_bienes_servicios_IC, 2);
+        PlanRyR.BienesServiciosIC = (DataSet)gv_bienes_servicios_IC.DataSource;
+        Lista.L_D_Clasificacion_Actividad(ref LD_Clasificacion_Actividad);
+
+        if (PlanRyR.TraerComunidad())
+        {
+            this.txtFechaActaPlanRyR.Text = PlanRyR.FechaActa.ToShortDateString();
+            this.LD_Estado_PlanRyR.SelectedValue = PlanRyR.EstadoPlan.ToString();
+            this.txtNombreComunidadPlanRyR.Text = PlanRyR.NombreComunidad;
+            this.LD_Departamento_PlanRyR.SelectedValue = PlanRyR.Departamento.ToString();
+            Lista.L_D_Municipios(ref LD_Municipio_PlanRyR, PlanRyR.Departamento);
+            this.LD_Municipio_PlanRyR.SelectedValue = PlanRyR.Municipio.ToString();
+            this.LD_Entorno_PlanRyR.SelectedValue = PlanRyR.Entorno.ToString();
+            this.txtDireccionPlanRyR.Text = PlanRyR.Direccion;
+            this.LD_Territorial_PlanRyR.SelectedValue = PlanRyR.Territorial.ToString();
+            this.txtProfesionalPlanRyR.Text = PlanRyR.Profesional.ToString();
+            this.txtCorreoPlanRyR.Text = PlanRyR.Correo.ToString();
+            this.txtFechaMedicionSSVPlanRyR.Text = PlanRyR.FechaMedicion.ToShortDateString();
+            this.txtFechaInicioPlanRyR.Text = PlanRyR.FechaInicioPlanRyR.ToShortDateString();
+            this.txtFechaDialogoPlanRyR.Text = PlanRyR.FechaDialogoPlanRyR.ToShortDateString();
+        }
+        this.txtHogaresPlanRyR.Text = PlanRyR.TotalHogares.ToString();
+        this.txtPersonasPlanRyR.Text = PlanRyR.TotalPersonas.ToString();
+        this.txtPersonasRUVPlanRyR.Text = PlanRyR.TotalPersonasRUV.ToString();
+        this.txtPersonasNoSuperanContribucionSSV.Text = ((System.Data.DataTable)PlanRyR.Necesidades.Tables[0]).Compute("Max(NUM_PERSONAS_PENDIENTES_SUPERAR)", string.Empty).ToString();
+        this.txtPersonasNoSuperanGeneracionIngresos.Text = ((System.Data.DataTable)PlanRyR.Personas.Tables[0]).Compute("sum(NO_CUMPLE_GENERACION_INGRESOS)", string.Empty).ToString();
+        this.txtCostoTotalBienesServiciosGI.Text = String.Format("{0:N0}", ((System.Data.DataTable)PlanRyR.BienesServiciosGI.Tables[0]).Compute("sum(COSTO_BIEN_SERVICIO)", string.Empty));
+        this.txtCostoTotalBienesServiciosIC.Text = String.Format("{0:N0}", ((System.Data.DataTable)PlanRyR.BienesServiciosIC.Tables[0]).Compute("sum(COSTO_BIEN_SERVICIO)", string.Empty));
+    }
+    protected void LlenarMunicipiosPlanRyR_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (LD_Departamento_PlanRyR.SelectedValue != "")
+        {
+            int idDepartamento = Convert.ToInt32(LD_Departamento_PlanRyR.SelectedValue);
+            Lista.L_D_Municipios(ref LD_Municipio_PlanRyR, idDepartamento);
+        }
+    }
+    protected void btn_guardar_plan_ryr_Click(object sender, EventArgs e)
+    {
+        DataSet ds = new DataSet();
+        try
+        {
+            PlanRyR.FechaMedicion = Convert.ToDateTime(Convert.ToString(this.txtFechaMedicionSSVPlanRyR.Text));
+            PlanRyR.Territorial = Convert.ToInt32(this.LD_Territorial_PlanRyR.SelectedValue);
+            PlanRyR.Departamento = Convert.ToInt32(this.LD_Departamento_PlanRyR.SelectedValue);
+            PlanRyR.Municipio = Convert.ToInt32(this.LD_Municipio_PlanRyR.SelectedValue);
+            PlanRyR.Entorno = Convert.ToInt32(this.LD_Entorno_PlanRyR.SelectedValue);
+            PlanRyR.Direccion = this.txtDireccionPlanRyR.Text;
+            PlanRyR.Profesional = this.txtProfesionalPlanRyR.Text;
+            PlanRyR.Correo = this.txtCorreoPlanRyR.Text;
+            PlanRyR.FechaActa = Convert.ToDateTime(Convert.ToString(this.txtFechaActaPlanRyR.Text));
+            PlanRyR.EstadoPlan = Convert.ToInt32(this.LD_Estado_PlanRyR.SelectedValue);
+            PlanRyR.FechaInicioPlanRyR = Convert.ToDateTime(Convert.ToString(this.txtFechaInicioPlanRyR.Text));
+            PlanRyR.FechaDialogoPlanRyR = Convert.ToDateTime(Convert.ToString(this.txtFechaDialogoPlanRyR.Text));
+            PlanRyR.Usuario = Convert.ToInt32(Session["id_usuario"]);
+            PlanRyR.GrabarPlan();
+            ProcesarPlanRyR();
+            texto("El registro se inserto correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+            Up_plan_ryr.Update();
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error adicionar el Plan RyR." + ex.Message, 0);
+        }
+    }
+    protected void btn_exportar_comunidad_plan_Click(object sender, EventArgs e)
+    {
+        this.gv_personas_exportar.DataSource = PlanRyR.Personas;
+        this.gv_personas_exportar.DataBind();
+        Up_personas_exportar.Update();
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalExportarPoblacion", "$('#myModalExportarPoblacion').modal();", true);
+    }
+    protected void GV_PersonasPlanRyR_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            if (e.CommandName == "VerDetallePoblacionPlanRyR")
+            {
+                GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                int idPersona = Convert.ToInt32(gv_PersonasPlanRyR.DataKeys[gvRow.DataItemIndex].Values[0]);
+                foreach (DataRow persona in PlanRyR.Personas.Tables[0].Rows)
+                    if (persona["ID_PERSONA"].Equals(idPersona))
+                        foreach (Control c in pDetallePersona.Controls)
+                            if (c is Label)
+                                try { ((Label)c).Text = persona[c.ID].ToString(); } catch { }
+                UpdatePanelDetallePersona.Update();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalPoblacionCaractizacion", "$('#myModalPoblacionCaractizacion').modal();", true);
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void GV_PersonasPlanRyR_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+        }
+    }
+    protected void GV_PersonasPlanRyR_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        Up_plan_ryr_personas.Update();
+    }
+    protected void GV_PersonasPlanRyR_PreRender(object sender, EventArgs e)
+    {
+        if (gv.Rows.Count > 0)
+        {
+            gv_PersonasPlanRyR.HeaderRow.Cells[0].Attributes["data-priority"] = "1";
+            gv_PersonasPlanRyR.HeaderRow.Cells[1].Attributes["data-priority"] = "2";
+            gv_PersonasPlanRyR.HeaderRow.Cells[2].Attributes["data-priority"] = "2";
+            gv_PersonasPlanRyR.HeaderRow.Cells[3].Attributes["data-priority"] = "1";
+            gv_PersonasPlanRyR.HeaderRow.Cells[4].Attributes["data-priority"] = "2";
+            gv_PersonasPlanRyR.UseAccessibleHeader = true;
+            gv_PersonasPlanRyR.HeaderRow.TableSection = TableRowSection.TableHeader;
+            gv_PersonasPlanRyR.FooterRow.TableSection = TableRowSection.TableFooter;
+        }
+        if (gv.Rows.Count == 1)
+        {
+        }
+    }
+    protected void gv_plan_ryr_necesidad_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            if (e.CommandName == "EditarDetalleNecesidadPlanRyR")
+            {
+                GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                int idNecesidad = Convert.ToInt32(gv_plan_ryr_necesidad.DataKeys[gvRow.DataItemIndex].Values[0]);
+                foreach (DataRow necesidad in PlanRyR.Necesidades.Tables[0].Rows)
+                    if (necesidad["ID_NECESIDAD"].Equals(idNecesidad))
+                        foreach (Control c in pDetalleNecesidad.Controls)
+                        {
+                            if (c is Label) try { ((Label)c).Text = necesidad[c.ID].ToString(); } catch { }
+                            if (c is TextBox)
+                                try
+                                {
+                                    ((TextBox)c).Text = ((TextBox)c).ID.Contains("FECHA") ? Convert.ToDateTime(Convert.ToString(necesidad[c.ID])).ToShortDateString() : necesidad[c.ID].ToString();
+                                }
+                                catch { }
+                        }
+                UpdatePanelNecesidadPlanRyR.Update();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalNecesidadesPlanRyR", "$('#myModalNecesidadesPlanRyR').modal();", true);
+            }
+            if (e.CommandName == "CargarEvidenciaNecesidadPlanRyR")
+            {
+                GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+                Evidencia.IdControl = Convert.ToInt32(gv_plan_ryr_necesidad.Rows[gvRow.RowIndex].Cells[1].Text);
+                Evidencia.Concepto = "NecesidadPlanRyR";
+                Consulta.GV_Evidencias(gv_evidencias);
+                UpdatePanelEvidencias.Update();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEvidencias", "$('#myModalEvidencias').modal();", true);
+
+            }
+        }
+        catch (Exception ex)
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void btn_grabar_necesidades_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            PlanRyR.Necesidad = Convert.ToInt32(this.ID_NECESIDAD.Text);
+            PlanRyR.Acciones = this.ACCIONES.Text;
+            PlanRyR.FechaInicio = Convert.ToDateTime(Convert.ToString(this.FECHA_INICIO_TRAMITE.Text));
+            PlanRyR.FechaCierre = Convert.ToDateTime(Convert.ToString(this.FECHA_CIERRE_TRAMITE.Text));
+            PlanRyR.GrabarNecesidadPlan();
+            texto("El registro se inserto correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+            Consulta.GV_NecesidadesPlanRyR(gv_plan_ryr_necesidad);
+            Up_plan_ryr.Update();
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error grabar la necesidad." + ex.Message, 0);
+        }
+    }
+    protected void gv_evidencias_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+
+            if (e.CommandName == "DescargarEvidencia")
+            {
+                Mensajes("Descargar_evidencia.aspx?ID=" + gv_evidencias.DataKeys[gvRow.DataItemIndex].Values[0], 9);
+            }
+            if (e.CommandName == "EliminarEvidencia")
+            {
+                Evidencia.IdEvidencia = Convert.ToInt32(gv_evidencias.DataKeys[gvRow.DataItemIndex].Values[0]);
+                Evidencia.EliminiarEvidencia();
+                texto("El registro se elimino correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+                Consulta.GV_Evidencias(gv_evidencias);
+                UpdatePanelEvidencias.Update();
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void btn_guardar_evidencia_Click(object sender, EventArgs e)
+    {
+        Evidencia.PathConcepto = this.archivo_filesystem.Value;
+        Evidencia.Usuario = Convert.ToInt32(Session["id_usuario"]);
+        Evidencia.IdTipoEvidencia = Convert.ToInt32(this.LD_MTipoEvidencia.SelectedValue);
+        if (Evidencia.CargarEvidencia(FU_Evidencia))
+        {
+            texto("El registro se inserto correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+        }
+        else
+        {
+            texto(Evidencia.Mensaje, 3); ; Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    
+    protected void btn_modal_bien_servicio_gi_Click(object sender, EventArgs e)
+    {
+        PlanRyR.BienServicioId = 0;
+        PlanRyR.BienServicioIdComponente = 1;
+        PanelBienesServiciosIC.Visible = false;
+
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalBienesServiciosPlanRyR", "$('#myModalBienesServiciosPlanRyR').modal();", true);
+    }
+    protected void btn_grabar_bien_servicio_gi_Click(object sender, EventArgs e)
+    {
+        long result;
+        PlanRyR.BienServicioIdComponente = 1;
+        PlanRyR.BienServicioNombre = this.txtBienServicioNombre.Text;
+        PlanRyR.BienServicioMeta = Convert.ToInt32(this.txtBienServicioMeta.Text);
+        PlanRyR.BienServicioIniciativaPDET = long.TryParse(this.txtBienServicioIniciativaPDET.Text, out result) ? result : 0;
+        PlanRyR.BienServicioVictimasDirectas = Convert.ToInt32(this.txtBienServicioVictimasDirectas.Text);
+        PlanRyR.BienServicioVictimasIndirectas = Convert.ToInt32(this.txtBienServicioVictimasIndirectas.Text);
+        PlanRyR.GrabarBienesServiciosPlan();
+        texto("El registro se grabo correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+        ProcesarPlanRyR();
+        Up_plan_ryr.Update();
+    }
+    protected void gv_bienes_servicios_GI_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+            PlanRyR.BienServicioId = Convert.ToInt32(gv_bienes_servicios_GI.DataKeys[gvRow.DataItemIndex].Values[0]);
+
+            if (e.CommandName == "EditarBienesServicioPlanRyR")
+            {
+                PanelBienesServiciosIC.Visible = false;
+                foreach (DataRow row in PlanRyR.BienesServiciosGI.Tables[0].Rows)
+                {
+                    if (row["ID_PLAN_RYR_BIEN_SERVICIO"].ToString().Equals(PlanRyR.BienServicioId.ToString()))
+                    {
+                        this.txtBienServicioNombre.Text = row["BIEN_SERVICIO"].ToString();
+                        this.txtBienServicioMeta.Text = row["META"].ToString();
+                        this.txtBienServicioIniciativaPDET.Text = row["INICIATIVAPDET"].ToString();
+                        this.txtBienServicioVictimasDirectas.Text = row["VICTIMAS_ACOMPANADAS_DIRECTAMENTE"].ToString();
+                        this.txtBienServicioVictimasIndirectas.Text = row["VICTIMAS_ACOMPANADAS_INDIRECTAMENTE"].ToString();
+                        UpdatePanelBienesServiciosPlanRyR.Update();
+                    }
+                }
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalBienesServiciosPlanRyR", "$('#myModalBienesServiciosPlanRyR').modal();", true);
+            }
+            if (e.CommandName == "EditarActividadesBienesServicioPlanRyR")
+            {
+                foreach (DataRow row in PlanRyR.BienesServiciosGI.Tables[0].Rows)
+                {
+                    if (row["ID_PLAN_RYR_BIEN_SERVICIO"].ToString().Equals(PlanRyR.BienServicioId.ToString()))
+                    {
+                        this.lblBienServicioNombre.Text = row["BIEN_SERVICIO"].ToString();
+                        Consulta.GV_ActividadBienesServicios(gv_actividad_bienes_servicios);
+                        PlanRyR.Actividades = (DataSet)gv_actividad_bienes_servicios.DataSource;
+                    }
+                }
+
+                this.txtActividadId.Text = "0";
+                this.txtActividadNombre.Text = "";
+                this.txtActividadFecha.Text = "";
+                this.txtActividadResponsable.Text = "";
+                this.txtActividadCosto.Text = "0";
+
+                PlanRyR.LimpiarActividadBienesServicios();
+                UpdatePanelActividadesBienesServiciosPlanRyR.Update();
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalActividadesBienesServiciosPlanRyR", "$('#myModalActividadesBienesServiciosPlanRyR').modal();", true);
+            }
+            if (e.CommandName == "CargarEvidenciasBienesServicioPlanRyR")
+            {
+                Evidencia.IdControl = Convert.ToInt32(gv_bienes_servicios_GI.DataKeys[gvRow.DataItemIndex].Values[0]);
+                Evidencia.Concepto = "BienesServicioPlanRyR";
+                Consulta.GV_Evidencias(gv_evidencias);
+                UpdatePanelEvidencias.Update();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEvidencias", "$('#myModalEvidencias').modal();", true);
+            }
+            if (e.CommandName == "EliminarBienesServicioPlanRyR")
+            {
+                PlanRyR.EliminarBienesServiciosPlan();
+                texto("El registro se elimino correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+                ProcesarPlanRyR();
+                Up_plan_ryr.Update();
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+
+    protected void btn_modal_bien_servicio_ic_Click(object sender, EventArgs e)
+    {
+        PlanRyR.BienServicioId = 0;
+        PlanRyR.BienServicioIdComponente = 2;
+        PanelBienesServiciosIC.Visible = true;
+
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalBienesServiciosPlanRyR", "$('#myModalBienesServiciosPlanRyR').modal();", true);
+    }
+    protected void btn_grabar_bien_servicio_ic_Click(object sender, EventArgs e)
+    {
+        long result;
+        PlanRyR.BienServicioIdComponente = 2;
+        PlanRyR.BienServicioNombre = this.txtBienServicioNombre.Text;
+        PlanRyR.BienServicioMeta = Convert.ToInt32(this.txtBienServicioMeta.Text);
+        PlanRyR.BienServicioIniciativaPDET = long.TryParse(this.txtBienServicioIniciativaPDET.Text, out result) ? result : 0;
+        PlanRyR.BienServicioVictimasDirectas = Convert.ToInt32(this.txtBienServicioVictimasDirectas.Text);
+        PlanRyR.BienServicioVictimasIndirectas = Convert.ToInt32(this.txtBienServicioVictimasIndirectas.Text);
+        PlanRyR.BienServicioPersonasNoVictimasBeneficiadas = Convert.ToInt32(this.txtBienServicioPersonasNoVictimasBeneficiadas.Text);
+        PlanRyR.BienServicioPersonasBeneficiadas = Convert.ToInt32(this.txtBienServicioPersonasBeneficiadas.Text);
+        PlanRyR.GrabarBienesServiciosPlan();
+        texto("El registro se grabo correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+        ProcesarPlanRyR();
+        Up_plan_ryr.Update();
+    }
+    protected void gv_bienes_servicios_IC_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+            PlanRyR.BienServicioId = Convert.ToInt32(gv_bienes_servicios_IC.DataKeys[gvRow.DataItemIndex].Values[0]);
+
+            if (e.CommandName == "EditarBienesServicioPlanRyR")
+            {
+                PanelBienesServiciosIC.Visible = true;
+                foreach (DataRow row in PlanRyR.BienesServiciosIC.Tables[0].Rows)
+                {
+                    if (row["ID_PLAN_RYR_BIEN_SERVICIO"].ToString().Equals(PlanRyR.BienServicioId.ToString()))
+                    {
+                        this.txtBienServicioNombre.Text = row["BIEN_SERVICIO"].ToString();
+                        this.txtBienServicioMeta.Text = row["META"].ToString();
+                        this.txtBienServicioIniciativaPDET.Text = row["INICIATIVAPDET"].ToString();
+                        this.txtBienServicioVictimasDirectas.Text = row["VICTIMAS_ACOMPANADAS_DIRECTAMENTE"].ToString();
+                        this.txtBienServicioVictimasIndirectas.Text = row["VICTIMAS_ACOMPANADAS_INDIRECTAMENTE"].ToString();
+                        this.txtBienServicioPersonasNoVictimasBeneficiadas.Text = row["PERSONAS_NO_VICTIMAS_BENEFICIADAS"].ToString();
+                        this.txtBienServicioPersonasBeneficiadas.Text = row["PERSONAS_BENEFICIADAS"].ToString();
+                        UpdatePanelBienesServiciosPlanRyR.Update();
+                    }
+                }
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalBienesServiciosPlanRyR", "$('#myModalBienesServiciosPlanRyR').modal();", true);
+            }
+            if (e.CommandName == "EditarActividadesBienesServicioPlanRyR")
+            {
+                foreach (DataRow row in PlanRyR.BienesServiciosIC.Tables[0].Rows)
+                {
+                    if (row["ID_PLAN_RYR_BIEN_SERVICIO"].ToString().Equals(PlanRyR.BienServicioId.ToString()))
+                    {
+                        this.lblBienServicioNombre.Text = row["BIEN_SERVICIO"].ToString();
+                        Consulta.GV_ActividadBienesServicios(gv_actividad_bienes_servicios);
+                        PlanRyR.Actividades = (DataSet)gv_actividad_bienes_servicios.DataSource;
+                    }
+                }
+
+                this.txtActividadId.Text = "0";
+                this.txtActividadNombre.Text = "";
+                this.txtActividadFecha.Text = "";
+                this.txtActividadResponsable.Text = "";
+                this.txtActividadCosto.Text = "0";
+
+                PlanRyR.LimpiarActividadBienesServicios();
+                UpdatePanelActividadesBienesServiciosPlanRyR.Update();
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalActividadesBienesServiciosPlanRyR", "$('#myModalActividadesBienesServiciosPlanRyR').modal();", true);
+            }
+            if (e.CommandName == "CargarEvidenciasBienesServicioPlanRyR")
+            {
+                Evidencia.IdControl = Convert.ToInt32(gv_bienes_servicios_IC.DataKeys[gvRow.DataItemIndex].Values[0]);
+                Evidencia.Concepto = "BienesServicioPlanRyR";
+                Consulta.GV_Evidencias(gv_evidencias);
+                UpdatePanelEvidencias.Update();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalEvidencias", "$('#myModalEvidencias').modal();", true);
+            }
+            if (e.CommandName == "EliminarBienesServicioPlanRyR")
+            {
+                PlanRyR.EliminarBienesServiciosPlan();
+                texto("El registro se elimino correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+                ProcesarPlanRyR();
+                Up_plan_ryr.Update();
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+
+    protected void gv_actividad_bienes_servicios_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
+            PlanRyR.ActividadId = Convert.ToInt32(gv_actividad_bienes_servicios.DataKeys[gvRow.DataItemIndex].Values[0]);
+
+            if (e.CommandName == "EditarActividadBienesServicioPlanRyR")
+            {
+                foreach(DataRow actividad in PlanRyR.Actividades.Tables[0].Rows)
+                {
+                    if (actividad["ID_PLAN_RYR_BIEN_SERVICIO_ACTIVIDAD"].ToString().Equals(PlanRyR.ActividadId.ToString()))
+                    {
+                        this.txtActividadId.Text = PlanRyR.ActividadId.ToString();
+                        this.LD_Clasificacion_Actividad.SelectedValue = actividad["ID_CLASIFICACION_ACTIVIDAD"].ToString();
+                        this.txtActividadNombre.Text = actividad["ACTIVIDAD"].ToString();
+                        this.txtActividadFecha.Text = Convert.ToDateTime(actividad["FECHA_ACTIVIDAD"].ToString()).ToShortDateString();
+                        this.txtActividadResponsable.Text = actividad["RESPONSABLE"].ToString();
+                        this.txtActividadCosto.Text = string.Format("{0:N0}", actividad["COSTO"]);
+                        chkActividadCumplida.Checked = (bool)actividad["CUMPLIDA"];
+                    }
+                }
+            }
+            
+            if (e.CommandName == "EliminarActividadBienesServicioPlanRyR")
+            {
+                PlanRyR.EliminarActividadBienesServiciosPlan();
+                texto("El registro se elimino correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+                Consulta.GV_ActividadBienesServicios(gv_actividad_bienes_servicios);
+                UpdatePanelActividadesBienesServiciosPlanRyR.Update();
+            }
+        }
+        catch
+        {
+            texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void btn_grabar_actividad_bien_servicio_Click(object sender, EventArgs e)
+    {
+        PlanRyR.ActividadId = Convert.ToInt32(this.txtActividadId.Text);
+        PlanRyR.ActividadClasificacionId = Convert.ToInt32(this.LD_Clasificacion_Actividad.SelectedValue);
+        PlanRyR.ActividadNombre = this.txtActividadNombre.Text;
+        PlanRyR.ActividadFecha = Convert.ToDateTime(Convert.ToString(this.txtActividadFecha.Text));
+        PlanRyR.ActividadResponsable = this.txtActividadResponsable.Text;
+        PlanRyR.ActividadCosto = Convert.ToInt32(this.txtActividadCosto.Text.Replace(",","").Replace(".",""));
+        PlanRyR.ActividadCumplida = this.chkActividadCumplida.Checked;
+        PlanRyR.ActividadActivo = true;
+        PlanRyR.GrabarActividadBienesServiciosPlan();
+        PlanRyR.LimpiarActividadBienesServicios();
+        texto("El registro se grabo correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
+        this.txtActividadId.Text = "0";
+        this.txtActividadNombre.Text = "";
+        this.txtActividadFecha.Text = "";
+        this.txtActividadResponsable.Text = "";
+        this.txtActividadCosto.Text = "0";
+        Consulta.GV_ActividadBienesServicios(gv_actividad_bienes_servicios);
+        ProcesarPlanRyR();
+        Up_plan_ryr.Update();
+    }
+
+    public void GenerarDocumentoPlanRyR(string extension)
+    {
+        //Create word document
+        string rutaPlantillaRyR = System.Configuration.ConfigurationManager.AppSettings["PlantillasRyR"];
+        string rutaCompletaPlantillaRyR = Server.MapPath(rutaPlantillaRyR + "DOCUMENTO_PLAN_DE_RETORNO_Y_REUBICACION.docx");
+        Spire.Doc.Document document = new Spire.Doc.Document(rutaCompletaPlantillaRyR);
+
+        PlanRyR.TraerPersonasDetalleComunidad();
+        string NOMBREDELACOMUNIDAD = PlanRyR.NombreComunidad;
+
+        document.Replace("NOMBREDELACOMUNIDAD", PlanRyR.NombreComunidad, true, true);
+        document.Replace("NOMBREDELDEPARTAMENTO", PlanRyR.NombreDepartamento, true, true);
+        document.Replace("NOMBREDELMUNICIPIO", PlanRyR.NombreMunicipio, true, true);
+        document.Replace("PROFESIONALES", PlanRyR.Profesional, true, true);
+        document.Replace("DIRECCIONTERRITORIAL", PlanRyR.NombreTerritorial, true, true);
+        document.Replace("BARRIO", PlanRyR.Direccion, true, true);
+        document.Replace("TOTALPERSONAS", PlanRyR.TotalPersonas.ToString(), true, true);
+        document.Replace("TOTALPERSONASRUV", PlanRyR.TotalPersonasRUV.ToString(), true, true);
+        document.Replace("TOTALHOMBRES", ((System.Data.DataTable)PlanRyR.Personas.Tables[0]).Compute("count(ID_PERSONA)", "SEXO = 'HOMBRE'").ToString(), true, true);
+        document.Replace("TOTALMUJERES", ((System.Data.DataTable)PlanRyR.Personas.Tables[0]).Compute("count(ID_PERSONA)", "SEXO = 'MUJER'").ToString(), true, true);
+        document.Replace("TOTALHOGARES", PlanRyR.TotalHogares.ToString(), true, true);
+        document.Replace("TOTALNINOS", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(NINO)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALAMAYORES", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(MAYOR)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALLGBTI", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(LGBTI)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALHOMBRESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(HOMBRE_RUV)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALMUJERESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(MUJER_RUV)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALHOGARESRUV",PlanRyR.TotalHogares.ToString(), true, true);
+        document.Replace("TOTALNINOSRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(NINO_RUV)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALAMAYORESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(MAYOR_RUV)", string.Empty).ToString(), true, true);
+        document.Replace("TOTALLGBTIRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(LGBTIRUV)", string.Empty).ToString(), true, true);
+
+        string fechaActual = DateTime.Now.ToString("yyyyMMddHHmmss");
+        string ruta_downlodad = System.Configuration.ConfigurationManager.AppSettings["PATH_SALVAR_ARCHIVO"].ToString();
+
+        if (!Directory.Exists(ruta_downlodad))
+        {
+            Directory.CreateDirectory(ruta_downlodad);
+        }
+        string nombreArchivo = ruta_downlodad + "DOCUMENTO_PLAN_DE_RETORNO_Y_REUBICACION" + fechaActual + extension;
+        if (extension == ".doc")
+        {
+            document.SaveToFile(nombreArchivo, FileFormat.Doc);
+        }
+        else
+        {
+            document.SaveToFile(nombreArchivo, FileFormat.PDF);
+        }
+        try
+        {
+            System.Diagnostics.Process.Start(nombreArchivo);
+        }
+        catch { }
+    }
+    protected void btn_plan_ryr_doc_Click(object sender, EventArgs e)
+    {
+
+        GenerarDocumentoPlanRyR(".doc");
+    }
+    protected void btn_plan_ryr_pdf_Click(object sender, EventArgs e)
+    {
+        GenerarDocumentoPlanRyR(".pdf");
+    }
 
 
     #endregion
-
-
 
     #region DESARROLLO LILIANA PARA EL TAB DE PLAN DE TRASLADO
 

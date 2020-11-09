@@ -58,7 +58,26 @@ public class Lista
             control.Items.Insert(0, new ListItem("Seleccionar el municipio", "0"));
         }
     }
+    public static void L_D_Entorno(ref DropDownList control)
+    {
+        DataSet ds = new DataSet();
+        ds = FachadaPersistencia.getInstancia().Get_Entorno();
 
+        control.Items.Clear();
+
+        if (!ds.Tables[0].Rows.Count.Equals(0))
+        {
+            control.DataValueField = "ID_ENTORNO";
+            control.DataTextField = "ENTORNO";
+            control.DataSource = ds;
+            control.DataBind();
+            control.Items.Insert(0, new ListItem("Seleccione el entorno", "0"));
+        }
+        else
+        {
+            control.Items.Insert(0, new ListItem("Seleccione el entorno", "0"));
+        }
+    }
     public static void L_D_Entidad(ref DropDownList control)
     {
         DataSet ds = new DataSet();
@@ -317,6 +336,69 @@ public class Lista
         }
 
         control.SelectedValue = "204";
+    }
+
+    public static void L_D_Estado_Plan_RyR(ref DropDownList control)
+    {
+        DataSet ds = new DataSet();
+        ds = FachadaPersistencia.getInstancia().GetEstadosPlanRyR();
+
+        control.Items.Clear();
+
+        if (!ds.Tables[0].Rows.Count.Equals(0))
+        {
+            control.DataValueField = "ID_ESTADO_PLAN_RYR";
+            control.DataTextField = "ESTADO_PLAN_RYR";
+            control.DataSource = ds;
+            control.DataBind();
+            control.Items.Insert(0, new ListItem("Seleccione el Estado", "0"));
+        }
+        else
+        {
+            control.Items.Insert(0, new ListItem("Seleccione el Estado", "0"));
+        }
+    }
+
+    public static void L_D_Tipo_Evidencia(ref DropDownList control)
+    {
+        DataSet ds = new DataSet();
+        ds = FachadaPersistencia.getInstancia().Get_Tipo_Evidencia();
+
+        control.Items.Clear();
+
+        if (!ds.Tables[0].Rows.Count.Equals(0))
+        {
+            control.DataValueField = "ID_TIPO_EVIDENCIA";
+            control.DataTextField = "NOMBRE";
+            control.DataSource = ds;
+            control.DataBind();
+            control.Items.Insert(0, new ListItem("Seleccione el Tipo de Envidencia", "0"));
+        }
+        else
+        {
+            control.Items.Insert(0, new ListItem("Seleccione el Tipo de Envidencia", "0"));
+        }
+    }
+
+    public static void L_D_Clasificacion_Actividad(ref DropDownList control)
+    {
+        DataSet ds = new DataSet();
+        ds = FachadaPersistencia.getInstancia().Get_Clasificacion_Actividad();
+
+        control.Items.Clear();
+
+        if (!ds.Tables[0].Rows.Count.Equals(0))
+        {
+            control.DataValueField = "ID_CLASIFICACION_ACTIVIDAD";
+            control.DataTextField = "CLASIFICACION_ACTIVIDAD";
+            control.DataSource = ds;
+            control.DataBind();
+            control.Items.Insert(0, new ListItem("Seleccione la Clasificación de la Actividad", "0"));
+        }
+        else
+        {
+            control.Items.Insert(0, new ListItem("Seleccione la Clasificación de la Actividad", "0"));
+        }
     }
 
 }
