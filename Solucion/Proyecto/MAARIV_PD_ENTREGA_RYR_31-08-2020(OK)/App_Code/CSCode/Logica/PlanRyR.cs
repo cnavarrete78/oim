@@ -17,6 +17,7 @@ public class PlanRyR
     public static string NombreComunidad { get; set; }
     public static DateTime FechaMedicion { get; set; }
     public static DateTime FechaInicioPlanRyR { get; set; }
+    public static DateTime FechaInicioTraslado { get; set; }
     public static DateTime FechaDialogoPlanRyR { get; set; }
     public static int Territorial { get; set; }
     public static string NombreTerritorial { get; set; }
@@ -93,6 +94,8 @@ public class PlanRyR
         TotalPersonas = 0;
         TotalPersonasRUV = 0;
     }
+
+    
     public static bool TraerComunidad()
     {
         DataSet ds = FachadaPersistencia.getInstancia().Get_Plan_RyR(Comunidad);
@@ -105,6 +108,7 @@ public class PlanRyR
             NombreComunidad = comunidad["NOMBRE_RYR_COMUNIDAD"].ToString();
             FechaMedicion = DateTime.TryParse(comunidad["FECHA_MEDICION"].ToString(), out fecha) ? fecha : new DateTime();
             FechaInicioPlanRyR = DateTime.TryParse(comunidad["FECHA_INICIO"].ToString(), out fecha) ? fecha : new DateTime();
+            FechaInicioTraslado = DateTime.TryParse(comunidad["FECHA_INICIO_TRASLADO"].ToString(), out fecha) ? fecha : new DateTime();
             FechaDialogoPlanRyR = DateTime.TryParse(comunidad["FECHA_DIALOGO"].ToString(), out fecha) ? fecha : new DateTime();
             Territorial = Convert.ToInt32(comunidad["ID_TERRITORIAL"]);
             NombreTerritorial = comunidad["NOMBRE_ENTIDAD"].ToString();

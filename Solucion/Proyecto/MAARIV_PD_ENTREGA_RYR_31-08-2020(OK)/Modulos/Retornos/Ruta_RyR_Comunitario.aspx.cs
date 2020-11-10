@@ -10845,12 +10845,14 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Spire.Doc.Document document = new Spire.Doc.Document(rutaCompletaPlantillaRyR);
 
         PlanRyR.TraerPersonasDetalleComunidad();
-        string NOMBREDELACOMUNIDAD = PlanRyR.NombreComunidad;
 
         document.Replace("NOMBREDELACOMUNIDAD", PlanRyR.NombreComunidad, true, true);
         document.Replace("NOMBREDELDEPARTAMENTO", PlanRyR.NombreDepartamento, true, true);
         document.Replace("NOMBREDELMUNICIPIO", PlanRyR.NombreMunicipio, true, true);
         document.Replace("PROFESIONALES", PlanRyR.Profesional, true, true);
+        document.Replace("FECHAINICIOPLAN", PlanRyR.FechaInicioPlanRyR.ToShortDateString(), true, true);
+        document.Replace("FECHAACTA", PlanRyR.FechaActa.ToShortDateString(), true, true);
+        document.Replace("FECHATRASLADO", PlanRyR.FechaInicioTraslado.ToShortDateString(), true, true);
         document.Replace("DIRECCIONTERRITORIAL", PlanRyR.NombreTerritorial, true, true);
         document.Replace("BARRIO", PlanRyR.Direccion, true, true);
         document.Replace("TOTALPERSONAS", PlanRyR.TotalPersonas.ToString(), true, true);
@@ -10863,10 +10865,49 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         document.Replace("TOTALLGBTI", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(LGBTI)", string.Empty).ToString(), true, true);
         document.Replace("TOTALHOMBRESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(HOMBRE_RUV)", string.Empty).ToString(), true, true);
         document.Replace("TOTALMUJERESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(MUJER_RUV)", string.Empty).ToString(), true, true);
-        document.Replace("TOTALHOGARESRUV",PlanRyR.TotalHogares.ToString(), true, true);
+        document.Replace("TOTALHOGARESRUV", PlanRyR.TotalHogares.ToString(), true, true);
         document.Replace("TOTALNINOSRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(NINO_RUV)", string.Empty).ToString(), true, true);
         document.Replace("TOTALAMAYORESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(MAYOR_RUV)", string.Empty).ToString(), true, true);
         document.Replace("TOTALLGBTIRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(LGBTIRUV)", string.Empty).ToString(), true, true);
+        long total = 0;
+        total = total + Convert.ToInt64(((System.Data.DataTable)PlanRyR.BienesServiciosGI.Tables[0]).Compute("sum(COSTO_BIEN_SERVICIO)", string.Empty));
+        total = total + Convert.ToInt64(((System.Data.DataTable)PlanRyR.BienesServiciosIC.Tables[0]).Compute("sum(COSTO_BIEN_SERVICIO)", string.Empty));
+        document.Replace("TOTALCOSTOSBIENESOSERVICIOS", string.Format("${0:n0}",total), true, true);
+
+        Spire.Doc.Table tableAcciones = document.Sections[0].Tables[6] as Spire.Doc.Table;
+        int r = 1;
+        foreach (DataRow acciones in PlanRyR.Necesidades.Tables[0].Rows)
+        {
+            tableAcciones.Rows[r].Cells[1].AddParagraph().AppendText(acciones["NECESIDAD"].ToString());
+            tableAcciones.Rows[r].Cells[2].AddParagraph().AppendText(acciones["ACCIONES"].ToString());
+            r++;
+        }
+        
+        Spire.Doc.Table tableGI = document.Sections[0].Tables[7] as Spire.Doc.Table;
+
+        long result = 0;
+        r = 2;
+        foreach (DataRow bienes in PlanRyR.BienesServiciosGI.Tables[0].Rows)
+        {
+            tableGI.AddRow();
+            tableGI.Rows[r].Cells[0].AddParagraph().AppendText(bienes["ID_PLAN_RYR_BIEN_SERVICIO"].ToString() + " - " + bienes["BIEN_SERVICIO"].ToString());
+            tableGI.Rows[r].Cells[1].AddParagraph().AppendText(bienes["META"].ToString());
+            tableGI.Rows[r].Cells[2].AddParagraph().AppendText(string.Format("${0:N0}",bienes["COSTO_BIEN_SERVICIO"]));
+            r++;
+        }
+        tableGI.Rows.RemoveAt(1);
+
+        Spire.Doc.Table tableIC = document.Sections[0].Tables[8] as Spire.Doc.Table;
+        r = 2;
+        foreach (DataRow bienes in PlanRyR.BienesServiciosIC.Tables[0].Rows)
+        {
+            tableIC.AddRow();
+            tableIC.Rows[r].Cells[0].AddParagraph().AppendText(bienes["ID_PLAN_RYR_BIEN_SERVICIO"].ToString() + " - " + bienes["BIEN_SERVICIO"].ToString());
+            tableIC.Rows[r].Cells[1].AddParagraph().AppendText(bienes["META"].ToString());
+            tableIC.Rows[r].Cells[2].AddParagraph().AppendText(string.Format("${0:N0}", bienes["COSTO_BIEN_SERVICIO"]));
+            r++;
+        }
+        tableIC.Rows.RemoveAt(1);
 
         string fechaActual = DateTime.Now.ToString("yyyyMMddHHmmss");
         string ruta_downlodad = System.Configuration.ConfigurationManager.AppSettings["PATH_SALVAR_ARCHIVO"].ToString();

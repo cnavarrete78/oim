@@ -1881,6 +1881,7 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             comunitario.Set_ActividadBienesServicios_Comunidad(Parametros);
         }
+
         #endregion
 
 

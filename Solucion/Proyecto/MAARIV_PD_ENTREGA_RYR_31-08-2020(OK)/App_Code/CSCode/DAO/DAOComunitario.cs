@@ -562,6 +562,5 @@ namespace com.GACV.lgb.persistencia.dao
                 //MsgBox(ex.Message);
             }
         }
-
     }
 }
