@@ -2034,7 +2034,10 @@ namespace com.GACV.lgb.persistencia.fachada
         {
             return L_D.LD_Insertar_plan_acción_traslado_balance_SSV_ruta_comunitaria(idPlan,  idUsuario);
         }
-
+        public bool LD_Insertar_personas_a_trasladar_ruta_comunitaria(int idPlan, int idUsuario)
+        {
+            return L_D.LD_Insertar_personas_a_trasladar_ruta_comunitaria(idPlan, idUsuario);
+        }
         public DataSet Get_Reportes_Ruta_Comunitaria()
         {
             return L_D.LD_Reportes_Ruta_Comunitaria();

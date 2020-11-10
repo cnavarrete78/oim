@@ -4377,25 +4377,25 @@
                                                                                         <asp:TextBox ID="txtCostoTotalBienesServiciosGI" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
-                                                                                 <div class="row">
+                                                                                <div class="row">
                                                                                     <div class="col-md-12">
-                                                                                        <asp:LinkButton ID="LinkButton28" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_modal_bien_servicio_gi_Click" Text="Agregar Bien o Servicio"/>
+                                                                                        <asp:LinkButton ID="LinkButton28" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_modal_bien_servicio_gi_Click" Text="Agregar Bien o Servicio" />
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_bienes_servicios_GI"
-                                                                                            runat="server" AutoGenerateColumns="false" DataKeyNames="ID_PLAN_RYR_BIEN_SERVICIO" OnRowCommand="gv_bienes_servicios_GI_RowCommand" >
+                                                                                            runat="server" AutoGenerateColumns="false" DataKeyNames="ID_PLAN_RYR_BIEN_SERVICIO" OnRowCommand="gv_bienes_servicios_GI_RowCommand">
                                                                                             <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                             <Columns>
                                                                                                 <asp:BoundField DataField="ID_PLAN_RYR_BIEN_SERVICIO" HeaderText="Id" Visible="true" />
-                                                                                                <asp:BoundField DataField="BIEN_SERVICIO" HeaderText="Bien o Servicio a Desarrollar" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%"/>
+                                                                                                <asp:BoundField DataField="BIEN_SERVICIO" HeaderText="Bien o Servicio a Desarrollar" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%" />
                                                                                                 <asp:BoundField DataField="META" HeaderText="Meta Total" Visible="true" />
                                                                                                 <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_DIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas directamente" Visible="true" />
                                                                                                 <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_INDIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas inddirectamente" Visible="true" />
                                                                                                 <asp:BoundField DataField="VICTIMAS_BENEFICIADAS" HeaderText="Total Vícticas beneficiadas con el bien o servicio" Visible="true" />
                                                                                                 <asp:BoundField DataField="COSTO_BIEN_SERVICIO" HeaderText="Costo Total del Bien o Servicio" DataFormatString="{0:N0}" Visible="true" />
-                                                                                                <asp:TemplateField HeaderText="Acciones" HeaderStyle-Width="20%" ItemStyle-Width="20%" FooterStyle-Width="20%" >
+                                                                                                <asp:TemplateField HeaderText="Acciones" HeaderStyle-Width="20%" ItemStyle-Width="20%" FooterStyle-Width="20%">
                                                                                                     <ItemTemplate>
                                                                                                         <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
                                                                                                             <asp:LinkButton ID="btn_editar" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Editar Bien o Servicio" CommandName="EditarBienesServicioPlanRyR" Visible="true">
@@ -4412,7 +4412,7 @@
                                                                                                                 <span class="far fa-file" aria-hidden="true"></span>
                                                                                                             </asp:LinkButton>
                                                                                                         </div>
-                                                                                                         <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                        <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
                                                                                                             <asp:LinkButton ID="LinkButton30" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Eliminar Bien o Servicio" CommandName="EliminarBienesServicioPlanRyR" Visible="true">
                                                                                                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                                                                             </asp:LinkButton>
@@ -4423,8 +4423,8 @@
                                                                                             </Columns>
                                                                                         </asp:GridView>
                                                                                     </div>
-                                                                                 </div>
-                                                                                
+                                                                                </div>
+
                                                                             </div>
                                                                         </div>
                                                                         <%--Integración Comunitaria y Arraigo Territorial--%>
@@ -4441,25 +4441,25 @@
                                                                                         <asp:TextBox ID="txtCostoTotalBienesServiciosIC" runat="server" CssClass="form-control" ForeColor="Black" ReadOnly='true'></asp:TextBox>
                                                                                     </div>
                                                                                 </div>
-                                                                                 <div class="row">
+                                                                                <div class="row">
                                                                                     <div class="col-md-12">
-                                                                                        <asp:LinkButton ID="LinkButton32" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_modal_bien_servicio_ic_Click" Text="Agregar Bien o Servicio"/>
+                                                                                        <asp:LinkButton ID="LinkButton32" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_modal_bien_servicio_ic_Click" Text="Agregar Bien o Servicio" />
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_bienes_servicios_IC"
-                                                                                            runat="server" AutoGenerateColumns="false" DataKeyNames="ID_PLAN_RYR_BIEN_SERVICIO" OnRowCommand="gv_bienes_servicios_IC_RowCommand" >
+                                                                                            runat="server" AutoGenerateColumns="false" DataKeyNames="ID_PLAN_RYR_BIEN_SERVICIO" OnRowCommand="gv_bienes_servicios_IC_RowCommand">
                                                                                             <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                             <Columns>
                                                                                                 <asp:BoundField DataField="ID_PLAN_RYR_BIEN_SERVICIO" HeaderText="Id" Visible="true" />
-                                                                                                <asp:BoundField DataField="BIEN_SERVICIO" HeaderText="Bien o Servicio a Desarrollar" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%"/>
+                                                                                                <asp:BoundField DataField="BIEN_SERVICIO" HeaderText="Bien o Servicio a Desarrollar" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%" />
                                                                                                 <asp:BoundField DataField="META" HeaderText="Meta Total" Visible="true" />
                                                                                                 <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_DIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas directamente" Visible="true" />
                                                                                                 <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_INDIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas inddirectamente" Visible="true" />
                                                                                                 <asp:BoundField DataField="VICTIMAS_BENEFICIADAS" HeaderText="Total Vícticas beneficiadas con el bien o servicio" Visible="true" />
                                                                                                 <asp:BoundField DataField="COSTO_BIEN_SERVICIO" HeaderText="Costo Total del Bien o Servicio" DataFormatString="{0:N0}" Visible="true" />
-                                                                                                <asp:TemplateField HeaderText="Acciones" HeaderStyle-Width="20%" ItemStyle-Width="20%" FooterStyle-Width="20%" >
+                                                                                                <asp:TemplateField HeaderText="Acciones" HeaderStyle-Width="20%" ItemStyle-Width="20%" FooterStyle-Width="20%">
                                                                                                     <ItemTemplate>
                                                                                                         <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
                                                                                                             <asp:LinkButton ID="btn_editar" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Editar Bien o Servicio" CommandName="EditarBienesServicioPlanRyR" Visible="true">
@@ -4476,7 +4476,7 @@
                                                                                                                 <span class="far fa-file" aria-hidden="true"></span>
                                                                                                             </asp:LinkButton>
                                                                                                         </div>
-                                                                                                         <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
+                                                                                                        <div class="btn-group " role="group" aria-label="..." style="padding-bottom: 6px; padding-top: 6px;">
                                                                                                             <asp:LinkButton ID="LinkButton30" runat="server" CssClass="btn btn-default btn-sm" ToolTip="Eliminar Bien o Servicio" CommandName="EliminarBienesServicioPlanRyR" Visible="true">
                                                                                                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                                                                             </asp:LinkButton>
@@ -4490,7 +4490,7 @@
                                                                                 </div>
 
                                                                             </div>
-                                                                             <%--Generación del Plan RyR--%>
+                                                                            <%--Generación del Plan RyR--%>
                                                                             <div class="panel panel-danger">
                                                                                 <div class="panel-heading">
                                                                                     Generación del documento del Plan de Retornos y Reubicaciones
@@ -4674,6 +4674,12 @@
                                                                             </div>
                                                                             <div class="panel-body">
                                                                                 <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="label1 col-sm-12" runat="server" style="color: red;" id="lblGuardoFotoPersonas"></label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="row">
                                                                                     <div class="col-md-4">
                                                                                         <label class="label1 col-sm-">Documento de identidad:</label>
                                                                                     </div>
@@ -4755,6 +4761,12 @@
                                                                                         </Columns>
                                                                                     </asp:GridView>
                                                                                 </div>
+                                                                                <div class="row">
+                                                                                    <asp:LinkButton ID="LinkButton38" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_guardar_personas_trasladar_Click" Text="Finalizar personas a trasladar">
+                                                                                            Finalizar personas a trasladar
+                                                                                    </asp:LinkButton>
+                                                                                </div>
+
                                                                             </div>
                                                                         </div>
                                                                     </asp:Panel>
@@ -5428,6 +5440,11 @@
                                                                                 <div class="row">
                                                                                     <asp:UpdatePanel ID="UP_DatosSujetos2" runat="server" UpdateMode="Conditional">
                                                                                         <ContentTemplate>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-12">
+                                                                                                    <label class="label1 col-sm-12" runat="server" style="color: red;" id="lblMesaje_listado_personas_que_se_acompanan"></label>
+                                                                                                </div>
+                                                                                            </div>
                                                                                             <div class="row">
                                                                                                 <div runat="server" style="overflow-x: scroll">
                                                                                                     <asp:GridView UseAccessibleHeader="true" CssClass="mGridgv_listado_personas_que_se_acompanan" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_listado_personas_que_se_acompanan"
@@ -6213,7 +6230,7 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-12">
-                                                                <asp:LinkButton ID="LinkButton29" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_grabar_bien_servicio_gi_Click" Text="Grabar Bien o Servicio" ValidationGroup="bien_servicios_group"/>
+                                                                <asp:LinkButton ID="LinkButton29" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_grabar_bien_servicio_gi_Click" Text="Grabar Bien o Servicio" ValidationGroup="bien_servicios_group" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -6303,20 +6320,20 @@
                                                                 <label class="label1 col-sm-12">Costo</label>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <asp:TextBox ID="txtActividadCosto" runat="server" CssClass="form-control" ForeColor="Black" ></asp:TextBox>
+                                                                <asp:TextBox ID="txtActividadCosto" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
                                                             </div>
                                                         </div>
-                                                         <div class="row">
+                                                        <div class="row">
                                                             <div class="col-md-6">
                                                                 <label class="label1 col-sm-12">Cumplida</label>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <asp:CheckBox id="chkActividadCumplida" runat="server" />
+                                                                <asp:CheckBox ID="chkActividadCumplida" runat="server" />
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-12">
-                                                                <asp:LinkButton ID="LinkButton33" runat="server" CssClass="btn btn-danger btn-block" Text="Grabar Actividad" OnClick="btn_grabar_actividad_bien_servicio_Click" ValidationGroup="actividad_bien_servicios_group"/>
+                                                                <asp:LinkButton ID="LinkButton33" runat="server" CssClass="btn btn-danger btn-block" Text="Grabar Actividad" OnClick="btn_grabar_actividad_bien_servicio_Click" ValidationGroup="actividad_bien_servicios_group" />
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -6399,7 +6416,7 @@
                                                         <asp:GridView UseAccessibleHeader="true" CssClass="mGridgv_reporte" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_reporte"
                                                             runat="server" AutoGenerateColumns="true" OnRowCommand="gv_reporte_RowCommand" OnRowDataBound="gv_reporte_RowDataBound" OnPreRender="gv_reporte_PreRender">
                                                             <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
-                                                            <Columns>                                                                
+                                                            <Columns>
                                                             </Columns>
                                                             <PagerStyle CssClass="pgr" />
                                                         </asp:GridView>
