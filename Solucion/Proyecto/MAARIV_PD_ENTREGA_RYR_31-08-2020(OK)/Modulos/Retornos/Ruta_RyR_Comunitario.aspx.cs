@@ -10590,7 +10590,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto(Evidencia.Mensaje, 3); ; Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
-    
+
     protected void btn_modal_bien_servicio_gi_Click(object sender, EventArgs e)
     {
         PlanRyR.BienServicioId = 0;
@@ -10786,7 +10786,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
             if (e.CommandName == "EditarActividadBienesServicioPlanRyR")
             {
-                foreach(DataRow actividad in PlanRyR.Actividades.Tables[0].Rows)
+                foreach (DataRow actividad in PlanRyR.Actividades.Tables[0].Rows)
                 {
                     if (actividad["ID_PLAN_RYR_BIEN_SERVICIO_ACTIVIDAD"].ToString().Equals(PlanRyR.ActividadId.ToString()))
                     {
@@ -10800,7 +10800,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     }
                 }
             }
-            
+
             if (e.CommandName == "EliminarActividadBienesServicioPlanRyR")
             {
                 PlanRyR.EliminarActividadBienesServiciosPlan();
@@ -10821,7 +10821,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         PlanRyR.ActividadNombre = this.txtActividadNombre.Text;
         PlanRyR.ActividadFecha = Convert.ToDateTime(Convert.ToString(this.txtActividadFecha.Text));
         PlanRyR.ActividadResponsable = this.txtActividadResponsable.Text;
-        PlanRyR.ActividadCosto = Convert.ToInt32(this.txtActividadCosto.Text.Replace(",","").Replace(".",""));
+        PlanRyR.ActividadCosto = Convert.ToInt32(this.txtActividadCosto.Text.Replace(",", "").Replace(".", ""));
         PlanRyR.ActividadCumplida = this.chkActividadCumplida.Checked;
         PlanRyR.ActividadActivo = true;
         PlanRyR.GrabarActividadBienesServiciosPlan();
@@ -10863,7 +10863,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         document.Replace("TOTALLGBTI", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(LGBTI)", string.Empty).ToString(), true, true);
         document.Replace("TOTALHOMBRESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(HOMBRE_RUV)", string.Empty).ToString(), true, true);
         document.Replace("TOTALMUJERESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(MUJER_RUV)", string.Empty).ToString(), true, true);
-        document.Replace("TOTALHOGARESRUV",PlanRyR.TotalHogares.ToString(), true, true);
+        document.Replace("TOTALHOGARESRUV", PlanRyR.TotalHogares.ToString(), true, true);
         document.Replace("TOTALNINOSRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(NINO_RUV)", string.Empty).ToString(), true, true);
         document.Replace("TOTALAMAYORESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(MAYOR_RUV)", string.Empty).ToString(), true, true);
         document.Replace("TOTALLGBTIRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(LGBTIRUV)", string.Empty).ToString(), true, true);
@@ -11459,6 +11459,15 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             DateTime fechaLlegada = Convert.ToDateTime(dsPT.Tables[0].Rows[0]["FECHA_LLEGADA"]);
             txFechaLlegada.Text = fechaLlegada.ToShortDateString();
 
+            if (Convert.ToBoolean( dsPT.Tables[0].Rows[0]["GUARDO_PERSONAS"]) == true)
+            {
+                DateTime fechaGuardoPersonas = Convert.ToDateTime(dsPT.Tables[0].Rows[0]["FECHA_GUARDA_PERSONAS"]);
+                lblGuardoFotoPersonas.InnerText = "Se realizó la ultima actualización de las personas caracterizadas que decidieron trasladarse el:" + fechaGuardoPersonas.ToShortDateString();
+            }
+            else
+            {
+                lblGuardoFotoPersonas.InnerText = "No se ha realizado actualización de las personas caracterizadas";
+            }
             idPlanAccionTraslado.Value = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"].ToString();
             ViewState["idPlanAccionTraslado"] = dsPT.Tables[0].Rows[0]["ID_PLAN_ACCION_TRASLADO"];
         }
@@ -11690,7 +11699,34 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         gv_personas.Visible = false;
     }
 
-
+    protected void btn_guardar_personas_trasladar_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
+            if (idPlan > 0)
+            {
+                int idUsuario = Convert.ToInt32(Session["id_usuario"]);
+                bool exitoso = FachadaPersistencia.getInstancia().LD_Insertar_personas_a_trasladar_ruta_comunitaria(idPlan, idUsuario);
+                if (exitoso)
+                {
+                    GetPlanTraslado();
+                }
+                else
+                {
+                    Mensajes("No se ingresó la información correctamente.", 0);
+                }
+            }
+            else
+            {
+                Mensajes("Debe ingresar la informacion de datos de salida y llegada del plan de traslado", 0);
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Mensajes("Error guardar a información. " + ex.Message, 0);
+        }
+    }
     //METODOS QUE GUARDAN INFORMACION DEL PLAN DE TRASLADO
     protected void btn_guardar_plan_Accion_traslado_Click(object sender, EventArgs e)
     {
@@ -12585,9 +12621,15 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         dsPE = FachadaPersistencia.getInstancia().Get_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria(idComunidad);
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
         {
+            lblMesaje_listado_personas_que_se_acompanan.InnerText = "";
             gv_listado_personas_que_se_acompanan.Visible = true;
             gv_listado_personas_que_se_acompanan.DataSource = dsPE;
             gv_listado_personas_que_se_acompanan.DataBind();
+
+            gv_listado_personas_que_se_acompanan.UseAccessibleHeader = true;
+            gv_listado_personas_que_se_acompanan.HeaderRow.TableSection = TableRowSection.TableHeader;
+            gv_listado_personas_que_se_acompanan.FooterRow.TableSection = TableRowSection.TableFooter;
+            gv_listado_personas_que_se_acompanan.HeaderRow.TableSection = TableRowSection.TableHeader;
         }
         else
         {
@@ -12595,13 +12637,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             gv_listado_personas_que_se_acompanan.Visible = false;
             gv_listado_personas_que_se_acompanan.DataSource = dsPE;
             gv_listado_personas_que_se_acompanan.DataBind();
+            lblMesaje_listado_personas_que_se_acompanan.InnerText = "No se ha guardado en el plan de traslado las personas que se van a trasladar!";
         }
 
 
-        gv_listado_personas_que_se_acompanan.UseAccessibleHeader = true;
-        gv_listado_personas_que_se_acompanan.HeaderRow.TableSection = TableRowSection.TableHeader;
-        gv_listado_personas_que_se_acompanan.FooterRow.TableSection = TableRowSection.TableFooter;
-        gv_listado_personas_que_se_acompanan.HeaderRow.TableSection = TableRowSection.TableHeader;
+        
         UP_DatosSujetos2.Update();
 
     }
@@ -13001,7 +13041,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 if (Convert.ToInt32(dsR.Tables[i].Rows[0].ItemArray[0]) == idReporte)
                 {
                     nombreSP = dsR.Tables[i].Rows[0].ItemArray[3].ToString();
-                }                
+                }
             }
         }
         dsPE = FachadaPersistencia.getInstancia().LD_Get_Datos_Reportes_Ruta_Comunitaria(nombreSP);
@@ -13023,7 +13063,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     protected void mostar_reportes_comunitario_Click(object sender, EventArgs e)
     {
-        panelReportes.Visible = true;       
+        panelReportes.Visible = true;
         UpdatePanelReportes.Update();
 
         DataSet dsPE = new DataSet();

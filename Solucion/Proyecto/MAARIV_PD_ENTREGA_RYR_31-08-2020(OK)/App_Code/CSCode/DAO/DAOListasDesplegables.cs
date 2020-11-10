@@ -6058,7 +6058,37 @@ namespace com.GACV.lgb.persistencia.dao
             }
             return true;
         }
+        public bool LD_Insertar_personas_a_trasladar_ruta_comunitaria(int idPlan, int idUsuario)
+        {
+            try
+            {
+                SqlConnection con;
+                SqlDataAdapter DataAdapter = new SqlDataAdapter();
+                con = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["DbConnecitionString"]);
+                con.Open();
 
+                SqlCommand Command = new SqlCommand("RYR_COMUNITARIO.SP_INSERTAR_TB_RYR_PERSONAS_CARACTERIZADAS_PARA_TRASLADAR", con);
+                Command.CommandType = CommandType.StoredProcedure;
+                Command.Connection = con;
+
+                SqlParameter oParam = new SqlParameter("@ID_PLAN_ACCION_TRASLADO", idPlan);
+                oParam.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParam);
+
+                SqlParameter oParamIdUsuario = new SqlParameter("@ID_USUARIO", idUsuario);
+                oParamIdUsuario.SqlDbType = SqlDbType.Int;
+                Command.Parameters.Add(oParamIdUsuario);
+
+                Command.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                //MsgBox(ex.Message);
+                return false;
+            }
+            return true;
+        }
 
         public DataSet LD_Reportes_Ruta_Comunitaria()
         {
