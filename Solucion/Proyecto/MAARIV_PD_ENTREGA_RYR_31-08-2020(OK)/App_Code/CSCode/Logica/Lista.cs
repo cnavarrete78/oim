@@ -401,4 +401,25 @@ public class Lista
         }
     }
 
+
+    public static void L_D_Reportes(ref DropDownList control)
+    {
+        DataSet ds = new DataSet();
+        ds = FachadaPersistencia.getInstancia().Get_Reportes_Ruta_Comunitaria();
+        control.Items.Clear();
+
+        if (!ds.Tables[0].Rows.Count.Equals(0))
+        {
+            control.DataValueField = "ID_REPORTE";
+            control.DataTextField = "NOMBRE";
+            control.DataSource = ds;
+            control.DataBind();
+            control.Items.Insert(0, new ListItem("Seleccione el reporte", "0"));
+        }
+        else
+        {
+            control.Items.Insert(0, new ListItem("Seleccione el reporte", "0"));
+        }
+    }
+
 }

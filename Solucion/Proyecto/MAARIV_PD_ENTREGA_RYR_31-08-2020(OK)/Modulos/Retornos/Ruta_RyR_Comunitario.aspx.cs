@@ -3801,46 +3801,14 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                     case 298://Fase 2  - Ficha de Caracterización
                         ProcesarFicha();
                         break;
-                    case 301://si es Fase 5 - desarrollo del traslado muestra los desarrollos de Liliana rodriguez
-                        m_PlanTraslado.Visible = true;
-                        plan_traslado.Visible = true;
-                        LlenarCombosDepartamento();
-                        LlenarCombosRequeridos();
-                        LlenarComboDT();
-                        LlenarComboEntidadesRutaComunitaria();
-                        GetPlanTraslado();
-                        GetCategoria_plan_acción_traslado_Ruta_Comunitaria();
-                        lblMensajePersona.Visible = false;
-                        lblListadoPersonasNoTrasladan.Visible = false;
-                        dvMotivo.Visible = false;
-                        Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria();
-                        Get_Entidades_Plan_Accion_Traslado_Entidad();
-                        Get_plan_acción_traslado_balance_traslado_ruta_comunitaria();
-                        Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria();
-                        Get_plan_acción_traslado_profesionales_traslado_ruta_comunitaria();
-                        Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria();
-                        LlenarComboTipo_Evidencia();
+                    case 301://si es Fase 5 - desarrollo del traslado
+                        procesaPlanTraslado();
                         break;
                     case 302://Fase 6 - Plan de retorno y reubicaciòn
                         ProcesarPlanRyR();
                         break;
-                    case 304:// si es Fase 8 - cierre / balance del acompañamiento -desarrollo que muestra los desarrollos de Liliana rodriguez
-                        bool existeplan = GetPlanTrasladoParaBalance();
-                        if (existeplan)
-                        {
-                            m_Balance.Visible = true;
-                            balance_ryr.Visible = true;
-                            PanelPT.Visible = true;
-                            LlenarComboDTBalance();
-                            Get_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria();
-                            Get_balance_SSV_Ruta_Comunitaria();
-                            Get_Consultar_Balance_GI_Ruta_Comunitaria();
-                            Get_Consultar_Balance_ICYAT_Ruta_Comunitaria();
-                        }
-                        else
-                        {
-                            Mensajes("No se tiene un plan de traslado. Por favor diligenciarlo en la fase 5.", 0);
-                        }
+                    case 304:// si es Fase 8 - cierre / balance del acompañamiento
+                        procesaBalanceTraslado();
                         break;
                     default:
 
@@ -10872,7 +10840,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         long total = 0;
         total = total + Convert.ToInt64(((System.Data.DataTable)PlanRyR.BienesServiciosGI.Tables[0]).Compute("sum(COSTO_BIEN_SERVICIO)", string.Empty));
         total = total + Convert.ToInt64(((System.Data.DataTable)PlanRyR.BienesServiciosIC.Tables[0]).Compute("sum(COSTO_BIEN_SERVICIO)", string.Empty));
-        document.Replace("TOTALCOSTOSBIENESOSERVICIOS", string.Format("${0:n0}",total), true, true);
+        document.Replace("TOTALCOSTOSBIENESOSERVICIOS", string.Format("${0:n0}", total), true, true);
 
         Spire.Doc.Table tableAcciones = document.Sections[0].Tables[6] as Spire.Doc.Table;
         int r = 1;
@@ -10882,7 +10850,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             tableAcciones.Rows[r].Cells[2].AddParagraph().AppendText(acciones["ACCIONES"].ToString());
             r++;
         }
-        
+
         Spire.Doc.Table tableGI = document.Sections[0].Tables[7] as Spire.Doc.Table;
 
         long result = 0;
@@ -10892,7 +10860,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             tableGI.AddRow();
             tableGI.Rows[r].Cells[0].AddParagraph().AppendText(bienes["ID_PLAN_RYR_BIEN_SERVICIO"].ToString() + " - " + bienes["BIEN_SERVICIO"].ToString());
             tableGI.Rows[r].Cells[1].AddParagraph().AppendText(bienes["META"].ToString());
-            tableGI.Rows[r].Cells[2].AddParagraph().AppendText(string.Format("${0:N0}",bienes["COSTO_BIEN_SERVICIO"]));
+            tableGI.Rows[r].Cells[2].AddParagraph().AppendText(string.Format("${0:N0}", bienes["COSTO_BIEN_SERVICIO"]));
             r++;
         }
         tableGI.Rows.RemoveAt(1);
@@ -10944,14 +10912,54 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     #endregion
 
-    #region DESARROLLO LILIANA PARA EL TAB DE PLAN DE TRASLADO
+    #region DESARROLLO PARA EL TAB DE PLAN DE TRASLADO
+
+    private void procesaPlanTraslado()
+    {
+        m_PlanTraslado.Visible = true;
+        plan_traslado.Visible = true;
+        lblMensajePersona.Visible = false;
+        lblListadoPersonasNoTrasladan.Visible = false;
+        dvMotivo.Visible = false;
+        LlenarCombosDepartamento();
+        LlenarCombosRequeridos();
+        LlenarComboEntidadesRutaComunitaria();
+        Lista.L_D_Territorial(ref LD_DireccionTerritorialProfesionalEncargado);
+        Lista.L_D_Tipo_Evidencia(ref LD_TipoEvidencia);
+        GetPlanTraslado();
+        GetCategoria_plan_acción_traslado_Ruta_Comunitaria();
+        Get_Personas_NO_se_trasladan_plan_acción_traslado_ruta_comunitaria();
+        Get_Entidades_Plan_Accion_Traslado_Entidad();
+        Get_plan_acción_traslado_balance_traslado_ruta_comunitaria();
+        Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria();
+        Get_plan_acción_traslado_profesionales_traslado_ruta_comunitaria();
+        Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria();        
+    }
+    private void procesaBalanceTraslado()
+    {
+        bool existeplan = GetPlanTrasladoParaBalance();
+        if (existeplan)
+        {
+            m_Balance.Visible = true;
+            balance_ryr.Visible = true;
+            PanelPT.Visible = true;
+            Lista.L_D_Territorial(ref LD_DireccionTerritorialProfesionalListadoBalance);
+            Get_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria();
+            Get_balance_SSV_Ruta_Comunitaria();
+            Get_Consultar_Balance_GI_Ruta_Comunitaria();
+            Get_Consultar_Balance_ICYAT_Ruta_Comunitaria();
+        }
+        else
+        {
+            Mensajes("No se tiene un plan de traslado. Por favor diligenciarlo en la fase 5.", 0);
+        }
+    }
 
     //METODOS QUE LLENAN LISTAS DESPLEGABLES
     protected void LlenarMunicipiosPlanSalida_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (LD_Departamento_Salida.SelectedValue != "")
         {
-
             int idDepartamento = Convert.ToInt32(LD_Departamento_Salida.SelectedValue);
             LlenarComboMunicipioSalida(idDepartamento);
         }
@@ -10972,55 +10980,11 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             LlenarComboMunicipioAlistamiento(idDepartamento);
         }
     }
-    public void LlenarComboDT()
-    {
-        DataSet dsTerritorio = new DataSet();
-        dsTerritorio = FachadaPersistencia.getInstancia().L_D_Territorial();
-        LD_DireccionTerritorialProfesionalEncargado.Items.Clear();
-        if (!dsTerritorio.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_DireccionTerritorialProfesionalEncargado.DataValueField = "Id_territorio";
-            LD_DireccionTerritorialProfesionalEncargado.DataTextField = "Territorio";
-            LD_DireccionTerritorialProfesionalEncargado.DataSource = dsTerritorio;
-            LD_DireccionTerritorialProfesionalEncargado.DataBind();
-            LD_DireccionTerritorialProfesionalEncargado.Items.Insert(0, new ListItem("Seleccione la DT", "0"));
-        }
-    }
     public void LlenarCombosDepartamento()
     {
-        DataSet dsDepartamento = new DataSet();
-
-        dsDepartamento = FachadaPersistencia.getInstancia().L_D_Departamentos(0);
-        LD_Departamento_Salida.Items.Clear();
-        LD_Departamento_Llegada.Items.Clear();
-        LD_DepartamentoAlistamiento.Items.Clear();
-
-        if (!dsDepartamento.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_Departamento_Salida.DataValueField = "id_departamento";
-            LD_Departamento_Salida.DataTextField = "departamento";
-            LD_Departamento_Salida.DataSource = dsDepartamento;
-            LD_Departamento_Salida.DataBind();
-            LD_Departamento_Salida.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-
-            LD_Departamento_Llegada.DataValueField = "id_departamento";
-            LD_Departamento_Llegada.DataTextField = "departamento";
-            LD_Departamento_Llegada.DataSource = dsDepartamento;
-            LD_Departamento_Llegada.DataBind();
-            LD_Departamento_Llegada.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-
-            LD_DepartamentoAlistamiento.DataValueField = "id_departamento";
-            LD_DepartamentoAlistamiento.DataTextField = "departamento";
-            LD_DepartamentoAlistamiento.DataSource = dsDepartamento;
-            LD_DepartamentoAlistamiento.DataBind();
-            LD_DepartamentoAlistamiento.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-        }
-        else
-        {
-            LD_Departamento_Salida.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-            LD_Departamento_Llegada.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-            LD_DepartamentoAlistamiento.Items.Insert(0, new ListItem("Seleccione el departamento", "0"));
-        }
+        Lista.L_D_Departamentos(ref LD_Departamento_Salida);
+        Lista.L_D_Departamentos(ref LD_Departamento_Llegada);
+        Lista.L_D_Departamentos(ref LD_DepartamentoAlistamiento);
     }
     public void LlenarCombosRequeridos()
     {
@@ -11038,122 +11002,32 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         LD_Cumplido.Items.Insert(0, new ListItem("Si", "True"));
         LD_Cumplido.Items.Insert(1, new ListItem("No", "False"));
 
-
         LD_Rotulacion.Items.Clear();
         LD_Rotulacion.Items.Insert(0, new ListItem("Si", "True"));
         LD_Rotulacion.Items.Insert(1, new ListItem("No", "False"));
     }
     public void LlenarComboMunicipioSalida(int idDepartamento)
     {
-        DataSet dsMunicipios = new DataSet();
-        dsMunicipios = FachadaPersistencia.getInstancia().L_D_Municipio(idDepartamento, 0, 0);
-        LD_Municipio_Salida.Items.Clear();
-        if (!dsMunicipios.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_Municipio_Salida.DataValueField = "ID_MUNICIPIO";
-            LD_Municipio_Salida.DataTextField = "MUNICIPIO";
-            LD_Municipio_Salida.DataSource = dsMunicipios;
-            LD_Municipio_Salida.DataBind();
-            LD_Municipio_Salida.Items.Insert(0, new ListItem("Seleccione el municipio", "0"));
-        }
-        else
-        {
-            LD_Municipio_Salida.Items.Insert(0, new ListItem("Seleccione el municipio", "0"));
-        }
+        Lista.L_D_Municipios(ref LD_Municipio_Salida, idDepartamento);
     }
     public void LlenarComboMunicipioLlegada(int idDepartamento)
     {
-        DataSet dsMunicipios = new DataSet();
-        dsMunicipios = FachadaPersistencia.getInstancia().L_D_Municipio(idDepartamento, 0, 0);
-        LD_Municipio_Llegada.Items.Clear();
-        if (!dsMunicipios.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_Municipio_Llegada.DataValueField = "ID_MUNICIPIO";
-            LD_Municipio_Llegada.DataTextField = "MUNICIPIO";
-            LD_Municipio_Llegada.DataSource = dsMunicipios;
-            LD_Municipio_Llegada.DataBind();
-            LD_Municipio_Llegada.Items.Insert(0, new ListItem("Seleccione el municipio", "0"));
-        }
-        else
-        {
-            LD_Municipio_Llegada.Items.Insert(0, new ListItem("Seleccione el municipio", "0"));
-        }
+        Lista.L_D_Municipios(ref LD_Municipio_Llegada, idDepartamento);
     }
     public void LlenarComboMunicipioAlistamiento(int idDepartamento)
     {
-        DataSet dsMunicipios = new DataSet();
-        dsMunicipios = FachadaPersistencia.getInstancia().L_D_Municipio(idDepartamento, 0, 0);
-        LD_MunicipioAlistamiento.Items.Clear();
-        if (!dsMunicipios.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_MunicipioAlistamiento.DataValueField = "ID_MUNICIPIO";
-            LD_MunicipioAlistamiento.DataTextField = "MUNICIPIO";
-            LD_MunicipioAlistamiento.DataSource = dsMunicipios;
-            LD_MunicipioAlistamiento.DataBind();
-            LD_MunicipioAlistamiento.Items.Insert(0, new ListItem("Seleccione el municipio", "0"));
-        }
-        else
-        {
-            LD_MunicipioAlistamiento.Items.Insert(0, new ListItem("Seleccione el municipio", "0"));
-        }
+        Lista.L_D_Municipios(ref LD_MunicipioAlistamiento, idDepartamento);
     }
     public void LlenarComboEntidadesRutaComunitaria()
     {
-        DataSet dsPE = new DataSet();
-        dsPE = FachadaPersistencia.getInstancia().GetTodasEntidadesRutaComunitaria();
-
-        LD_Entidad.Items.Clear();
-        if (!dsPE.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_Entidad.DataValueField = "ID_ENTIDAD";
-            LD_Entidad.DataTextField = "NOMBRE_ENTIDAD";
-            LD_Entidad.DataSource = dsPE;
-            LD_Entidad.DataBind();
-            LD_Entidad.Items.Insert(0, new ListItem("Seleccione la entidad", "0"));
-        }
-        LD_EntidadRegistra.Items.Clear();
-        if (!dsPE.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_EntidadRegistra.DataValueField = "ID_ENTIDAD";
-            LD_EntidadRegistra.DataTextField = "NOMBRE_ENTIDAD";
-            LD_EntidadRegistra.DataSource = dsPE;
-            LD_EntidadRegistra.DataBind();
-            LD_EntidadRegistra.Items.Insert(0, new ListItem("Seleccione la entidad", "0"));
-        }
-
-        LD_EntidadProfesionalRegistra.Items.Clear();
-        if (!dsPE.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_EntidadProfesionalRegistra.DataValueField = "ID_ENTIDAD";
-            LD_EntidadProfesionalRegistra.DataTextField = "NOMBRE_ENTIDAD";
-            LD_EntidadProfesionalRegistra.DataSource = dsPE;
-            LD_EntidadProfesionalRegistra.DataBind();
-            LD_EntidadProfesionalRegistra.Items.Insert(0, new ListItem("Seleccione la entidad", "0"));
-        }
-        LD_EntidadCaracterizacion.Items.Clear();
-        if (!dsPE.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_EntidadCaracterizacion.DataValueField = "ID_ENTIDAD";
-            LD_EntidadCaracterizacion.DataTextField = "NOMBRE_ENTIDAD";
-            LD_EntidadCaracterizacion.DataSource = dsPE;
-            LD_EntidadCaracterizacion.DataBind();
-            LD_EntidadCaracterizacion.Items.Insert(0, new ListItem("Seleccione la entidad", "0"));
-        }
-
+        Lista.L_D_Entidad(ref LD_Entidad);
+        Lista.L_D_Entidad(ref LD_EntidadRegistra);
+        Lista.L_D_Entidad(ref LD_EntidadProfesionalRegistra);
+        Lista.L_D_Entidad(ref LD_EntidadCaracterizacion);
     }
     public void LlenarComboTipo_Evidencia()
     {
-        DataSet ds = new DataSet();
-        ds = FachadaPersistencia.getInstancia().Get_Tipo_Evidencia();
-        LD_TipoEvidencia.Items.Clear();
-        if (!ds.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_TipoEvidencia.DataValueField = "ID_TIPO_EVIDENCIA";
-            LD_TipoEvidencia.DataTextField = "NOMBRE";
-            LD_TipoEvidencia.DataSource = ds;
-            LD_TipoEvidencia.DataBind();
-        }
-        LD_TipoEvidencia.Items.Insert(0, new ListItem("Seleccione", "0"));
+        Lista.L_D_Tipo_Evidencia(ref LD_TipoEvidencia);
     }
 
     //METODOS DE LOS GRID
@@ -11500,7 +11374,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             DateTime fechaLlegada = Convert.ToDateTime(dsPT.Tables[0].Rows[0]["FECHA_LLEGADA"]);
             txFechaLlegada.Text = fechaLlegada.ToShortDateString();
 
-            if (Convert.ToBoolean( dsPT.Tables[0].Rows[0]["GUARDO_PERSONAS"]) == true)
+            if (Convert.ToBoolean(dsPT.Tables[0].Rows[0]["GUARDO_PERSONAS"]) == true)
             {
                 DateTime fechaGuardoPersonas = Convert.ToDateTime(dsPT.Tables[0].Rows[0]["FECHA_GUARDA_PERSONAS"]);
                 lblGuardoFotoPersonas.InnerText = "Se realizó la ultima actualización de las personas caracterizadas que decidieron trasladarse el:" + fechaGuardoPersonas.ToShortDateString();
@@ -11739,7 +11613,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
         gv_personas.Visible = false;
     }
-
     protected void btn_guardar_personas_trasladar_Click(object sender, EventArgs e)
     {
         try
@@ -11768,6 +11641,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes("Error guardar a información. " + ex.Message, 0);
         }
     }
+
     //METODOS QUE GUARDAN INFORMACION DEL PLAN DE TRASLADO
     protected void btn_guardar_plan_Accion_traslado_Click(object sender, EventArgs e)
     {
@@ -12423,7 +12297,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
     #endregion
 
-    #region DESARROLLO LILIANA PARA EL TAB DEL BALANCE
+    #region DESARROLLO PARA EL TAB DEL BALANCE
     protected void gv_listado_personas_que_se_acompanan_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         DataSet ds = new DataSet();
@@ -12597,20 +12471,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
     }
 
-    public void LlenarComboDTBalance()
-    {
-        DataSet dsTerritorio = new DataSet();
-        dsTerritorio = FachadaPersistencia.getInstancia().L_D_Territorial();
-        LD_DireccionTerritorialProfesionalListadoBalance.Items.Clear();
-        if (!dsTerritorio.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_DireccionTerritorialProfesionalListadoBalance.DataValueField = "Id_territorio";
-            LD_DireccionTerritorialProfesionalListadoBalance.DataTextField = "Territorio";
-            LD_DireccionTerritorialProfesionalListadoBalance.DataSource = dsTerritorio;
-            LD_DireccionTerritorialProfesionalListadoBalance.DataBind();
-            LD_DireccionTerritorialProfesionalListadoBalance.Items.Insert(0, new ListItem("Seleccione la DT", "0"));
-        }
-    }
     public bool GetPlanTrasladoParaBalance()
     {
         DataSet dsPT = new DataSet();
@@ -12682,7 +12542,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
 
 
-        
+
         UP_DatosSujetos2.Update();
 
     }
@@ -12837,7 +12697,6 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             Mensajes("Error guardar a información. " + ex.Message, 0);
         }
     }
-
     public void GenerarDocumentoBalance(string extension)
     {
         //Create word document
@@ -13101,21 +12960,24 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
 
     }
-
     protected void mostar_reportes_comunitario_Click(object sender, EventArgs e)
     {
+        //limpiar tabs
+        m_PlanTraslado.Visible = false;
+        plan_traslado.Visible = false;
+        lblMensajePersona.Visible = false;
+        lblListadoPersonasNoTrasladan.Visible = false;
+        dvMotivo.Visible = false;
+        m_Balance.Visible = false;
+        balance_ryr.Visible = false;
+        PanelPT.Visible = false;
+        UP_DatosEvento.Visible = false;
+        LimpiaFormulario(this);
+
+        //carga informacion del reporte
         panelReportes.Visible = true;
         UpdatePanelReportes.Update();
-
-        DataSet dsPE = new DataSet();
-        dsPE = FachadaPersistencia.getInstancia().Get_Reportes_Ruta_Comunitaria();
-        if (!dsPE.Tables[0].Rows.Count.Equals(0))
-        {
-            LD_Reporte.DataValueField = "ID_REPORTE";
-            LD_Reporte.DataTextField = "NOMBRE";
-            LD_Reporte.DataSource = dsPE;
-            LD_Reporte.DataBind();
-        }
+        Lista.L_D_Reportes(ref LD_Reporte);
     }
 
     #endregion

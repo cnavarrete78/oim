@@ -2486,9 +2486,9 @@
                                             <div class="panel-body">
                                                 <div id="Tabs" role="tabpanel">
                                                     <!-- Nav tabs -->
-                                                    <%--------------------------------------------------------%>
-                                                    <%--aqui se deben agregar los nuevos tabs da desarrollar--%>
-                                                    <%--------------------------------------------------------%>
+                                                    <%---------------------------------------------------------------------------------%>
+                                                    <%--aqui se deben agregar los nuevos tabs da desarrollar para la ruta comunitaria--%>
+                                                    <%---------------------------------------------------------------------------------%>
                                                     <ul class="nav2 nav2-tabs pestana" role="tablist">
                                                         <li id="m_2" runat="server"><a href="#ContentPlaceHolder1_Responsables" aria-controls="Responsables" role="tab" data-toggle="tab">Responsables</a></li>
                                                         <li id="m_4" runat="server"><a href="#ContentPlaceHolder1_Dias" aria-controls="Dias" role="tab" data-toggle="tab">Acciones </a></li>
@@ -2499,7 +2499,6 @@
                                                     </ul>
                                                     <!-- Tab panes -->
                                                     <div class="tab-content" style="padding-top: 20px">
-
                                                         <asp:HiddenField ID="hidIdSujetoCol" runat="server" />
                                                         <%--primer tab de responsables--%>
                                                         <div role="tabpanel" class="tab-pane" id="Responsables" runat="server">
@@ -4948,17 +4947,6 @@
                                                                                         </span>
                                                                                     </div>
                                                                                 </div>
-                                                                                <%-- <div class="row">
-                                                                                    <div class="col-md-12">
-                                                                                        <label class="label1 col-sm-">Evidencia:</label>                                                                                    
-                                                                                        <asp:DropDownList ID="LD_evidencia" runat="server" CssClass="form-control">
-                                                                                        </asp:DropDownList>
-                                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator36" runat="server"
-                                                                                            ControlToValidate="LD_evidencia" CssClass="validador" Display="Dynamic"
-                                                                                            ErrorMessage="Seleccione el tipo de evidencia" InitialValue="0"
-                                                                                            ValidationGroup="agregarActividad"></asp:RequiredFieldValidator>
-                                                                                    </div>                                                                                   
-                                                                                </div>--%>
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <asp:LinkButton ID="LinkButton10" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_agregar_Actividad_Click" Text="Agregar Actividad" ValidationGroup="agregarActividad">
@@ -6380,56 +6368,6 @@
                                 </asp:UpdatePanel>
                             </div>
                         </div>
-                        <%--Reportes--%>
-                        <div>
-                            <br />
-                        </div>
-
-                        <asp:Panel ID="panelReportes" Visible="false" runat="server" CssClass="container-fluid">
-                            <div class="panel panel-danger">
-                                <div class="panel-heading">
-                                    Generación de reportes del modulo de Comunidades RyR
-                                </div>
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <%--busqueda--%>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label class="label1 col-sm-12">Reporte</label>
-                                                <asp:DropDownList ID="LD_Reporte" runat="server" AutoPostBack="True" CssClass="form-control">
-                                                </asp:DropDownList>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator124" runat="server"
-                                                    ControlToValidate="LD_Reporte" CssClass="validador" Display="Dynamic"
-                                                    ErrorMessage="* Campo obligatorio" InitialValue="0"></asp:RequiredFieldValidator>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <asp:LinkButton ID="LinkButton15" runat="server" CssClass="btn btn-danger btn-block" ValidationGroup="agregarDatosListadoBalance" OnClick="btn_generar_reporte_Click" Text="Generar Reporte">
-                                             Generar Reporte</asp:LinkButton>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <asp:UpdatePanel ID="UpdatePanelReportes" runat="server" UpdateMode="Conditional">
-                                            <ContentTemplate>
-                                                <div class="row">
-                                                    <div runat="server" style="overflow-x: scroll">
-                                                        <asp:GridView UseAccessibleHeader="true" CssClass="mGridgv_reporte" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_reporte"
-                                                            runat="server" AutoGenerateColumns="true" OnRowCommand="gv_reporte_RowCommand" OnRowDataBound="gv_reporte_RowDataBound" OnPreRender="gv_reporte_PreRender">
-                                                            <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
-                                                            <Columns>
-                                                            </Columns>
-                                                            <PagerStyle CssClass="pgr" />
-                                                        </asp:GridView>
-                                                    </div>
-                                                </div>
-                                            </ContentTemplate>
-                                            <Triggers>
-                                            </Triggers>
-                                        </asp:UpdatePanel>
-                                    </div>
-                                </div>
-                            </div>
-                        </asp:Panel>
                         <%--modales de inventario--%>
                         <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" visible="false" style="z-index: 150;" id="myModalEnseres" aria-hidden="true">
                             <div style="background: black; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; opacity: 0.5; z-index: 1040;"></div>
@@ -6907,6 +6845,55 @@
 
                             </div>
                         </div>
+                        <%--Reportes--%>
+                        <div>
+                            <br />
+                        </div>
+                        <asp:Panel ID="panelReportes" Visible="false" runat="server" CssClass="container-fluid">
+                            <div class="panel panel-danger">
+                                <div class="panel-heading">
+                                    Generación de reportes del modulo de Comunidades RyR
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <%--busqueda--%>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label class="label1 col-sm-12">Reporte</label>
+                                                <asp:DropDownList ID="LD_Reporte" runat="server" AutoPostBack="True" CssClass="form-control">
+                                                </asp:DropDownList>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator124" runat="server"
+                                                    ControlToValidate="LD_Reporte" CssClass="validador" Display="Dynamic" ValidationGroup="LD_Reporte"
+                                                    ErrorMessage="* Campo obligatorio" InitialValue="0"></asp:RequiredFieldValidator>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <asp:LinkButton ID="LinkButton15" runat="server" CssClass="btn btn-danger btn-block" ValidationGroup="LD_Reporte" OnClick="btn_generar_reporte_Click" Text="Generar Reporte">
+                                             Generar Reporte</asp:LinkButton>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <asp:UpdatePanel ID="UpdatePanelReportes" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
+                                                <div class="row">
+                                                    <div runat="server" style="overflow-x: scroll">
+                                                        <asp:GridView UseAccessibleHeader="true" CssClass="mGridgv_reporte" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_reporte"
+                                                            runat="server" AutoGenerateColumns="true" OnRowCommand="gv_reporte_RowCommand" OnRowDataBound="gv_reporte_RowDataBound" OnPreRender="gv_reporte_PreRender">
+                                                            <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
+                                                            <Columns>
+                                                            </Columns>
+                                                            <PagerStyle CssClass="pgr" />
+                                                        </asp:GridView>
+                                                    </div>
+                                                </div>
+                                            </ContentTemplate>
+                                            <Triggers>
+                                            </Triggers>
+                                        </asp:UpdatePanel>
+                                    </div>
+                                </div>
+                            </div>
+                        </asp:Panel>
 
                     </div>
                 </div>
