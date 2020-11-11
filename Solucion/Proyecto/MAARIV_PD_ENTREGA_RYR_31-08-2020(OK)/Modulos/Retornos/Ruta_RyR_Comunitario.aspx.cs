@@ -10853,8 +10853,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         document.Replace("TOTALAMAYORESRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(MAYOR_RUV)", string.Empty).ToString(), true, true);
         document.Replace("TOTALLGBTIRUV", ((System.Data.DataTable)PlanRyR.PersonasDetalle.Tables[0]).Compute("sum(LGBTIRUV)", string.Empty).ToString(), true, true);
         long total = 0;
-        total = total + Convert.ToInt64(((System.Data.DataTable)PlanRyR.BienesServiciosGI.Tables[0]).Compute("sum(COSTO_BIEN_SERVICIO)", string.Empty));
-        total = total + Convert.ToInt64(((System.Data.DataTable)PlanRyR.BienesServiciosIC.Tables[0]).Compute("sum(COSTO_BIEN_SERVICIO)", string.Empty));
+        try { total = total + Convert.ToInt64(((System.Data.DataTable)PlanRyR.BienesServiciosGI.Tables[0]).Compute("sum(COSTO_BIEN_SERVICIO)", string.Empty));} catch {}
+        try { total = total + Convert.ToInt64(((System.Data.DataTable)PlanRyR.BienesServiciosIC.Tables[0]).Compute("sum(COSTO_BIEN_SERVICIO)", string.Empty)); } catch { }
+        
         document.Replace("TOTALCOSTOSBIENESOSERVICIOS", string.Format("${0:n0}", total), true, true);
 
         Spire.Doc.Table tableAcciones = document.Sections[0].Tables[6] as Spire.Doc.Table;
