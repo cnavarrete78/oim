@@ -6710,8 +6710,9 @@
                                                                     <asp:BoundField DataField="ID" HeaderText="ID" Visible="false" />
                                                                     <asp:BoundField DataField="ID_RELACION" HeaderText="ID" Visible="false" />
                                                                     <asp:BoundField DataField="ID_TIPO_EVIDENCIA" HeaderText="ID_TIPO_EVIDENCIA" Visible="false" />
-                                                                    <asp:BoundField DataField="TIPO_EVIDENCIA" HeaderText="TIPO_EVIDENCIA" />
-                                                                    <asp:BoundField DataField="URL_ARCHIVO" HeaderText="URL_ARCHIVO" />
+                                                                    <asp:BoundField DataField="TIPO_EVIDENCIA" HeaderText="TIPO EVIDENCIA" />
+                                                                    <asp:BoundField DataField="NOMBRE_ARCHIVO" HeaderText="ARCHIVO"  Visible="true"/>
+                                                                    <asp:BoundField DataField="URL_ARCHIVO" HeaderText="URL ARCHIVO"  Visible="false"/>
                                                                     <asp:BoundField DataField="EXTENSION" HeaderText="EXTENSION" />
                                                                     <asp:TemplateField HeaderText="Acciones">
                                                                         <ItemTemplate>

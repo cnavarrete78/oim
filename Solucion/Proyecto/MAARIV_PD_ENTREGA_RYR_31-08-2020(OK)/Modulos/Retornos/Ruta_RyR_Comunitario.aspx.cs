@@ -12161,6 +12161,9 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         case "BalanceGI":
                             idRelacion = Convert.ToInt32(ViewState["idPlanBienServicio"]);
                             break;
+                        case "BalanceICAT":
+                            idRelacion = Convert.ToInt32(ViewState["idPlanBienServicio"]);
+                            break;
                         default:
                             break;
                     }
@@ -12610,7 +12613,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
             for (int i = 0; i < dsPE.Tables[0].Rows.Count; i++)
             {
-                totalGI = totalGI + Convert.ToDecimal(dsPE.Tables[i].Rows[0]["COSTO_TOTAL"]);
+                totalGI = totalGI + Convert.ToDecimal(dsPE.Tables[0].Rows[i]["COSTO_TOTAL"]);
             }
         }
         else
@@ -12646,7 +12649,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
             for (int i = 0; i < dsPE.Tables[0].Rows.Count; i++)
             {
-                totalICYAT = totalICYAT + Convert.ToDecimal(dsPE.Tables[i].Rows[0]["COSTO_TOTAL"]);
+                totalICYAT = totalICYAT + Convert.ToDecimal(dsPE.Tables[0].Rows[i]["COSTO_TOTAL"]);
             }
         }
         else
@@ -12716,7 +12719,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         //Create word document
         string rutaPlantillaRyR = System.Configuration.ConfigurationManager.AppSettings["PlantillasRyR"];
-        string rutaCompletaPlantillaRyR = Server.MapPath(rutaPlantillaRyR + "DOCUMENTO_PLAN_DE_RETORNO_Y_REUBICACION.docx");
+        string rutaCompletaPlantillaRyR = Server.MapPath(rutaPlantillaRyR + "DOCUMENTO_BALANCE_DEL_ACOMPANAMIENTO_AL_RyR.docx");
 
         Spire.Doc.Document document = new Spire.Doc.Document(rutaCompletaPlantillaRyR);
 
@@ -12746,6 +12749,8 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             string TOTALNINOSRUV = dsPT.Tables[0].Rows[0]["TOTALNINOSRUV"].ToString();
             string TOTALAMAYORESRUV = dsPT.Tables[0].Rows[0]["TOTALAMAYORESRUV"].ToString();
             string TOTALLGBTIRUV = dsPT.Tables[0].Rows[0]["TOTALLGBTIRUV"].ToString();
+            DateTime fechaLlegada = Convert.ToDateTime(dsPT.Tables[0].Rows[0]["FECHA_LLEGADA"]);
+            string FECHATRASLADO = fechaLlegada.ToShortDateString();
 
             document.Replace("NOMBREDELACOMUNIDAD", NOMBREDELACOMUNIDAD, true, true);
             document.Replace("NOMBREDELDEPARTAMENTO", NOMBREDELDEPARTAMENTO, true, true);
@@ -12767,6 +12772,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             document.Replace("TOTALNINOSRUV", TOTALNINOSRUV, true, true);
             document.Replace("TOTALAMAYORESRUV", TOTALAMAYORESRUV, true, true);
             document.Replace("TOTALLGBTIRUV", TOTALLGBTIRUV, true, true);
+            document.Replace("FECHATRASLADO", FECHATRASLADO, true, true);
         }
         string fechaActual = DateTime.Now.ToString("yyyyMMddHHmmss");
         string ruta_downlodad = System.Configuration.ConfigurationManager.AppSettings["PATH_SALVAR_ARCHIVO"].ToString();
