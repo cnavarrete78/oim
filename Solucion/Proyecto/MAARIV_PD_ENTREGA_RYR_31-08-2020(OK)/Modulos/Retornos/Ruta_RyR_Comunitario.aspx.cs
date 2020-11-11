@@ -10572,6 +10572,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     protected void btn_modal_bien_servicio_gi_Click(object sender, EventArgs e)
     {
+        PlanRyR.LimpiarBienesServicios();
         PlanRyR.BienServicioId = 0;
         PlanRyR.BienServicioIdComponente = 1;
         PanelBienesServiciosIC.Visible = false;
@@ -10664,6 +10665,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 
     protected void btn_modal_bien_servicio_ic_Click(object sender, EventArgs e)
     {
+        PlanRyR.LimpiarBienesServicios();
         PlanRyR.BienServicioId = 0;
         PlanRyR.BienServicioIdComponente = 2;
         PanelBienesServiciosIC.Visible = true;
