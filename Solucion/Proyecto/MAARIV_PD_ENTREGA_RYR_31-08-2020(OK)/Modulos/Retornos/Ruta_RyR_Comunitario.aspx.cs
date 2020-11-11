@@ -11276,7 +11276,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                 int idPersona = Convert.ToInt32(((Label)gvRow.FindControl("ID_PERSONA")).Text);
                 bool seTraslada = false;
                 int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
-                int idComunidad = Convert.ToInt32(TB_Nit.Text);
+                int idComunidad =  Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
                 string motivo = txMotivoNoTraslado.Text;
                 int idUsuario = Convert.ToInt32(Session["id_usuario"]);
                 bool exitoso = FachadaPersistencia.getInstancia().LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(idPlan, idComunidad, idPersona, seTraslada, motivo, idUsuario);
@@ -11351,7 +11351,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     public void GetPlanTraslado()
     {
         DataSet dsPT = new DataSet();
-        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]); ;
         dsPT = FachadaPersistencia.getInstancia().GetPlanTrasladoPorComunidad(idComunidad);
         if (!dsPT.Tables[0].Rows.Count.Equals(0))
         {
@@ -11462,7 +11462,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     public void Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria()
     {
         DataSet dsPT = new DataSet();
-        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
         dsPT = FachadaPersistencia.getInstancia().Get_plan_acción_traslado_Inventario_hogar_ruta_comunitaria(idComunidad);
         if (!dsPT.Tables[0].Rows.Count.Equals(0))
         {
@@ -11474,7 +11474,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     public void Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria()
     {
         DataSet dsPT = new DataSet();
-        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]); ;
         int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
         dsPT = FachadaPersistencia.getInstancia().Get_plan_acción_traslado_Alistamiento_traslado_ruta_comunitaria(idPlan);
         if (!dsPT.Tables[0].Rows.Count.Equals(0))
@@ -11649,7 +11649,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         try
         {
             //todos los datos son obligatorios de diligenciamiento pero se validan en el aspx
-            int idComuniad = Convert.ToInt32(TB_Nit.Text);
+            int idComuniad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]); 
             int id_MunSalida = Convert.ToInt32(LD_Municipio_Salida.SelectedValue);
             int idMunLlegada = Convert.ToInt32(LD_Municipio_Llegada.SelectedValue);
             int idEntornoSalida = Convert.ToInt32(LD_Entorno_Salida.SelectedValue);
@@ -11666,7 +11666,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
         catch (System.Exception ex)
         {
-            Mensajes("Error adicionar la entidad." + ex.Message, 0);
+            Mensajes("Error al guardar la información." + ex.Message, 0);
         }
     }
     protected void btn_guardar_Categorias_Click(object sender, EventArgs e)
@@ -11674,7 +11674,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         try
         {
-            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             if (idPlan > 0)
             {
@@ -11751,7 +11751,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             if (Convert.ToInt32(LD_Entidad.SelectedValue) != 0)
             {
-                int idComuniad = Convert.ToInt32(TB_Nit.Text);
+                int idComuniad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
                 int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
                 if (idPlan > 0)
                 {
@@ -11789,7 +11789,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         try
         {
-            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             if (idPlan > 0)
             {
@@ -11834,7 +11834,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         try
         {
-            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             if (idPlan > 0)
             {
@@ -11865,7 +11865,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         }
         catch (System.Exception ex)
         {
-            Mensajes("Error al guardar información del alistamiento logistico." + ex, 0);
+            Mensajes("Error al guardar información del alistamiento logístico." + ex, 0);
         }
     }
     protected void btn_agregar_profesional_encargado_Click(object sender, EventArgs e)
@@ -11873,7 +11873,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         try
         {
-            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             if (idPlan > 0)
             {
@@ -11920,7 +11920,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             if (idPlan > 0)
             {
-                int idComunidad = Convert.ToInt32(TB_Nit.Text);
+                int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
                 int idHogar = Convert.ToInt32(ViewState["idHogar"]);
                 int estufas = Convert.ToInt32(txEstufas.Text);
                 int neveras = Convert.ToInt32(txNeveras.Text);
@@ -12065,7 +12065,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             int idPersona = Convert.ToInt32(((Label)gvRow.FindControl("ID_PERSONASI")).Text);
             bool seTraslada = true;
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
-            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
             string motivo = "";
             int idUsuario = Convert.ToInt32(Session["id_usuario"]);
             bool exitoso = FachadaPersistencia.getInstancia().LD_Modificar_Persona_trasladar_plan_acción_traslado_ruta_comunitaria(idPlan, idComunidad, idPersona, seTraslada, motivo, idUsuario);
@@ -12209,7 +12209,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         Session["extension"] = extension;
                         string path = System.Configuration.ConfigurationManager.AppSettings["Archivos"] + this.archivo_filesystem.Value;
                         // TODO: MODIFICAR
-                        string FileName = TB_Nit.Text + "_" + (DateTime.Now.ToString("dd-MM-yyyy hh-mm-ss").Replace(" ", "H")) + extension;
+                        string FileName = ViewState["ID_RYR_COMUNIDAD"].ToString() + "_" + (DateTime.Now.ToString("dd-MM-yyyy hh-mm-ss").Replace(" ", "H")) + extension;
                         string NOMBRE_ARCHIVO = FileName.Substring(0, FileName.IndexOf("."));
 
                         //Si el directorio no existe, crearlo
@@ -12474,7 +12474,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     public bool GetPlanTrasladoParaBalance()
     {
         DataSet dsPT = new DataSet();
-        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
         dsPT = FachadaPersistencia.getInstancia().GetPlanTrasladoPorComunidad(idComunidad);
         if (!dsPT.Tables[0].Rows.Count.Equals(0))
         {
@@ -12517,7 +12517,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     }
     public void Get_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria()
     {
-        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
         DataSet dsPE = new DataSet();
         dsPE = FachadaPersistencia.getInstancia().Get_Personas_SI_se_trasladan_plan_acción_traslado_ruta_comunitaria(idComunidad);
         if (!dsPE.Tables[0].Rows.Count.Equals(0))
@@ -12575,7 +12575,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     public void Get_Consultar_Balance_GI_Ruta_Comunitaria()
     {
         int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
-        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
         decimal totalGI = 0;
         DataSet dsPE = new DataSet();
         dsPE = FachadaPersistencia.getInstancia().Get_Consultar_Balance_Metas_Ruta_Comunitaria(idComunidad, "GI");
@@ -12610,7 +12610,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     public void Get_Consultar_Balance_ICYAT_Ruta_Comunitaria()
     {
         int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
-        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
         decimal totalICYAT = 0;
 
         DataSet dsPE = new DataSet();
@@ -12647,7 +12647,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
     {
         try
         {
-            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             int idDt = Convert.ToInt32(LD_DireccionTerritorialProfesionalListadoBalance.SelectedValue);
             string profesional = txProfesionalListadoBalance.Text;
@@ -12706,7 +12706,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         Spire.Doc.Document document = new Spire.Doc.Document(rutaCompletaPlantillaRyR);
 
         DataSet dsPT = new DataSet();
-        int idComunidad = Convert.ToInt32(TB_Nit.Text);
+        int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
         dsPT = FachadaPersistencia.getInstancia().GetPlanTrasladoPorComunidad(idComunidad);
         if (!dsPT.Tables[0].Rows.Count.Equals(0))
         {
@@ -12788,7 +12788,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         try
         {
-            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             if (idPlan > 0)
             {
@@ -12833,7 +12833,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         DataSet ds = new DataSet();
         try
         {
-            int idComunidad = Convert.ToInt32(TB_Nit.Text);
+            int idComunidad = Convert.ToInt32(ViewState["ID_RYR_COMUNIDAD"]);
             int idPlan = Convert.ToInt32(ViewState["idPlanAccionTraslado"]);
             if (idPlan > 0)
             {
