@@ -6218,7 +6218,7 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-12">
-                                                                <asp:LinkButton ID="LinkButton29" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_grabar_bien_servicio_gi_Click" Text="Grabar Bien o Servicio" ValidationGroup="bien_servicios_group" />
+                                                                <asp:LinkButton ID="lnkBienServicio" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_grabar_bien_servicio_Click" Text="Grabar Bien o Servicio" ValidationGroup="bien_servicios_group" />
                                                             </div>
                                                         </div>
                                                     </div>

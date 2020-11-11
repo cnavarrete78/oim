@@ -10558,6 +10558,17 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto(Evidencia.Mensaje, 3); ; Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
+    protected void btn_grabar_bien_servicio_Click(object sender, EventArgs e)
+    {
+        if(PlanRyR.BienServicioIdComponente == 1)
+        {
+            btn_grabar_bien_servicio_gi_Click(sender, e);
+        }
+        else
+        {
+            btn_grabar_bien_servicio_ic_Click(sender, e);
+        }
+    }
 
     protected void btn_modal_bien_servicio_gi_Click(object sender, EventArgs e)
     {
@@ -10587,6 +10598,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
             PlanRyR.BienServicioId = Convert.ToInt32(gv_bienes_servicios_GI.DataKeys[gvRow.DataItemIndex].Values[0]);
+            PlanRyR.BienServicioIdComponente = 1;
 
             if (e.CommandName == "EditarBienesServicioPlanRyR")
             {
@@ -10680,6 +10692,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         {
             GridViewRow gvRow = (GridViewRow)(((LinkButton)e.CommandSource).NamingContainer);
             PlanRyR.BienServicioId = Convert.ToInt32(gv_bienes_servicios_IC.DataKeys[gvRow.DataItemIndex].Values[0]);
+            PlanRyR.BienServicioIdComponente = 2;
 
             if (e.CommandName == "EditarBienesServicioPlanRyR")
             {
