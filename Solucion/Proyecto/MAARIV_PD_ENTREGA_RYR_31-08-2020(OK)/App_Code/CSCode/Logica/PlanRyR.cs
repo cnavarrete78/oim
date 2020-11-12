@@ -56,6 +56,7 @@ public class PlanRyR
     public static int BienServicioPersonasNoVictimasBeneficiadas { get; set; }
     public static int BienServicioPersonasBeneficiadas { get; set; }
     public static long BienServicioIniciativaPDET { get; set; }
+    public static bool BienServicioCumplida { get; set; }
     public static DataSet BienesServiciosGI { get; set; }
     public static DataSet BienesServiciosIC { get; set; }
 
@@ -206,6 +207,8 @@ public class PlanRyR
         parametros.Add(new SqlParameter("PERSONAS_NO_VICTIMAS_BENEFICIADAS", BienServicioPersonasNoVictimasBeneficiadas));
         parametros.Add(new SqlParameter("PERSONAS_BENEFICIADAS", BienServicioPersonasBeneficiadas));
         parametros.Add(new SqlParameter("INICIATIVAPDET", BienServicioIniciativaPDET));
+        parametros.Add(new SqlParameter("CUMPLIDA", BienServicioCumplida));
+        
 
         FachadaPersistencia.getInstancia().Set_BienesServicios_Comunidad(parametros);
         LimpiarBienesServicios();
@@ -232,6 +235,8 @@ public class PlanRyR
         BienServicioPersonasNoVictimasBeneficiadas = 0;
         BienServicioPersonasBeneficiadas = 0;
         BienServicioIniciativaPDET = 0;
+        BienServicioCumplida = false;
+
     }
 
     public static DataSet TraerActividadBienesServicios()

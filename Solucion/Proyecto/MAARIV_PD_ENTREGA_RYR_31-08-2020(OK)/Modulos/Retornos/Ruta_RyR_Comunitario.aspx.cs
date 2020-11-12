@@ -62,6 +62,7 @@ using com.GACV.lgb.modelo.ADEP;
 using com.GACV.lgb.modelo.ADES;
 using ASP;
 using System.Linq;
+using System.ServiceModel.Security.Tokens;
 
 public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
 {
@@ -10576,6 +10577,13 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         PlanRyR.BienServicioId = 0;
         PlanRyR.BienServicioIdComponente = 1;
         PanelBienesServiciosIC.Visible = false;
+        this.txtBienServicioNombre.Text = "";
+        this.txtBienServicioMeta.Text = "0";
+        this.txtBienServicioIniciativaPDET.Text = "0";
+        this.txtBienServicioVictimasDirectas.Text = "0";
+        this.txtBienServicioVictimasIndirectas.Text = "0";
+        this.chkBienServicioCumplida.Checked = false;
+        UpdatePanelBienesServiciosPlanRyR.Update();
 
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalBienesServiciosPlanRyR", "$('#myModalBienesServiciosPlanRyR').modal();", true);
     }
@@ -10588,6 +10596,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         PlanRyR.BienServicioIniciativaPDET = long.TryParse(this.txtBienServicioIniciativaPDET.Text, out result) ? result : 0;
         PlanRyR.BienServicioVictimasDirectas = Convert.ToInt32(this.txtBienServicioVictimasDirectas.Text);
         PlanRyR.BienServicioVictimasIndirectas = Convert.ToInt32(this.txtBienServicioVictimasIndirectas.Text);
+        PlanRyR.BienServicioCumplida = this.chkBienServicioCumplida.Checked;
         PlanRyR.GrabarBienesServiciosPlan();
         texto("El registro se grabo correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
         ProcesarPlanRyR();
@@ -10604,17 +10613,17 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             if (e.CommandName == "EditarBienesServicioPlanRyR")
             {
                 PanelBienesServiciosIC.Visible = false;
-                foreach (DataRow row in PlanRyR.BienesServiciosGI.Tables[0].Rows)
+                DataRow row = PlanRyR.BienesServiciosGI.Tables[0].Rows[gvRow.DataItemIndex];
+
+                if (row["ID_PLAN_RYR_BIEN_SERVICIO"].ToString().Equals(PlanRyR.BienServicioId.ToString()))
                 {
-                    if (row["ID_PLAN_RYR_BIEN_SERVICIO"].ToString().Equals(PlanRyR.BienServicioId.ToString()))
-                    {
-                        this.txtBienServicioNombre.Text = row["BIEN_SERVICIO"].ToString();
-                        this.txtBienServicioMeta.Text = row["META"].ToString();
-                        this.txtBienServicioIniciativaPDET.Text = row["INICIATIVAPDET"].ToString();
-                        this.txtBienServicioVictimasDirectas.Text = row["VICTIMAS_ACOMPANADAS_DIRECTAMENTE"].ToString();
-                        this.txtBienServicioVictimasIndirectas.Text = row["VICTIMAS_ACOMPANADAS_INDIRECTAMENTE"].ToString();
-                        UpdatePanelBienesServiciosPlanRyR.Update();
-                    }
+                    this.txtBienServicioNombre.Text = row["BIEN_SERVICIO"].ToString();
+                    this.txtBienServicioMeta.Text = row["META"].ToString();
+                    this.txtBienServicioIniciativaPDET.Text = row["INICIATIVAPDET"].ToString();
+                    this.txtBienServicioVictimasDirectas.Text = row["VICTIMAS_ACOMPANADAS_DIRECTAMENTE"].ToString();
+                    this.txtBienServicioVictimasIndirectas.Text = row["VICTIMAS_ACOMPANADAS_INDIRECTAMENTE"].ToString();
+                    this.chkBienServicioCumplida.Checked = Convert.ToBoolean(row["CUMPLIDA"].ToString());
+                    UpdatePanelBienesServiciosPlanRyR.Update();
                 }
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalBienesServiciosPlanRyR", "$('#myModalBienesServiciosPlanRyR').modal();", true);
             }
@@ -10662,6 +10671,33 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
             texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
         }
     }
+    protected void gv_bienes_servicios_GI_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+        }
+    }
+    protected void gv_bienes_servicios_GI_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        Up_plan_ryr.Update();
+    }
+    protected void gv_bienes_servicios_GI_PreRender(object sender, EventArgs e)
+    {
+        if (gv_bienes_servicios_GI.Rows.Count > 0)
+        {
+            gv_bienes_servicios_GI.HeaderRow.Cells[0].Attributes["data-priority"] = "1";
+            gv_bienes_servicios_GI.HeaderRow.Cells[1].Attributes["data-priority"] = "2";
+            gv_bienes_servicios_GI.HeaderRow.Cells[2].Attributes["data-priority"] = "2";
+            gv_bienes_servicios_GI.HeaderRow.Cells[3].Attributes["data-priority"] = "1";
+            gv_bienes_servicios_GI.HeaderRow.Cells[4].Attributes["data-priority"] = "2";
+            gv_bienes_servicios_GI.UseAccessibleHeader = true;
+            gv_bienes_servicios_GI.HeaderRow.TableSection = TableRowSection.TableHeader;
+            gv_bienes_servicios_GI.FooterRow.TableSection = TableRowSection.TableFooter;
+        }
+        if (gv_bienes_servicios_GI.Rows.Count == 1)
+        {
+        }
+    }
 
     protected void btn_modal_bien_servicio_ic_Click(object sender, EventArgs e)
     {
@@ -10669,6 +10705,16 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         PlanRyR.BienServicioId = 0;
         PlanRyR.BienServicioIdComponente = 2;
         PanelBienesServiciosIC.Visible = true;
+
+        this.txtBienServicioNombre.Text = "";
+        this.txtBienServicioMeta.Text = "0";
+        this.txtBienServicioIniciativaPDET.Text = "0";
+        this.txtBienServicioVictimasDirectas.Text = "0";
+        this.txtBienServicioVictimasIndirectas.Text = "0";
+        this.txtBienServicioPersonasNoVictimasBeneficiadas.Text = "0";
+        this.txtBienServicioPersonasBeneficiadas.Text = "0";
+        this.chkBienServicioCumplida.Checked = false;
+        UpdatePanelBienesServiciosPlanRyR.Update();
 
         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "myModalBienesServiciosPlanRyR", "$('#myModalBienesServiciosPlanRyR').modal();", true);
     }
@@ -10683,6 +10729,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         PlanRyR.BienServicioVictimasIndirectas = Convert.ToInt32(this.txtBienServicioVictimasIndirectas.Text);
         PlanRyR.BienServicioPersonasNoVictimasBeneficiadas = Convert.ToInt32(this.txtBienServicioPersonasNoVictimasBeneficiadas.Text);
         PlanRyR.BienServicioPersonasBeneficiadas = Convert.ToInt32(this.txtBienServicioPersonasBeneficiadas.Text);
+        PlanRyR.BienServicioCumplida = this.chkBienServicioCumplida.Checked;
         PlanRyR.GrabarBienesServiciosPlan();
         texto("El registro se grabo correctamente!.", 1); Mensajes_2("", this.L_mensaje.Text, 1);
         ProcesarPlanRyR();
@@ -10710,6 +10757,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
                         this.txtBienServicioVictimasIndirectas.Text = row["VICTIMAS_ACOMPANADAS_INDIRECTAMENTE"].ToString();
                         this.txtBienServicioPersonasNoVictimasBeneficiadas.Text = row["PERSONAS_NO_VICTIMAS_BENEFICIADAS"].ToString();
                         this.txtBienServicioPersonasBeneficiadas.Text = row["PERSONAS_BENEFICIADAS"].ToString();
+                        this.chkBienServicioCumplida.Checked = Convert.ToBoolean(row["CUMPLIDA"].ToString());
                         UpdatePanelBienesServiciosPlanRyR.Update();
                     }
                 }
@@ -10757,6 +10805,33 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         catch
         {
             texto("No se ha podido realizar el evento requerido.", 3); Mensajes_2("", this.L_mensaje.Text, 3);
+        }
+    }
+    protected void gv_bienes_servicios_IC_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+        }
+    }
+    protected void gv_bienes_servicios_IC_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        Up_plan_ryr.Update();
+    }
+    protected void gv_bienes_servicios_IC_PreRender(object sender, EventArgs e)
+    {
+        if (gv_bienes_servicios_IC.Rows.Count > 0)
+        {
+            gv_bienes_servicios_IC.HeaderRow.Cells[0].Attributes["data-priority"] = "1";
+            gv_bienes_servicios_IC.HeaderRow.Cells[1].Attributes["data-priority"] = "2";
+            gv_bienes_servicios_IC.HeaderRow.Cells[2].Attributes["data-priority"] = "2";
+            gv_bienes_servicios_IC.HeaderRow.Cells[3].Attributes["data-priority"] = "1";
+            gv_bienes_servicios_IC.HeaderRow.Cells[4].Attributes["data-priority"] = "2";
+            gv_bienes_servicios_IC.UseAccessibleHeader = true;
+            gv_bienes_servicios_IC.HeaderRow.TableSection = TableRowSection.TableHeader;
+            gv_bienes_servicios_IC.FooterRow.TableSection = TableRowSection.TableFooter;
+        }
+        if (gv_bienes_servicios_IC.Rows.Count == 1)
+        {
         }
     }
 
@@ -10874,7 +10949,7 @@ public partial class Ruta_RyR_Comunitario : System.Web.UI.Page
         foreach (DataRow bienes in PlanRyR.BienesServiciosGI.Tables[0].Rows)
         {
             tableGI.AddRow();
-            tableGI.Rows[r].Cells[0].AddParagraph().AppendText(bienes["ID_PLAN_RYR_BIEN_SERVICIO"].ToString() + " - " + bienes["BIEN_SERVICIO"].ToString());
+            tableGI.Rows[r].Cells[0].AddParagraph().AppendText(bienes["BIEN_SERVICIO"].ToString());
             tableGI.Rows[r].Cells[1].AddParagraph().AppendText(bienes["META"].ToString());
             tableGI.Rows[r].Cells[2].AddParagraph().AppendText(string.Format("${0:N0}", bienes["COSTO_BIEN_SERVICIO"]));
             r++;

@@ -22,9 +22,6 @@
     <script src="../../js/PIRC/PDF_PIRC.js"></script>
     <link href="../../css/fa-all.css" rel="stylesheet" />
 
-
-
-
     <script type="text/javascript">
         function pageLoad() {
             $(function () {
@@ -181,6 +178,32 @@
                     'csv'
                 ]
             });
+
+            $('.mgv_bienes_servicios_GI').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'pdf',
+                    'excel',
+                    'csv'
+                ]
+            });
+            $('.mgv_bienes_servicios_IC').dataTable({
+                destroy: true,
+                responsive: {
+                    //details: false
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'pdf',
+                    'excel',
+                    'csv'
+                ]
+            });
+            
 
             //PARA LA TABLA DE personas_que_se_acompanan
             $('[id$="gv_listado_personas_que_se_acompanan"]').dataTable({
@@ -4223,7 +4246,7 @@
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
-                                                                                        <label class="label1 col-sm-12">Fecha Inicio de la Formulación del Plan de Retorno y Reubicación</label>
+                                                                                        <label class="label1 col-sm-12">Fecha Aprobación del Plan de Retorno y Reubicación</label>
                                                                                     </div>
                                                                                     <div class="col-md-6">
                                                                                         <div class="input-group " id="calendarFechaInicioPlanRyR" style="padding-right: 40px;">
@@ -4383,13 +4406,18 @@
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
-                                                                                        <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_bienes_servicios_GI"
-                                                                                            runat="server" AutoGenerateColumns="false" DataKeyNames="ID_PLAN_RYR_BIEN_SERVICIO" OnRowCommand="gv_bienes_servicios_GI_RowCommand">
+                                                                                        <asp:GridView UseAccessibleHeader="true" CssClass="mgv_bienes_servicios_GI footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_bienes_servicios_GI"
+                                                                                            runat="server" AutoGenerateColumns="false" DataKeyNames="ID_PLAN_RYR_BIEN_SERVICIO" OnRowCommand="gv_bienes_servicios_GI_RowCommand" OnRowDataBound="gv_bienes_servicios_GI_RowDataBound" OnPreRender="gv_bienes_servicios_GI_PreRender">
                                                                                             <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                             <Columns>
                                                                                                 <asp:BoundField DataField="ID_PLAN_RYR_BIEN_SERVICIO" HeaderText="Id" Visible="true" />
                                                                                                 <asp:BoundField DataField="BIEN_SERVICIO" HeaderText="Bien o Servicio a Desarrollar" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%" />
                                                                                                 <asp:BoundField DataField="META" HeaderText="Meta Total" Visible="true" />
+                                                                                                <asp:TemplateField HeaderText="Cumplida">
+                                                                                                    <ItemTemplate>
+                                                                                                        <asp:CheckBox ID="chkCumplida" runat="server" Checked='<%# Eval("CUMPLIDA") %>' ViewStateMode="Disabled" />
+                                                                                                    </ItemTemplate>
+                                                                                                </asp:TemplateField>
                                                                                                 <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_DIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas directamente" Visible="true" />
                                                                                                 <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_INDIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas inddirectamente" Visible="true" />
                                                                                                 <asp:BoundField DataField="VICTIMAS_BENEFICIADAS" HeaderText="Total Vícticas beneficiadas con el bien o servicio" Visible="true" />
@@ -4447,13 +4475,18 @@
                                                                                 </div>
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
-                                                                                        <asp:GridView UseAccessibleHeader="true" CssClass="footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_bienes_servicios_IC"
-                                                                                            runat="server" AutoGenerateColumns="false" DataKeyNames="ID_PLAN_RYR_BIEN_SERVICIO" OnRowCommand="gv_bienes_servicios_IC_RowCommand">
+                                                                                        <asp:GridView UseAccessibleHeader="true" CssClass="mgv_bienes_servicios_IC footable mGrid" AlternatingRowStyle-CssClass="alt" PagerStyle-CssClass="pgr" ID="gv_bienes_servicios_IC"
+                                                                                            runat="server" AutoGenerateColumns="false" DataKeyNames="ID_PLAN_RYR_BIEN_SERVICIO" OnRowCommand="gv_bienes_servicios_IC_RowCommand" OnRowDataBound="gv_bienes_servicios_IC_RowDataBound" OnPreRender="gv_bienes_servicios_IC_PreRender">
                                                                                             <SelectedRowStyle BackColor="Red" VerticalAlign="Top" />
                                                                                             <Columns>
                                                                                                 <asp:BoundField DataField="ID_PLAN_RYR_BIEN_SERVICIO" HeaderText="Id" Visible="true" />
                                                                                                 <asp:BoundField DataField="BIEN_SERVICIO" HeaderText="Bien o Servicio a Desarrollar" Visible="true" HeaderStyle-Width="25%" ItemStyle-Width="25%" FooterStyle-Width="25%" />
                                                                                                 <asp:BoundField DataField="META" HeaderText="Meta Total" Visible="true" />
+                                                                                                <asp:TemplateField HeaderText="Cumplida">
+                                                                                                    <ItemTemplate>
+                                                                                                        <asp:CheckBox ID="chkCumplida" runat="server" Checked='<%# Eval("CUMPLIDA") %>' ViewStateMode="Disabled" />
+                                                                                                    </ItemTemplate>
+                                                                                                </asp:TemplateField>
                                                                                                 <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_DIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas directamente" Visible="true" />
                                                                                                 <asp:BoundField DataField="VICTIMAS_ACOMPANADAS_INDIRECTAMENTE" HeaderText="Total Víctimas acompañadas beneficiadas inddirectamente" Visible="true" />
                                                                                                 <asp:BoundField DataField="VICTIMAS_BENEFICIADAS" HeaderText="Total Vícticas beneficiadas con el bien o servicio" Visible="true" />
@@ -6078,6 +6111,7 @@
                                                                             <div class="row">
                                                                                 <div class="col-md-12">
                                                                                     <asp:TextBox ID="ACCIONES" runat="server" ForeColor="Black" TextMode="MultiLine" Width="100%" Rows="5"></asp:TextBox>
+                                                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator125" runat="server" ControlToValidate="ACCIONES" CssClass="validador" Display="Dynamic" ValidationGroup="guardarNecesidadPlanRyR">* Campo obligatorio</asp:RequiredFieldValidator>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -6117,7 +6151,7 @@
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-md-12">
-                                                                            <asp:LinkButton ID="LinkButton25" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_grabar_necesidades_Click" Text="Guardar Necesidades" />
+                                                                            <asp:LinkButton ID="LinkButton25" runat="server" CssClass="btn btn-danger btn-block" OnClick="btn_grabar_necesidades_Click" Text="Guardar Necesidades" ValidationGroup="guardarNecesidadPlanRyR" />
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -6159,7 +6193,8 @@
                                                                 <label class="label1 col-sm-12">Meta Total</label>
                                                             </div>
                                                             <div class="col-md-2">
-                                                                <asp:TextBox ID="txtBienServicioMeta" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                                <asp:TextBox ID="txtBienServicioMeta" runat="server" CssClass="form-control" ForeColor="Black" TextMode="Number"></asp:TextBox>
+                                                                <asp:RangeValidator id="RangeValidator1" runat="server" ControlToValidate="txtBienServicioMeta"  CssClass="validador" ErrorMessage="* Valor no valido" MinimumValue="0" MaximumValue="100" ValidationGroup="bien_servicios_group" Type="Integer"></asp:RangeValidator>
                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator120" runat="server" CssClass="validador" ErrorMessage="* Campo obligatorio" ControlToValidate="txtBienServicioMeta" ValidationGroup="bien_servicios_group"></asp:RequiredFieldValidator>
                                                             </div>
                                                         </div>
@@ -6169,6 +6204,14 @@
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <asp:TextBox ID="txtBienServicioIniciativaPDET" runat="server" CssClass="form-control" ForeColor="Black"></asp:TextBox>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <label class="label1 col-sm-12">Cumplida</label>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <asp:CheckBox id="chkBienServicioCumplida" runat="server" />
                                                             </div>
                                                         </div>
                                                         <div class="row">
