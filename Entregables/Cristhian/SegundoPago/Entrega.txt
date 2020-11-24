@@ -1,7 +1,0 @@
-Segundo pago:
-1.	Documento que dé cuenta del acompañamiento realizado en el seguimiento a la implementación del modulo desarrollado.
-2.	Documento que muestre la implementación de funcionalidad y despliegue en ambiente de Pruebas y Producción de los formularios y procedimientos que se requieran para:
-- FICHA DE CARACTERIZACION DE LA COMUNIDAD
-- HERRAMIENTAS PARA LA FORMULACIÓN DEL PLAN DE RETORNO Y REUBICACIÓN
-
-3.	Documentos e insumos y los archivos producidos en desarrollo del proyecto (documentos en físico, digitales y/o CD/DVD).

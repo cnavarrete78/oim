@@ -1,4 +1,0 @@
-Primer Pago:
-1.	Plan de trabajo, con productos y tiempos de entrega para el proceso de asistencia técnica para la formulación y/o ajuste de los planes de retornos y reubicaciones y del acompañamiento al seguimiento.
-2.	Documento de Levantamiento de Especificación de Requerimientos Mínimos y Documento de Análisis Planeación y Diseño de Requerimiento de Software.
-3.	Documentos e insumos y los archivos producidos en desarrollo del proyecto (documentos en físico, digitales y/o CD/DVD).
